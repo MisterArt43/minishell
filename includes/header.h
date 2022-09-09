@@ -1,0 +1,163 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   header.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/30 16:15:55 by abucia            #+#    #+#             */
+/*   Updated: 2022/08/30 16:15:55 by abucia           ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef HEADER_H
+# define HEADER_H
+# include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <fcntl.h>
+# include "../../includes/readline-8.1/readline.h"
+# include "../../includes/readline-8.1/history.h"
+
+/**
+ * @brief gabadge memory collection
+ * \struct
+ * < ---- GARBADGE COLLECTOR ---- >
+ */
+typedef struct s_gc
+{
+	void		*src;
+	struct s_gc	*next;
+}	t_gc;
+
+// < ---- CHAINED LIST ENVIRONEMENT ---- >
+typedef struct s_lst_env
+{
+	char				*key;
+	char				*value;
+	struct s_lst_env	*next;
+	struct s_lst_env	*prev;
+}	t_lst_env;
+
+typedef struct s_lst_parsed
+{
+	char				*str;
+	char				type;
+	struct s_lst_parsed	*next;
+	struct s_lst_parsed	*prev;
+}	t_lst_parse;
+
+/**
+ * @brief chained list for all command parsed passed in the prompt
+ * \struct
+ * < ---- CHAINED LIST COMMAND ---- >
+ */
+typedef struct s_lst_cmd
+{
+	char				*command; //ls -a >> r.txt
+	struct s_lst_parsed	*split_cmd;
+	//mayon redirection
+	//commande
+	char				**inpute;
+	char				**output;
+	struct s_lst_cmd	*next;
+}	t_lst_cmd;
+
+/**
+ * @brief global struct that contain the answer
+ * \struct
+ * < ---- GLOBAL STRUCT ---- >
+ */
+typedef struct s_global
+{
+	t_gc	*gc_parsing;
+	t_lst_cmd	*cmd;
+	t_lst_env	*env;
+} t_global;
+
+//  ------------------------------------------------
+//  < ------------ GARBADGE COLLECTOR ------------ >
+//  ------------------------------------------------
+
+//create a new gc chain
+t_gc	*ft_gc_new(void *var, const char *er);
+//link a new gc chain to the list (S.O.L.)
+void	*ft_gc_add_front(t_gc **alst, t_gc *new);
+//link a new gc chain to the list or create the list if NULL (E.O.L.)
+void	*ft_gc_add_back(t_gc **alst, t_gc *new);
+//return the last chain of the list
+t_gc	*ft_gc_last(t_gc *lst);
+//free the current chain and the pointer inside
+void	ft_gc_delone(t_gc *lst);
+//free the whole list and their pointers
+void	ft_gc_clear(t_gc **lst);
+
+
+
+//  ------------------------------------------------
+//  < ------------        UTILS       ------------ >
+//  ------------------------------------------------
+
+//take a part of a string
+char	*ft_substr(char const *s, unsigned int start, size_t len, t_gc **gc);
+//give the lenght of the string
+size_t	ft_strlen(const char *str);
+//allocate the string passed in parameter
+char	*ft_strdup(const char *s1, t_gc **gc);
+
+
+
+
+//  ------------------------------------------------
+//  < ------------      CHECKER       ------------ >
+//  ------------------------------------------------
+
+//check if the cmd is filled with nothing more than space, skip line, tab ...
+int checker_isempty(char *cmd);
+//check if the cmd have a correct format of pipe
+int	check_pipe(char *cmd);
+
+
+
+
+//  ------------------------------------------------
+//  < ------------    CHAINED LIST    ------------ >
+//  ------------------------------------------------
+
+t_lst_cmd	*ft_lst_cmd_new(t_gc **cmd_gc, char *cmd);
+t_lst_cmd	*ft_lst_cmd_last(t_lst_cmd *lst);
+void		ft_lst_cmd_add_back(t_lst_cmd **alst, t_lst_cmd *new);
+int			ft_lst_cmd_size(t_lst_cmd *lst);
+
+t_lst_parse	*ft_lst_parse_new(t_gc **cmd_gc, char *cmd, char type);
+t_lst_parse	*ft_lst_parse_last(t_lst_parse *lst);
+void		ft_lst_parse_add_back(t_lst_parse **alst, t_lst_parse *new);
+int			ft_lst_parse_size(t_lst_parse *lst);
+
+t_lst_env	*ft_lst_env_new(char **key, char **value);
+t_lst_env	*ft_lst_env_last(t_lst_env *lst);
+void		ft_lst_env_add_back(t_lst_env **alst, t_lst_env *new);
+
+
+//  ------------------------------------------------
+//  < ------------   PARSING COMMAND  ------------ >
+//  ------------------------------------------------
+
+void		ft_split_shell(t_lst_cmd **cmd, t_global *mini_sh);
+void		skip_to_next_word(char *str, int *i);
+
+
+
+
+
+//  ------------------------------------------------
+//  < ------------      READLINE      ------------ >
+//  ------------------------------------------------
+
+void	main_mini_sh(t_global *mini_sh);
+
+
+//ERROR MANAGER
+int print_er(const char *er);
+
+#endif
