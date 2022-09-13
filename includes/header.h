@@ -80,7 +80,7 @@ typedef struct s_global
 //  ------------------------------------------------
 
 //create a new gc chain
-t_gc	*ft_gc_new(void *var, const char *er);
+t_gc	*ft_gc_new(void *var, const char *er, t_global *g);
 //link a new gc chain to the list (S.O.L.)
 void	*ft_gc_add_front(t_gc **alst, t_gc *new);
 //link a new gc chain to the list or create the list if NULL (E.O.L.)
@@ -99,11 +99,11 @@ void	ft_gc_clear(t_gc **lst);
 //  ------------------------------------------------
 
 //take a part of a string
-char	*ft_substr(char const *s, unsigned int start, size_t len, t_gc **gc);
+char	*ft_substr(char const *s, unsigned int start, size_t len, t_global *g);
 //give the lenght of the string
 size_t	ft_strlen(const char *str);
 //allocate the string passed in parameter
-char	*ft_strdup(const char *s1, t_gc **gc);
+char	*ft_strdup(const char *s1, t_global *g);
 
 
 
@@ -124,15 +124,16 @@ int	check_pipe(char *cmd);
 //  < ------------    CHAINED LIST    ------------ >
 //  ------------------------------------------------
 
-t_lst_cmd	*ft_lst_cmd_new(t_gc **cmd_gc, char *cmd);
+t_lst_cmd	*ft_lst_cmd_new(t_gc **cmd_gc, char *cmd, t_global *g);
 t_lst_cmd	*ft_lst_cmd_last(t_lst_cmd *lst);
 void		ft_lst_cmd_add_back(t_lst_cmd **alst, t_lst_cmd *new);
 int			ft_lst_cmd_size(t_lst_cmd *lst);
 
-t_lst_parse	*ft_lst_parse_new(t_gc **cmd_gc, char *cmd, char type);
+t_lst_parse	*ft_lst_parse_new(t_gc **cmd_gc, char *cmd, t_global *g);
 t_lst_parse	*ft_lst_parse_last(t_lst_parse *lst);
 void		ft_lst_parse_add_back(t_lst_parse **alst, t_lst_parse *new);
 int			ft_lst_parse_size(t_lst_parse *lst);
+void		ft_lst_env_clear(t_lst_env **lst);
 
 t_lst_env	*ft_lst_env_new(char **key, char **value);
 t_lst_env	*ft_lst_env_last(t_lst_env *lst);

@@ -12,15 +12,16 @@
 
 #include "../../includes/header.h"
 
-t_lst_cmd	*ft_lst_cmd_new(t_gc **cmd_gc, char *cmd)
+t_lst_cmd	*ft_lst_cmd_new(t_gc **cmd_gc, char *cmd, t_global *g)
 {
 	t_lst_cmd	*newl;
 
 	newl = (t_lst_cmd *)ft_gc_add_back(cmd_gc, ft_gc_new(malloc(sizeof(\
-	t_lst_cmd)), "An error occur while mallocing the env"));
+	t_lst_cmd)), "An error occur while mallocing cmd", g));
 	if (!newl)
 		return (NULL);
 	newl->next = NULL;
+	newl->split_cmd = NULL;
 	newl->command = cmd;
 	return (newl);
 }
@@ -66,18 +67,18 @@ int	ft_lst_cmd_size(t_lst_cmd *lst)
 
 //---------------------
 
-t_lst_parse	*ft_lst_parse_new(t_gc **cmd_gc, char *cmd, char type)
+t_lst_parse	*ft_lst_parse_new(t_gc **cmd_gc, char *cmd, t_global *g)
 {
 	t_lst_parse	*newl;
 
 	newl = (t_lst_parse *)ft_gc_add_back(cmd_gc, ft_gc_new(malloc(sizeof(\
-	t_lst_parse)), "An error occur while mallocing the env"));
+	t_lst_parse)), "An error occur while mallocing parsed cmd", g));
 	if (!newl)
 		return (NULL);
 	newl->next = NULL;
 	newl->prev = NULL;
 	newl->str = cmd;
-	newl->type = type;
+	newl->type = 0;
 	return (newl);
 }
 
@@ -163,9 +164,28 @@ void	ft_lst_env_add_back(t_lst_env **alst, t_lst_env *new)
 	new->prev = tmp;
 }
 
-void	ft_lstdelone(t_lst_env *lst)
+void	ft_lst_env_delone(t_lst_env *lst)
 {
 	if (!lst)
 		return ;
+	free(lst->key);
+	free(lst->value);
 	free(lst);
+}
+
+void	ft_lst_env_clear(t_lst_env **lst)
+{
+	t_lst_env	*tmp;
+	t_lst_env	*tmp2;
+
+	if (!lst)
+		return ;
+	tmp = *lst;
+	while (tmp)
+	{
+		tmp2 = tmp->next;
+		ft_lst_env_delone(tmp);
+		tmp = tmp2;
+	}
+	*lst = NULL;
 }

@@ -71,6 +71,8 @@ void	*ft_gc_add_back(t_gc **alst, t_gc *new)
 
 void	ft_gc_delone(t_gc *lst)
 {
+	printf("-a - \n");
+	printf("%s\n", lst->src);
 	if (!lst)
 		return ;
 	if (!lst->src)
