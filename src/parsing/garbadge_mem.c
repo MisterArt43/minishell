@@ -71,10 +71,9 @@ void	*ft_gc_add_back(t_gc **alst, t_gc *new)
 
 void	ft_gc_delone(t_gc *lst)
 {
-	printf("-a - \n");
-	printf("%s\n", lst->src);
 	if (!lst)
 		return ;
+	printf("%p\n", lst->src);
 	if (!lst->src)
 	{
 		free(lst);
@@ -102,4 +101,19 @@ void	ft_gc_clear(t_gc **lst)
 		tmp = tmp2;
 	}
 	*lst = NULL;
+}
+
+int	ft_gc_size(t_gc *lst)
+{
+	unsigned int	i;
+
+	i = 1;
+	if (!lst)
+		return (0);
+	while (lst->next)
+	{
+		lst = lst->next;
+		i++;
+	}
+	return (i);
 }

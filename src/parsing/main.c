@@ -107,41 +107,56 @@ int	make_lst_cmd(char *cmd, t_global *mini_sh)
 	return (1);
 }
 
-void	start_parse(char *cmd, t_global *mini_sh)
+int	start_parse(char *cmd, t_global *mini_sh)
 {
 	mini_sh->cmd = NULL;
 	if (make_lst_cmd(cmd, mini_sh) == 0)
 	{
-		printf("invalid command, check start_parse function\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBB\n");
+		printf("invalid command, check start_parse function\n");
 		//free(cmd);
 		ft_gc_clear(&mini_sh->gc_parsing);
-		return ;
+		return (0);
 	}
-	printf("LST SIZE : %d\n",ft_lst_cmd_size(mini_sh->cmd));
+	printf("LST SIZE : %d\n\n",ft_lst_cmd_size(mini_sh->cmd));
 	//test
-
-	ft_split_shell(&mini_sh->cmd, mini_sh);
+	
+	t_lst_cmd *tmp = mini_sh->cmd;
+	while (tmp)
+	{
+		ft_split_shell(&tmp, mini_sh);
+		printf("  -CMD SIZE : %d\n", ft_lst_parse_size(tmp->split_cmd));
+		tmp = tmp->next;
+	}
 	//ft_gc_clear(&mini_sh->gc_parsing);
-	return ;
+	return (1);
 }
 
 void	main_mini_sh(t_global *mini_sh)
 {
 	char *cmd;
 
+	cmd = (char *)NULL;
 	while (1)
 	{
 		cmd = (char *)readline("wati-minishell> ");
-		add_history(cmd);
-		printf("%c - %d\n",cmd[0],cmd[0]);
-		if (cmd[0] == '\0');
+		if (cmd)
+			add_history(cmd);
+		if (cmd[0] == 0)
 		{
-			printf("\nAAAAAAAAAAAAAAAAAAAAAAAAA\n");
 			free(cmd);
+			ft_gc_clear(&mini_sh->gc_parsing);
 			ft_lst_env_clear(&mini_sh->env);
 			return ;
 		}
-		start_parse(cmd, mini_sh);
+		if (start_parse(cmd, mini_sh) == 0)
+		{
+			printf("hey\n");
+			ft_gc_clear(&mini_sh->gc_parsing);
+			free(cmd);
+			continue ;
+		}
+		printf("GC SIZE : %d\n\n",ft_gc_size(mini_sh->gc_parsing));
+		ft_gc_clear(&mini_sh->gc_parsing);
 		free(cmd);
 	}
 }

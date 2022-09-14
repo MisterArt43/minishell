@@ -16,7 +16,7 @@ int checker_isempty(char *cmd)
 {
 	int	i;
 
-	if (!cmd)
+	if (cmd[0] == 0)
 		return (0);
 	i = 0;
 	while (cmd[i])

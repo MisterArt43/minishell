@@ -92,6 +92,8 @@ void	ft_gc_delone(t_gc *lst);
 //free the whole list and their pointers
 void	ft_gc_clear(t_gc **lst);
 
+int	ft_gc_size(t_gc *lst);
+
 
 
 //  ------------------------------------------------

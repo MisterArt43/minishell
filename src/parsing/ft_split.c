@@ -6,7 +6,7 @@
 /*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 00:39:49 by abucia            #+#    #+#             */
-/*   Updated: 2022/09/11 22:47:59 by abucia           ###   ########lyon.fr   */
+/*   Updated: 2022/09/14 17:01:40 by abucia           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,8 @@ void	sort_split(t_lst_cmd **cmd, int *i, t_global *g, int start)
 	{
 		start = *i;
 		skip_quote((*cmd)->command, i);
-		ft_lst_parse_add_back(&(*cmd)->split_cmd, \
-		ft_gc_add_back(&g->gc_parsing, \
-		ft_gc_new(ft_lst_parse_new(&g->gc_parsing, \
-		ft_substr((*cmd)->command, start, *i, g), g), \
-		"Error occur while mallocing", g)));
+		ft_lst_parse_add_back(&(*cmd)->split_cmd, ft_lst_parse_new(&g->gc_parsing, ft_substr((*cmd)->command, start, *i, g), g));
+		printf("Quote\n");
 	}
 	else if ((*cmd)->command[*i] == 0)
 		return ;
@@ -72,11 +69,9 @@ void	sort_split(t_lst_cmd **cmd, int *i, t_global *g, int start)
 	{
 		start = *i;
 		skip_word((*cmd)->command, i);
-		ft_lst_parse_add_back(&(*cmd)->split_cmd, \
-		ft_gc_add_back(&g->gc_parsing, \
-		ft_gc_new(ft_lst_parse_new(&g->gc_parsing, \
-		ft_substr((*cmd)->command, start, *i, g), g), \
-		"Error occur while mallocing", g)));
+
+		ft_lst_parse_add_back(&(*cmd)->split_cmd, ft_lst_parse_new(&g->gc_parsing, ft_substr((*cmd)->command, start, *i, g), g));
+		printf("Word\n");
 	}
 }
 
@@ -89,5 +84,5 @@ void	ft_split_shell(t_lst_cmd **cmd, t_global *mini_sh)
 	{
 		sort_split(cmd, &i, mini_sh, 0);
 	}
-	printf("CMD 1 SIZE : %d\n", ft_lst_parse_size((*cmd)->split_cmd));
+	//printf("CMD SIZE : %d\n", ft_lst_parse_size((*cmd)->split_cmd));
 }
