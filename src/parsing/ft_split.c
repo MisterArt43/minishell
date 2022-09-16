@@ -6,7 +6,7 @@
 /*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 00:39:49 by abucia            #+#    #+#             */
-/*   Updated: 2022/09/14 17:01:40 by abucia           ###   ########lyon.fr   */
+/*   Updated: 2022/09/16 22:07:41 by abucia           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	sort_split(t_lst_cmd **cmd, int *i, t_global *g, int start)
 	{
 		start = *i;
 		skip_quote((*cmd)->command, i);
-		ft_lst_parse_add_back(&(*cmd)->split_cmd, ft_lst_parse_new(&g->gc_parsing, ft_substr((*cmd)->command, start, *i, g), g));
+		ft_lst_parse_add_back(&(*cmd)->split_cmd, ft_lst_parse_new(&g->gc_parsing, ft_substr((*cmd)->command, start, *i - start, g), g));
 		printf("Quote\n");
 	}
 	else if ((*cmd)->command[*i] == 0)
@@ -70,7 +70,7 @@ void	sort_split(t_lst_cmd **cmd, int *i, t_global *g, int start)
 		start = *i;
 		skip_word((*cmd)->command, i);
 
-		ft_lst_parse_add_back(&(*cmd)->split_cmd, ft_lst_parse_new(&g->gc_parsing, ft_substr((*cmd)->command, start, *i, g), g));
+		ft_lst_parse_add_back(&(*cmd)->split_cmd, ft_lst_parse_new(&g->gc_parsing, ft_substr((*cmd)->command, start, *i - start, g), g));
 		printf("Word\n");
 	}
 }

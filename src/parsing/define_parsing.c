@@ -18,9 +18,10 @@ void d_print_exec(char **exec)
 
 	while (exec[i])
 	{
-		printf("  %d : %s\n", i, exec[i]);
+		printf("\n  %d : %s\n", i, exec[i]);
 		i++;
 	}
+	printf("--------\n\n");
 }
 
 
@@ -72,7 +73,7 @@ int	define_exec(t_lst_cmd **lst, t_global *g, int i)
 			i++;
 		parse = parse->next;
 	}
-	(*lst)->exec = ft_gc_add_back(&g->gc_parsing, ft_gc_new(malloc((sizeof(char *) + 1)* i), "invalide malloc in define exec", g));
+	(*lst)->exec = ft_gc_add_back(&g->gc_parsing, ft_gc_new(malloc(sizeof(char *) * (i + 1)), "invalide malloc in define exec", g));
 	(*lst)->exec[i] = NULL;
 	i = 0;
 	parse = (*lst)->split_cmd;

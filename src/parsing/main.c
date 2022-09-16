@@ -94,18 +94,28 @@ int	make_lst_cmd(char *cmd, t_global *mini_sh)
 	if (check_redirection(cmd, 0, 0) == 0)
 		return (0);
 	i = 0;
+	j = 0;
 	while (cmd[i])
 	{
 		//printf("i : %d\n", i);
-		j = 0;
 		if (cmd[i] == '|')
 		{
-			ft_lst_cmd_add_back(&mini_sh->cmd, ft_lst_cmd_new(&mini_sh->gc_parsing, ft_substr(cmd, j, i - 1, mini_sh), mini_sh));
+			ft_lst_cmd_add_back(&mini_sh->cmd, ft_lst_cmd_new(&mini_sh->gc_parsing, ft_substr(cmd, j, i - j, mini_sh), mini_sh));
 			j = i + 1;
 		}
 		i++;
 	}
-	ft_lst_cmd_add_back(&mini_sh->cmd, ft_lst_cmd_new(&mini_sh->gc_parsing, ft_substr(cmd, j, i, mini_sh), mini_sh));
+	ft_lst_cmd_add_back(&mini_sh->cmd, ft_lst_cmd_new(&mini_sh->gc_parsing, ft_substr(cmd, j, i - j, mini_sh), mini_sh));
+
+	//debug
+	t_lst_cmd *c = mini_sh->cmd;
+	while (c)
+	{
+		printf("%s\n",c->command);
+		c = c->next;
+	}
+	
+	//end debug
 	return (1);
 }
 
