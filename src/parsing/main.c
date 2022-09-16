@@ -91,6 +91,8 @@ int	make_lst_cmd(char *cmd, t_global *mini_sh)
 		return (0);
 	if (check_pipe(cmd) == 0)
 		return (print_er("minishell: syntax error near unexpected token `|'\n"));
+	if (check_redirection(cmd, 0, 0) == 0)
+		return (0);
 	i = 0;
 	while (cmd[i])
 	{
@@ -133,9 +135,11 @@ int	start_parse(char *cmd, t_global *mini_sh)
 
 void	main_mini_sh(t_global *mini_sh)
 {
+	Keymap key;
 	char *cmd;
 
 	cmd = (char *)NULL;
+	key = rl_get_keymap();
 	while (1)
 	{
 		cmd = (char *)readline("wati-minishell> ");
@@ -146,15 +150,16 @@ void	main_mini_sh(t_global *mini_sh)
 			free(cmd);
 			ft_gc_clear(&mini_sh->gc_parsing);
 			ft_lst_env_clear(&mini_sh->env);
+			rl_clear_history();
 			return ;
 		}
 		if (start_parse(cmd, mini_sh) == 0)
 		{
-			printf("hey\n");
 			ft_gc_clear(&mini_sh->gc_parsing);
 			free(cmd);
 			continue ;
 		}
+		define_cmd(mini_sh);
 		printf("GC SIZE : %d\n\n",ft_gc_size(mini_sh->gc_parsing));
 		ft_gc_clear(&mini_sh->gc_parsing);
 		free(cmd);

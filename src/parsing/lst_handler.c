@@ -16,7 +16,6 @@ t_lst_cmd	*ft_lst_cmd_new(t_gc **cmd_gc, char *cmd, t_global *g)
 {
 	t_lst_cmd	*newl;
 
-	printf("lst_cmd\n");
 	newl = (t_lst_cmd *)ft_gc_add_back(cmd_gc, ft_gc_new(malloc(sizeof(\
 	t_lst_cmd)), "An error occur while mallocing cmd", g));
 	if (!newl)
@@ -72,7 +71,6 @@ t_lst_parse	*ft_lst_parse_new(t_gc **cmd_gc, char *cmd, t_global *g)
 {
 	t_lst_parse	*newl;
 
-	printf("lst_parse\n");
 	newl = (t_lst_parse *)ft_gc_add_back(cmd_gc, ft_gc_new(malloc(sizeof(\
 	t_lst_parse)), "An error occur while mallocing parsed cmd", g));
 	if (!newl)

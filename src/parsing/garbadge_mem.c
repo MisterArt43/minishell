@@ -73,11 +73,9 @@ void	ft_gc_delone(t_gc *lst)
 {
 	if (!lst)
 		return ;
-	printf("%p\n", lst->src);
 	if (!lst->src)
 	{
-		free(lst);
-		return ;
+		return (free(lst));
 	}
 	else
 	{

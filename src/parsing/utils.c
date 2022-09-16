@@ -24,7 +24,6 @@ size_t	ft_strlen(const char *str)
 
 char	*ft_strdup(const char *s1, t_global *g)
 {
-	printf("Strdup ?\n");
 	char	*cpy;
 	size_t	i;
 
@@ -57,7 +56,6 @@ char	*ft_substr(char const *s, unsigned int start, size_t len, t_global *g)
 		i++;
 	if (&g->gc_parsing != NULL)
 	{
-		printf("substr\n");
 		res = (char *)ft_gc_add_back(&g->gc_parsing, ft_gc_new(malloc((i + 1) * sizeof(char)), \
 		"An error occur while mallocing", g));
 	}

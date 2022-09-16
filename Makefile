@@ -17,6 +17,7 @@ src/parsing/garbadge_mem.c \
 src/parsing/utils.c \
 src/parsing/checker_cmd.c \
 src/parsing/ft_split.c \
+src/parsing/define_parsing.c \
 
 CC = gcc
 OBJ = $(SRC:.c=.o)

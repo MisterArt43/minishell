@@ -56,6 +56,7 @@ typedef struct s_lst_cmd
 {
 	char				*command; //ls -a >> r.txt
 	struct s_lst_parsed	*split_cmd;
+	char				**exec; //ls -a
 	//mayon redirection
 	//commande
 	char				**inpute;
@@ -118,6 +119,8 @@ char	*ft_strdup(const char *s1, t_global *g);
 int checker_isempty(char *cmd);
 //check if the cmd have a correct format of pipe
 int	check_pipe(char *cmd);
+//check if the redirection are valid
+int	check_redirection(char *cmd, int i, int state);
 
 
 
@@ -148,7 +151,7 @@ void		ft_lst_env_add_back(t_lst_env **alst, t_lst_env *new);
 
 void		ft_split_shell(t_lst_cmd **cmd, t_global *mini_sh);
 void		skip_to_next_word(char *str, int *i);
-
+void		define_cmd(t_global *mini_sh);
 
 
 
