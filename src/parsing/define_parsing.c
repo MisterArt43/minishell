@@ -80,9 +80,19 @@ int	define_exec(t_lst_cmd **lst, t_global *g, int i)
 	while (parse)
 	{
 		if (i == 0)
-			(*lst)->exec[i++] = parse->str;
+		{
+			if (parse->env_var_str != NULL)
+				(*lst)->exec[i++] = parse->env_var_str;
+			else
+				(*lst)->exec[i++] = parse->str;
+		}
 		else if (parse->type == 1 && parse->prev->type < 2)
-			(*lst)->exec[i++] = parse->str;
+		{
+			if (parse->env_var_str != NULL)
+				(*lst)->exec[i++] = parse->env_var_str;
+			else
+				(*lst)->exec[i++] = parse->str;
+		}
 		parse = parse->next;
 	}
 }

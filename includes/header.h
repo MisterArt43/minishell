@@ -41,6 +41,7 @@ typedef struct s_lst_env
 
 typedef struct s_lst_parsed
 {
+	char				*env_var_str;
 	char				*str;
 	char				type;
 	struct s_lst_parsed	*next;
@@ -108,6 +109,9 @@ size_t	ft_strlen(const char *str);
 //allocate the string passed in parameter
 char	*ft_strdup(const char *s1, t_global *g);
 
+int	ft_isalnum(int c);
+
+char	*ft_strjoin(char *s1, char *s2, t_global *g);
 
 
 

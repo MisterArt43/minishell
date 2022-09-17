@@ -77,6 +77,7 @@ t_lst_parse	*ft_lst_parse_new(t_gc **cmd_gc, char *cmd, t_global *g)
 		return (NULL);
 	newl->next = NULL;
 	newl->prev = NULL;
+	newl->env_var_str = NULL;
 	newl->str = cmd;
 	newl->type = 0;
 	return (newl);

@@ -72,3 +72,47 @@ char	*ft_substr(char const *s, unsigned int start, size_t len, t_global *g)
 	res[i] = 0;
 	return (res);
 }
+
+int	ft_isalnum(int c)
+{
+	if ((c >= '0' && c <= '9') || ((c >= 'a' && c <= 'z') \
+	|| (c >= 'A' && c <= 'Z')))
+		return (1);
+	return (0);
+}
+
+char	*ft_strjoin(char *s1, char *s2, t_global *g)
+{
+	char	*res;
+	int		i;
+	int		len;
+
+	if (!s1)
+	{
+		if (!s2)
+			return (NULL);
+		else
+			return (s2);
+	}
+	if (!s2)
+		return (s1);
+	i = 0;
+	len = ft_strlen(s1) + ft_strlen(s2);
+	res = ft_gc_add_back(&g->gc_parsing, ft_gc_new(malloc((len + 1) * sizeof(char)), "invalid malloc in strjoin", g));
+	if (!res)
+		return (NULL);
+	while (s1[i])
+		{
+			res[i] = s1[i];
+			i++;
+		}
+	len = 0;
+	while (s2[len])
+	{
+		res[i] = s2[len];
+		i++;
+		len++;
+	}
+	res[i] = 0;
+	return (res);
+}
