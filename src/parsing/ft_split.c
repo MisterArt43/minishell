@@ -6,7 +6,7 @@
 /*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 00:39:49 by abucia            #+#    #+#             */
-/*   Updated: 2022/09/17 08:38:45 by abucia           ###   ########lyon.fr   */
+/*   Updated: 2022/09/18 02:14:51 by abucia           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,21 @@ void	skip_word(char *str, int *i)
 		|| str[*i] == '\n' \
 		|| str[*i] == '\r' \
 		|| str[*i] == '\"' \
-		|| str[*i] == '\'')
+		|| str[*i] == '\'' \
+		|| str[*i] == '<' \
+		|| str[*i] == '>')
 			return ;
 		*i += 1;
 	}
+}
+
+void	skip_redirection(char *str, int *i)
+{
+	char	c;
+
+	c = str[*i];
+	while (c == str[*i])
+		*i += 1;
 }
 
 void	sort_split(t_lst_cmd **cmd, int *i, t_global *g, int start)
@@ -62,6 +73,13 @@ void	sort_split(t_lst_cmd **cmd, int *i, t_global *g, int start)
 		skip_quote((*cmd)->command, i);
 		ft_lst_parse_add_back(&(*cmd)->split_cmd, ft_lst_parse_new(&g->gc_parsing, ft_substr((*cmd)->command, start, *i - start, g), g));
 		printf("Quote\n");
+	}
+	else if ((*cmd)->command[*i] == '<' || (*cmd)->command[*i] == '>')
+	{
+		start = *i;
+		skip_redirection((*cmd)->command, i);
+		ft_lst_parse_add_back(&(*cmd)->split_cmd, ft_lst_parse_new(&g->gc_parsing, ft_substr((*cmd)->command, start, *i - start, g), g));
+		printf("Redirect\n");
 	}
 	else if ((*cmd)->command[*i] == 0)
 		return ;
@@ -145,10 +163,12 @@ void	replace_env_var(t_lst_parse **lst, t_global *g)
 		}
 		i++;
 	}
-	ret = ft_strjoin(ret, ft_substr((*lst)->str, start , i - start, g), g);
 	if (ret != NULL)
-		printf("->env var detected : before = '%s' after = '%s'\n", (*lst)->str, ret);
-	(*lst)->env_var_str = ret;
+	{
+		ret = ft_strjoin(ret, ft_substr((*lst)->str, start , i - start, g), g);
+		(*lst)->env_var_str = ret;
+		printf("->env var detected : before = '%s' after = '%s'\n", (*lst)->str, (*lst)->env_var_str);
+	}
 }
 
 void	ft_split_shell(t_lst_cmd **cmd, t_global *mini_sh)

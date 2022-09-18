@@ -75,7 +75,6 @@ int	check_redirect2(char *cmd, int *i, int *state)
 		*state = 1;
 		return (0);
 	}
-	*state = 0;
 	return (0);
 }
 
@@ -91,8 +90,8 @@ int	redirect_erno(char *cmd, int i, int state)
 	else if (cmd[i] == '<')
 	{
 		if (cmd[i + 1] == '<')
-			return (print_er("minishell: syntax error near unexpected token `<'"));
-		return (print_er("minishell: syntax error near unexpected token `<<'"));
+			return (print_er("minishell: syntax error near unexpected token `<<'"));
+		return (print_er("minishell: syntax error near unexpected token `<'"));
 	}
 	return (0);
 }
@@ -102,8 +101,12 @@ int	check_redirection(char *cmd, int i, int state)
 	while (cmd[i])
 	{
 		if (cmd[i] == '>' || cmd[i] == '<')
+		{
 			if(check_redirect2(cmd, &i, &state))
 				return (redirect_erno(cmd, i, state));
+		}
+		else if (cmd[i] != ' ' && cmd[i] != '\t' && cmd[i] != '\n' && cmd[i] != '\r')
+			state = 0;
 		i++;
 	}
 	if (state == 1)
