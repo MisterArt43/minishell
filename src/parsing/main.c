@@ -82,22 +82,16 @@ void print_env(t_lst_env *env)
 	}
 }
 
-int	make_lst_cmd(char *cmd, t_global *mini_sh)
+int	make_lst_cmd(char *cmd, t_global *mini_sh, int i, int j)
 {
-	int	i;
-	int	j;
-
 	if (checker_isempty(cmd) == 0)
 		return (0);
 	if (check_pipe(cmd) == 0)
 		return (print_er("minishell: syntax error near unexpected token `|'\n"));
 	if (check_redirection(cmd, 0, 0) == 0)
 		return (0);
-	i = 0;
-	j = 0;
 	while (cmd[i])
 	{
-		//printf("i : %d\n", i);
 		if (cmd[i] == '|')
 		{
 			ft_lst_cmd_add_back(&mini_sh->cmd, ft_lst_cmd_new(&mini_sh->gc_parsing, ft_substr(cmd, j, i - j, mini_sh), mini_sh));
@@ -114,65 +108,56 @@ int	make_lst_cmd(char *cmd, t_global *mini_sh)
 		printf("%s\n",c->command);
 		c = c->next;
 	}
-	
 	//end debug
+	
 	return (1);
 }
 
 int	start_parse(char *cmd, t_global *mini_sh)
 {
+	t_lst_cmd *tmp;
+
 	mini_sh->cmd = NULL;
-	if (make_lst_cmd(cmd, mini_sh) == 0)
+	if (make_lst_cmd(cmd, mini_sh, 0, 0) == 0)
 	{
 		printf("invalid command, check start_parse function\n");
-		//free(cmd);
 		ft_gc_clear(&mini_sh->gc_parsing);
 		return (0);
 	}
 	printf("LST SIZE : %d\n\n",ft_lst_cmd_size(mini_sh->cmd));
-	//test
-	
-	t_lst_cmd *tmp = mini_sh->cmd;
+	tmp = mini_sh->cmd;
 	while (tmp)
 	{
 		ft_split_shell(&tmp, mini_sh);
 		printf("  -CMD SIZE : %d\n", ft_lst_parse_size(tmp->split_cmd));
 		tmp = tmp->next;
 	}
-	//ft_gc_clear(&mini_sh->gc_parsing);
 	return (1);
 }
 
 void	main_mini_sh(t_global *mini_sh)
 {
-	Keymap key;
-	char *cmd;
-
-	cmd = (char *)NULL;
-	key = rl_get_keymap();
 	while (1)
 	{
-		cmd = (char *)readline("wati-minishell> ");
-		if (cmd)
-			add_history(cmd);
-		if (cmd[0] == 0)
+		mini_sh->line = (char *)ft_gc_add_back(&mini_sh->gc_parsing,ft_gc_new(readline("wati-minishell> "), "an error occured when mallocing readline", mini_sh));
+		if (mini_sh->line)
+			add_history(mini_sh->line);
+		if (mini_sh->line[0] == 0)
 		{
-			free(cmd);
 			ft_gc_clear(&mini_sh->gc_parsing);
 			ft_lst_env_clear(&mini_sh->env);
 			rl_clear_history();
+			exit(0);
 			return ;
 		}
-		if (start_parse(cmd, mini_sh) == 0)
+		if (start_parse(mini_sh->line, mini_sh) == 0)
 		{
 			ft_gc_clear(&mini_sh->gc_parsing);
-			free(cmd);
 			continue ;
 		}
 		define_cmd(mini_sh);
 		printf("GC SIZE : %d\n\n",ft_gc_size(mini_sh->gc_parsing));
 		ft_gc_clear(&mini_sh->gc_parsing);
-		free(cmd);
 	}
 }
 
@@ -184,6 +169,7 @@ int	main(int argc, char **argv, char **env)
 	mini_sh.env = NULL;
 	mini_sh.cmd = NULL;
 	mini_sh.gc_parsing = NULL;
+	mini_sh.line = (char *)NULL;
 	load_env(env, &mini_sh.env);
 	main_mini_sh(&mini_sh);
 	return (0);

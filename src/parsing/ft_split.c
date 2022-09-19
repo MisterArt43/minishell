@@ -6,7 +6,7 @@
 /*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 00:39:49 by abucia            #+#    #+#             */
-/*   Updated: 2022/09/18 02:14:51 by abucia           ###   ########lyon.fr   */
+/*   Updated: 2022/09/19 01:00:46 by abucia           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,14 +71,16 @@ void	sort_split(t_lst_cmd **cmd, int *i, t_global *g, int start)
 	{
 		start = *i;
 		skip_quote((*cmd)->command, i);
-		ft_lst_parse_add_back(&(*cmd)->split_cmd, ft_lst_parse_new(&g->gc_parsing, ft_substr((*cmd)->command, start, *i - start, g), g));
+		ft_lst_parse_add_back(&(*cmd)->split_cmd, ft_lst_parse_new(&g->gc_parsing, \
+		ft_substr((*cmd)->command, start, *i - start, g), g));
 		printf("Quote\n");
 	}
 	else if ((*cmd)->command[*i] == '<' || (*cmd)->command[*i] == '>')
 	{
 		start = *i;
 		skip_redirection((*cmd)->command, i);
-		ft_lst_parse_add_back(&(*cmd)->split_cmd, ft_lst_parse_new(&g->gc_parsing, ft_substr((*cmd)->command, start, *i - start, g), g));
+		ft_lst_parse_add_back(&(*cmd)->split_cmd, ft_lst_parse_new(&g->gc_parsing, \
+		ft_substr((*cmd)->command, start, *i - start, g), g));
 		printf("Redirect\n");
 	}
 	else if ((*cmd)->command[*i] == 0)
@@ -87,35 +89,29 @@ void	sort_split(t_lst_cmd **cmd, int *i, t_global *g, int start)
 	{
 		start = *i;
 		skip_word((*cmd)->command, i);
-
-		ft_lst_parse_add_back(&(*cmd)->split_cmd, ft_lst_parse_new(&g->gc_parsing, ft_substr((*cmd)->command, start, *i - start, g), g));
+		ft_lst_parse_add_back(&(*cmd)->split_cmd, ft_lst_parse_new(&g->gc_parsing, \
+		ft_substr((*cmd)->command, start, *i - start, g), g));
 		printf("Word\n");
 	}
 }
 
-t_lst_env	*cmp_env_key(int *i, char *str, t_global *g)
+t_lst_env	*cmp_env_key(int *i, char *str, t_global *g, t_lst_env	*tmp)
 {
-	t_lst_env	*tmp;
-	int			j;
-	int			tmp_i;
+	int	j;
+	int	tmp_i;
 
 	if (!ft_isalnum(str[*i + 1]))
 		return (NULL);
-	tmp = g->env;
 	while (tmp)
 	{
 		tmp_i = *i + 1;
 		j = 0;
-		//printf("key : %c | str : %c\n", tmp->key[j], str[*i + 1]);
 		if (tmp->key[j] == str[*i + 1])
 		{
 			while (1)
 			{
-				//printf("they are inside\n\n");
-				//printf("key : %c/%d | str : %c/%d\n", tmp->key[j],tmp->key[j] , str[tmp_i],str[tmp_i]);
 				if (tmp->key[j] == 0 && ft_isalnum(str[tmp_i]) == 0)
 				{
-					//printf("added\n\n");
 					*i = tmp_i;
 					return (tmp);
 				}
@@ -147,9 +143,8 @@ void	replace_env_var(t_lst_parse **lst, t_global *g)
 	{
 		if ((*lst)->str[i] == '$')
 		{
-			//printf("i need dollars ... \n");
 			end = i;
-			find = cmp_env_key(&i, (*lst)->str, g);
+			find = cmp_env_key(&i, (*lst)->str, g, g->env);
 			if (find != NULL)
 			{
 				if (ret == NULL)
@@ -158,7 +153,6 @@ void	replace_env_var(t_lst_parse **lst, t_global *g)
 					ret = ft_strjoin(ret, ft_strjoin(ft_substr((*lst)->str, start, end - start, g), find->value, g), g);
 				start = i;
 				i--;
-				//printf("\nenv var detected : ret = '%s'\n",ret);
 			}
 		}
 		i++;
@@ -185,6 +179,4 @@ void	ft_split_shell(t_lst_cmd **cmd, t_global *mini_sh)
 		replace_env_var(&lst_parse, mini_sh);
 		lst_parse = lst_parse->next;
 	}
-	
-	//printf("CMD SIZE : %d\n", ft_lst_parse_size((*cmd)->split_cmd));
 }

@@ -10,3 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../includes/header.h"
+
+void	make_fork(t_global *mini_sh)
+{
+	int size;
+
+	size = ft_lst_cmd_size(mini_sh->cmd);
+}

@@ -23,7 +23,7 @@ CC = gcc
 OBJ = $(SRC:.c=.o)
 HEADER = includes/header.h
 READLINE_LIB = ./includes/readline-8.1
-FLAG = -I./includes/readline-8.1/ -g #-Wall -Wextra -Werror
+FLAG = -I./includes/readline-8.1/ -g3 # -fsanitize=address #-Wall -Wextra -Werror
 
 all : $(NAME)
 

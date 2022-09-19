@@ -58,10 +58,9 @@ typedef struct s_lst_cmd
 	char				*command; //ls -a >> r.txt
 	struct s_lst_parsed	*split_cmd;
 	char				**exec; //ls -a
-	//mayon redirection
-	//commande
-	char				**inpute;
-	char				**output;
+	//STDIN_FILENO -> fd_out = write && fd_in = read
+	int					fd_in;
+	int					fd_out;
 	struct s_lst_cmd	*next;
 }	t_lst_cmd;
 
@@ -72,6 +71,8 @@ typedef struct s_lst_cmd
  */
 typedef struct s_global
 {
+	char	*line;
+	int		**pid;
 	t_gc	*gc_parsing;
 	t_lst_cmd	*cmd;
 	t_lst_env	*env;
@@ -113,6 +114,7 @@ int	ft_isalnum(int c);
 
 char	*ft_strjoin(char *s1, char *s2, t_global *g);
 
+int	ft_nstrncmp(const char *s1, const char *s2, size_t n, size_t i);
 
 
 //  ------------------------------------------------

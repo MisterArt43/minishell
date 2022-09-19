@@ -28,7 +28,7 @@ char	*ft_strdup(const char *s1, t_global *g)
 	size_t	i;
 
 	i = 0;
-	if (g->gc_parsing != NULL)
+	if (g != NULL && g->gc_parsing != NULL)
 		cpy = (char *)ft_gc_add_back(&g->gc_parsing, ft_gc_new(malloc((ft_strlen(s1) + 1) * \
 	sizeof(char)), "An error occur while mallocing", g));
 	else
@@ -54,7 +54,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len, t_global *g)
 		return (ft_strdup("", g));
 	while (s[start + i] && i != len)
 		i++;
-	if (&g->gc_parsing != NULL)
+	if (g != NULL && &g->gc_parsing != NULL)
 	{
 		res = (char *)ft_gc_add_back(&g->gc_parsing, ft_gc_new(malloc((i + 1) * sizeof(char)), \
 		"An error occur while mallocing", g));
@@ -115,4 +115,17 @@ char	*ft_strjoin(char *s1, char *s2, t_global *g)
 	}
 	res[i] = 0;
 	return (res);
+}
+
+int	ft_nstrncmp(const char *s1, const char *s2, size_t n, size_t i)
+{
+	while (s1[i] != '\0' && s2[i] != '\0' && i < n)
+	{
+		if ((unsigned char)s1[i] != (unsigned char)s2[i])
+			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+		i++;
+	}
+	if (i == n)
+		return (0);
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
