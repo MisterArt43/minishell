@@ -168,6 +168,14 @@ void		define_cmd(t_global *mini_sh);
 
 void	main_mini_sh(t_global *mini_sh);
 
+//  ------------------------------------------------
+//  < ------------      BUILT-IN      ------------ >
+//  ------------------------------------------------
+
+//sort to see if it's a built in and execute it
+void	sort_build_in(t_lst_cmd **cmd, t_global *mini_sh);
+
+
 
 //ERROR MANAGER
 int print_er(const char *er);
