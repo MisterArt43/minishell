@@ -117,15 +117,17 @@ char	*ft_strjoin(char *s1, char *s2, t_global *g)
 	return (res);
 }
 
-int	ft_nstrncmp(const char *s1, const char *s2, size_t n, size_t i)
+int	ft_nstrncmp(const char *s1, const char *s2, size_t n, size_t start)
 {
-	while (s1[i] != '\0' && s2[i] != '\0' && i < n)
+	if (ft_strlen(s1) < start || ft_strlen(s2) < start)
+		return (1);
+	while (s1[start] != '\0' && s2[start] != '\0' && start < n)
 	{
-		if ((unsigned char)s1[i] != (unsigned char)s2[i])
-			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-		i++;
+		if ((unsigned char)s1[start] != (unsigned char)s2[start])
+			return ((unsigned char)s1[start] - (unsigned char)s2[start]);
+		start++;
 	}
-	if (i == n)
+	if (start == n)
 		return (0);
-	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+	return ((unsigned char)s1[start] - (unsigned char)s2[start]);
 }

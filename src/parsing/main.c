@@ -73,15 +73,6 @@ void	load_env(char **env, t_lst_env **lst_env)
 	}
 }
 
-void print_env(t_lst_env *env)
-{
-	while (env)
-	{
-		printf("%s=%s\n", env->key, env->value);
-		env = env->next;
-	}
-}
-
 int	make_lst_cmd(char *cmd, t_global *mini_sh, int i, int j)
 {
 	if (checker_isempty(cmd) == 0)
@@ -139,10 +130,19 @@ void	main_mini_sh(t_global *mini_sh)
 {
 	while (1)
 	{
-		mini_sh->line = (char *)ft_gc_add_back(&mini_sh->gc_parsing,ft_gc_new(readline("wati-minishell> "), "an error occured when mallocing readline", mini_sh));
+		mini_sh->line = readline("wati-minishell> ");
+		
 		if (mini_sh->line)
+		{
+			if (mini_sh->line[0] == 0)
+			{
+				free(mini_sh->line);
+				continue ;
+			}
+			ft_gc_add_back(&mini_sh->gc_parsing,ft_gc_new(mini_sh->line, "an error occured when mallocing readline", mini_sh));
 			add_history(mini_sh->line);
-		if (mini_sh->line[0] == 0)
+		}
+		else
 		{
 			ft_gc_clear(&mini_sh->gc_parsing);
 			ft_lst_env_clear(&mini_sh->env);

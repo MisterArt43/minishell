@@ -12,7 +12,7 @@
 
 #include "../../includes/header.h"
 
-void d_print_exec(char **exec)
+void d_print_exec(char **exec, t_global *g)
 {
 	int i = 0;
 
@@ -22,6 +22,18 @@ void d_print_exec(char **exec)
 		i++;
 	}
 	printf("--------\n\n");
+
+	t_lst_cmd *cmd;
+	t_lst_parse *parse;
+
+	cmd = g->cmd;
+	parse = cmd->split_cmd;
+	while (parse)
+	{
+		printf("debug pour quote (export) CMD : %s\n --- is near quote : %d\n", parse->str, parse->quote_near_prev);
+		parse = parse->next;
+	}
+	
 }
 
 
@@ -117,7 +129,7 @@ void	define_cmd(t_global *mini_sh)
 	tmp_cmd = mini_sh->cmd;
 	while (tmp_cmd)
 	{
-		d_print_exec(tmp_cmd->exec);
+		d_print_exec(tmp_cmd->exec, mini_sh);
 		tmp_cmd = tmp_cmd->next;
 	}
 }

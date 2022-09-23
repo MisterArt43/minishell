@@ -6,7 +6,7 @@
 /*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 00:39:49 by abucia            #+#    #+#             */
-/*   Updated: 2022/09/19 01:00:46 by abucia           ###   ########lyon.fr   */
+/*   Updated: 2022/09/23 11:58:16 by abucia           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,9 @@ void	sort_split(t_lst_cmd **cmd, int *i, t_global *g, int start)
 		skip_quote((*cmd)->command, i);
 		ft_lst_parse_add_back(&(*cmd)->split_cmd, ft_lst_parse_new(&g->gc_parsing, \
 		ft_substr((*cmd)->command, start, *i - start, g), g));
-		printf("Quote\n");
+		if (start - 1 >= 0 && checker_char_isempty((*cmd)->command[start - 1]) == 1)
+			ft_lst_parse_last((*cmd)->split_cmd)->quote_near_prev = 1;
+		printf("Quote / %d\n", ft_lst_parse_last((*cmd)->split_cmd)->quote_near_prev);
 	}
 	else if ((*cmd)->command[*i] == '<' || (*cmd)->command[*i] == '>')
 	{

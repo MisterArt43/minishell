@@ -12,6 +12,15 @@
 
 #include "../../includes/header.h"
 
+int checker_char_isempty(char cmd)
+{
+	if (cmd == 0)
+		return (0);
+	if (cmd != ' ' && cmd != '\t' && cmd != '\n' && cmd != '\r')
+		return (1);
+	return (0);
+}
+
 int checker_isempty(char *cmd)
 {
 	int	i;

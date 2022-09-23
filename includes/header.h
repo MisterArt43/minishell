@@ -43,6 +43,7 @@ typedef struct s_lst_parsed
 {
 	char				*env_var_str;
 	char				*str;
+	char				quote_near_prev;
 	char				type;
 	struct s_lst_parsed	*next;
 	struct s_lst_parsed	*prev;
@@ -114,7 +115,7 @@ int	ft_isalnum(int c);
 
 char	*ft_strjoin(char *s1, char *s2, t_global *g);
 
-int	ft_nstrncmp(const char *s1, const char *s2, size_t n, size_t i);
+int	ft_nstrncmp(const char *s1, const char *s2, size_t n, size_t start);
 
 
 //  ------------------------------------------------
@@ -128,6 +129,7 @@ int	check_pipe(char *cmd);
 //check if the redirection are valid
 int	check_redirection(char *cmd, int i, int state);
 
+int checker_char_isempty(char cmd);
 
 
 
