@@ -19,6 +19,10 @@
 # include "../../includes/readline-8.1/readline.h"
 # include "../../includes/readline-8.1/history.h"
 
+# include <signal.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+
 /**
  * @brief gabadge memory collection
  * \struct
@@ -76,6 +80,7 @@ typedef struct s_global
 	t_gc	*gc_parsing;
 	t_lst_cmd	*cmd;
 	t_lst_env	*env;
+	int			ret;
 } t_global;
 
 //  ------------------------------------------------
@@ -115,6 +120,12 @@ int	ft_isalnum(int c);
 char	*ft_strjoin(char *s1, char *s2, t_global *g);
 
 int	ft_nstrncmp(const char *s1, const char *s2, size_t n, size_t i);
+
+void	ft_putstr_fd(char	*s, int fd);
+
+int	ft_isdigit(int c);
+
+int	ft_atoi(const char *str);
 
 
 //  ------------------------------------------------
@@ -174,7 +185,13 @@ void	main_mini_sh(t_global *mini_sh);
 
 //sort to see if it's a built in and execute it
 void	sort_build_in(t_lst_cmd **cmd, t_global *mini_sh);
+void	b_in_exit(t_global *mini_sh);
 
+
+//  ------------------------------------------------
+//  < ------------      EXEC          ------------ >
+//  ------------------------------------------------
+void    exec_cmd(t_global *mini_sh);
 
 
 //ERROR MANAGER
