@@ -23,6 +23,8 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 
+# include <limits.h> // For cd and pwd to get PATH_MAX
+
 /**
  * @brief gabadge memory collection
  * \struct
@@ -127,6 +129,7 @@ int	ft_isdigit(int c);
 
 int	ft_atoi(const char *str);
 
+void	ft_putendl_fd(char	*s, int fd);
 
 //  ------------------------------------------------
 //  < ------------      CHECKER       ------------ >
@@ -186,7 +189,7 @@ void	main_mini_sh(t_global *mini_sh);
 //sort to see if it's a built in and execute it
 void	sort_build_in(t_lst_cmd **cmd, t_global *mini_sh);
 void	b_in_exit(t_global *mini_sh);
-
+void	b_in_pwd(t_global *mini_sh);
 
 //  ------------------------------------------------
 //  < ------------      EXEC          ------------ >

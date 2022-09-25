@@ -20,6 +20,8 @@ src/parsing/ft_split.c \
 src/parsing/define_parsing.c \
 src/exec/fork.c \
 src/built_in/exit.c \
+src/built_in/pwd.c \
+
 
 CC = gcc
 OBJ = $(SRC:.c=.o)
