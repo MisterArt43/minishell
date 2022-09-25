@@ -15,7 +15,7 @@
 void	exec_cmd(t_global *mini_sh)
 {
 	printf("CMD TO EXEC: $%s$, ENV: $%s$\n", mini_sh->cmd->exec[0], mini_sh->env->value);
-	b_in_pwd(mini_sh);
+	b_in_exit(mini_sh);
 	// pid_t	pid = 0;
 	// int		status = 0;
 

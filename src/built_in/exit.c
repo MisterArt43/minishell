@@ -36,19 +36,21 @@ int	check_exit_arg(char *arg)
 
 void	b_in_exit(t_global *mini_sh)
 {
-	if (mini_sh->cmd->exec[1] && mini_sh->cmd->exec[2])
-		ft_putstr_fd("wati-minishell: exit: too many arguments", 2);
-	else if (mini_sh->cmd->exec[1] && check_exit_arg(mini_sh->cmd->exec[1]))
+	
+	if (mini_sh->cmd->exec[1] && check_exit_arg(mini_sh->cmd->exec[1]))
 	{
 		ft_putstr_fd("wati-minishell: exit: ", 2);
 		ft_putstr_fd(mini_sh->cmd->exec[1], 2);
-		ft_putstr_fd(": exit: numeric argument required", 2);
+		ft_putendl_fd(": exit: numeric argument required", 2);
 		mini_sh->ret = 255;
 		quit(mini_sh);
 	}
+	else if (mini_sh->cmd->exec[1] && mini_sh->cmd->exec[2])
+		ft_putendl_fd("wati-minishell: exit: too many arguments", 2);
 	else if (mini_sh->cmd->exec[1])
 	{
 		mini_sh->ret = ft_atoi(mini_sh->cmd->exec[1]);
+		printf("exit\n");
 		quit(mini_sh);
 	}
 	else

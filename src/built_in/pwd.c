@@ -12,13 +12,14 @@
 
 #include "../../includes/header.h"
 
-void	b_in_pwd(t_global *mini_sh)
+int	b_in_pwd(t_global *mini_sh)
 {
 	char	cwd[PATH_MAX];
 
 	if (getcwd(cwd, PATH_MAX))
 	{
 		printf("%s\n", cwd);
-		return ;
+		return (0);
 	}
+		return (1);
 }
