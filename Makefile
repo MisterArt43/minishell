@@ -23,6 +23,8 @@ src/built_in/exit.c \
 src/built_in/pwd.c \
 src/built_in/cd.c \
 src/built_in/echo.c \
+src/built_in/env.c \
+
 
 
 

@@ -195,6 +195,7 @@ void	b_in_exit(t_global *mini_sh);
 int		b_in_pwd(t_global *mini_sh);
 int		b_in_cd(t_global *mini_sh);
 int		b_in_echo(t_global *mini_sh);
+int		b_in_env(t_global *mini_sh);
 
 //  ------------------------------------------------
 //  < ------------      EXEC          ------------ >
@@ -204,5 +205,8 @@ void    exec_cmd(t_global *mini_sh);
 
 //ERROR MANAGER
 int print_er(const char *er);
+
+// tu connais
+void print_env(t_lst_env *env);
 
 #endif
