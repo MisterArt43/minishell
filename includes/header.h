@@ -131,6 +131,9 @@ int	ft_atoi(const char *str);
 
 void	ft_putendl_fd(char	*s, int fd);
 
+int	ft_strncmp(const char *s1, const char *s2, size_t n);
+
+
 //  ------------------------------------------------
 //  < ------------      CHECKER       ------------ >
 //  ------------------------------------------------
@@ -190,6 +193,8 @@ void	main_mini_sh(t_global *mini_sh);
 void	sort_build_in(t_lst_cmd **cmd, t_global *mini_sh);
 void	b_in_exit(t_global *mini_sh);
 int		b_in_pwd(t_global *mini_sh);
+int		b_in_cd(t_global *mini_sh);
+int		b_in_echo(t_global *mini_sh);
 
 //  ------------------------------------------------
 //  < ------------      EXEC          ------------ >

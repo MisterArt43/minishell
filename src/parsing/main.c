@@ -124,12 +124,12 @@ int	start_parse(char *cmd, t_global *mini_sh)
 		ft_gc_clear(&mini_sh->gc_parsing);
 		return (0);
 	}
-	printf("LST SIZE : %d\n\n",ft_lst_cmd_size(mini_sh->cmd));
+	// printf("LST SIZE : %d\n\n",ft_lst_cmd_size(mini_sh->cmd));
 	tmp = mini_sh->cmd;
 	while (tmp)
 	{
 		ft_split_shell(&tmp, mini_sh);
-		printf("  -CMD SIZE : %d\n", ft_lst_parse_size(tmp->split_cmd));
+		// printf("  -CMD SIZE : %d\n", ft_lst_parse_size(tmp->split_cmd));
 		tmp = tmp->next;
 	}
 	return (1);
@@ -156,7 +156,7 @@ void	main_mini_sh(t_global *mini_sh)
 			continue ;
 		}
 		define_cmd(mini_sh);
-		printf("GC SIZE : %d\n\n",ft_gc_size(mini_sh->gc_parsing));
+		// printf("GC SIZE : %d\n\n",ft_gc_size(mini_sh->gc_parsing));
 		exec_cmd(mini_sh);
 		ft_gc_clear(&mini_sh->gc_parsing);
 	}
