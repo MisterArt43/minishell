@@ -201,7 +201,7 @@ int		b_in_env(t_global *mini_sh);
 //  < ------------      EXEC          ------------ >
 //  ------------------------------------------------
 void    exec_cmd(t_global *mini_sh);
-
+void	exec_built_in(t_global *mini_sh);
 
 //ERROR MANAGER
 int print_er(const char *er);
