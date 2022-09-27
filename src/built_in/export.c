@@ -60,6 +60,23 @@ int	check_valid_key(char *str)
 	return (3);
 }
 
+char	*get_key(char *str, int *i)
+{
+	char	*key;
+	int		start;
+
+	start = 0;
+	if (str[0] == '\'' || str[0] == '\"')
+		start = 1;
+	while (str[*i])
+	{
+		if (str[*i] == '=')
+			return (ft_substr(str,start, ft_strlen(str), NULL));
+		*i += 1;
+	}
+	
+}
+
 void print_env(t_lst_env *env)
 {
 	while (env)
@@ -86,6 +103,8 @@ void	exec_export(t_lst_cmd *cmd, t_global *mini_sh)
 {
 	int	i;
 	int	nb;
+	char *key;
+	char *value;
 
 	nb = ft_strlen(cmd->exec);
 	i = 1;
@@ -93,7 +112,9 @@ void	exec_export(t_lst_cmd *cmd, t_global *mini_sh)
 	{
 		if (nb == 2 && check_valid_key(cmd->exec[i]) == 3)
 		{
-			ft_lst_env_add_back(&mini_sh->env, ft_lst_env_new(&, &ft_strdup("")))
+			value = ft_strdup("",mini_sh);
+			key = get_key(cmd->exec[i], );
+			ft_lst_env_add_back(&mini_sh->env, ft_lst_env_new(&, &value))
 		}
 		i++;
 	}

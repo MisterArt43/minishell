@@ -157,6 +157,7 @@ void	main_mini_sh(t_global *mini_sh)
 		}
 		define_cmd(mini_sh);
 		printf("GC SIZE : %d\n\n",ft_gc_size(mini_sh->gc_parsing));
+		
 		ft_gc_clear(&mini_sh->gc_parsing);
 	}
 }

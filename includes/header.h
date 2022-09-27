@@ -43,11 +43,13 @@ typedef struct s_lst_parsed
 {
 	char				*env_var_str;
 	char				*str;
-	char				quote_near_prev;
+	char				is_near_prev;
+	char				*in_quote;
 	char				type;
 	struct s_lst_parsed	*next;
 	struct s_lst_parsed	*prev;
 }	t_lst_parse;
+
 
 /**
  * @brief chained list for all command parsed passed in the prompt
