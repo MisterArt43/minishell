@@ -30,7 +30,7 @@ void d_print_exec(char **exec, t_global *g)
 	parse = cmd->split_cmd;
 	while (parse)
 	{
-		printf("debug pour quote (export) CMD : %s\n --- is near quote : %d\n", parse->str, parse->is_near_prev);
+		//printf("debug pour argument coller CMD : %s\n --- is near prev : %d\n", parse->str, parse->is_near_prev);
 		parse = parse->next;
 	}
 	
@@ -40,7 +40,7 @@ void d_print_exec(char **exec, t_global *g)
 /**
  * 0:command
  * 1:param
- * 2:fd
+ * 2:fd || heredoc_word
  * 3-6:redirect
  * @param lst
  */
