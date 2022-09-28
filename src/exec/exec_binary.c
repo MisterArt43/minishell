@@ -37,10 +37,7 @@ char	*get_binary(t_global *mini_sh)
 		ft_strlcat(bin, "/", -1);
 		ft_strlcat(bin, mini_sh->cmd->exec[0], -1);
 		if (access(bin, F_OK) == 0)
-		{
-			printf("%s\n", bin);
 			return (bin);
-		}
 		free(bin);
 		bin = NULL;
 		i++;
