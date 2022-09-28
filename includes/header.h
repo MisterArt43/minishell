@@ -133,6 +133,11 @@ void	ft_putendl_fd(char	*s, int fd);
 
 int	ft_strncmp(const char *s1, const char *s2, size_t n);
 
+char	**ft_split(char const *s, char c);
+
+size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
+
+void	*ft_calloc(size_t count, size_t size);
 
 //  ------------------------------------------------
 //  < ------------      CHECKER       ------------ >
@@ -208,5 +213,6 @@ int print_er(const char *er);
 
 // tu connais
 void print_env(t_lst_env *env);
+void	exec_binary_no_fork(t_global *mini_sh);
 
 #endif

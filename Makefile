@@ -25,6 +25,8 @@ src/built_in/cd.c \
 src/built_in/echo.c \
 src/built_in/env.c \
 src/built_in/sort_built_in.c \
+src/exec/exec_binary.c \
+src/exec/ft_split.c \
 
 
 
