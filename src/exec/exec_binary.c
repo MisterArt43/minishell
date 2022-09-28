@@ -47,8 +47,3 @@ char	*get_binary(t_global *mini_sh)
 	} 
 	return (NULL);
 }
-
-void	exec_binary_no_fork(t_global *mini_sh)
-{
-	execve(get_binary(mini_sh), mini_sh->cmd->exec, NULL);
-}

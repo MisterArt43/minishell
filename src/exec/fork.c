@@ -31,7 +31,7 @@ void	exec_cmd(t_global *mini_sh)
 		kill(pid, SIGTERM);
 	} else {
 		// Le processus enfant execute la commande ou exit si execve echoue
-		if (execve(mini_sh->env->value, mini_sh->cmd->exec, NULL) == -1)
+		if (execve(get_binary(mini_sh), mini_sh->cmd->exec, NULL) == -1)
 			perror("shell");
 		exit(EXIT_FAILURE);
 	}

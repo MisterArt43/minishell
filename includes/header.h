@@ -213,6 +213,7 @@ int print_er(const char *er);
 
 // tu connais
 void print_env(t_lst_env *env);
-void	exec_binary_no_fork(t_global *mini_sh);
+char	*get_binary(t_global *mini_sh);
+char	*get_path(t_global *mini_sh);
 
 #endif

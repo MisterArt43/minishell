@@ -147,7 +147,7 @@ void	select_exec(t_global *mini_sh)
 		|| !ft_strncmp(mini_sh->cmd->exec[0], "unset", -1)))
 		exec_built_in(mini_sh);
 	else if (ft_lst_cmd_size(mini_sh->cmd) == 1)
-		exec_binary_no_fork(mini_sh);
+		exec_cmd(mini_sh);
 }
 
 void	main_mini_sh(t_global *mini_sh)
