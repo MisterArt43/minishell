@@ -136,6 +136,8 @@ t_lst_env	*ft_lst_env_new(char **key, char **value)
 	if (!newl)
 		return (NULL);
 	newl->key = *key;
+	if (!value)
+		newl->value = NULL;
 	newl->value = *value;
 	newl->prev = NULL;
 	newl->next = NULL;

@@ -65,11 +65,18 @@ char	*get_key(char *str, int *i)
 	char	*key;
 	int		start;
 
-	start = 0;
+	start = *i;
 	if (str[0] == '\'' || str[0] == '\"')
-		start = 1;
+		start++;
+	if (str[start] == '=')
+	{
+		printf("bash: export: `=': not a valid identifier\n");
+		return (NULL);
+	}
 	while (str[*i])
 	{
+		if (ft_isalnum(str[*i]) == 0 && str[*i] != '_')
+			return (NULL);
 		if (str[*i] == '=')
 			return (ft_substr(str,start, ft_strlen(str), NULL));
 		*i += 1;
@@ -86,50 +93,82 @@ void print_env(t_lst_env *env)
 	}
 }
 
-void	sort_export(int *i, char *str, t_lst_cmd *cmd)
-{
-	t_lst_parse *tmp;
-
-	tmp = cmd->split_cmd;
-	while (ft_nstrncmp(str, tmp->env_var_str, ft_strlen(str), 0) != 0)
-	{
-		tmp = tmp->next;
-	}
-	
-}
-
 //faire attention au redirection et fichier a ignorer
 void	exec_export(t_lst_cmd *cmd, t_global *mini_sh)
 {
 	int	i;
-	int	nb;
+	int	j;
 	char *key;
 	char *value;
 
-	nb = ft_strlen(cmd->exec);
-	i = 1;
 	while (cmd->exec[i])
 	{
-		if (nb == 2 && check_valid_key(cmd->exec[i]) == 3)
+		i = 0;
+		
+		
+		if ()
 		{
-			value = ft_strdup("",mini_sh);
-			key = get_key(cmd->exec[i], );
-			ft_lst_env_add_back(&mini_sh->env, ft_lst_env_new(&, &value))
+			key = get_key(cmd->exec[i], &i);
+			value = get_value("",mini_sh);
+			if (key == NULL)
+				break ;
+			ft_lst_env_add_back(&mini_sh->env, ft_lst_env_new());
 		}
 		i++;
 	}
-	
+}
+
+char	*rebuild_command(t_lst_cmd *cmd, t_global *g)
+{
+	t_lst_parse	*tmp;
+	char		*ret;
+
+	ret = NULL;
+	tmp = cmd->split_cmd;
+	while (tmp)
+	{
+		if (tmp->type == 1)
+		{
+			if (ret == NULL)
+			{
+				if (tmp->env_var_str != NULL)
+					ret = tmp->env_var_str;
+				else
+					ret = tmp->str;
+			}
+			else 
+			{
+				if (tmp->is_near_prev == 0)
+					ft_gc_add_back(&g->gc_parsing, ft_gc_new(ft_strjoin(ret, \
+					" ", g), "error while malloc in export", g));
+				if (tmp->env_var_str != NULL)
+					ft_gc_add_back(&g->gc_parsing, ft_gc_new(ft_strjoin(ret, \
+					tmp->env_var_str, g), "error while malloc in export", g));
+				else
+					ft_gc_add_back(&g->gc_parsing, ft_gc_new(ft_strjoin(ret, \
+					tmp->str, g), "error while malloc in export", g));
+			}
+		}
+		tmp = tmp->next;
+	}
+	return (ret);
 }
 
 int	b_in_export(t_lst_cmd **cmd, t_global *mini_sh)
 {
+	t_lst_parse	*tmp;
+	char *line;
+
+	tmp = (*cmd)->split_cmd;
 	if (ft_strlen((*cmd)->exec) > 1)
 	{
+		//si ya un pipe c'est inutile
 		if (ft_lst_cmd_size(*cmd) != 1)
 			return (1);
-		if (check_no_arg(cmd) == 0)
+		if (check_no_arg(cmd) == 0) // pas d'option "-..."
 			return (0);
-
+		line = rebuild_command(*cmd, mini_sh);
+		exec_export(tmp, mini_sh);
 	}
 	else
 		print_env(mini_sh->env);

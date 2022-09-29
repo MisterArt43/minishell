@@ -74,9 +74,10 @@ typedef struct s_lst_cmd
  */
 typedef struct s_global
 {
-	char	*line;
-	int		**pid;
-	t_gc	*gc_parsing;
+	int			status;
+	char		*line;
+	int			**pid;
+	t_gc		*gc_parsing;
 	t_lst_cmd	*cmd;
 	t_lst_env	*env;
 } t_global;
