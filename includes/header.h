@@ -3,21 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 16:15:55 by abucia            #+#    #+#             */
-/*   Updated: 2022/08/30 16:15:55 by abucia           ###   ########lyon.fr   */
+/*   Updated: 2022/09/29 16:51:29 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HEADER_H
 # define HEADER_H
+
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <fcntl.h>
-# include "../../includes/readline-8.1/readline.h"
-# include "../../includes/readline-8.1/history.h"
+# include <readline/readline.h>
+# include <readline/history.h>
+// # include "../../includes/readline-8.1/readline.h"
+// # include "../../includes/readline-8.1/history.h"
 
 # include <signal.h>
 # include <sys/types.h>

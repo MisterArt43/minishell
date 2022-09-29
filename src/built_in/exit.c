@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Wati-Theo <wati-theo@protonmail.com>       +#+  +:+       +#+        */
+/*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 15:40:57 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/09/24 15:40:57 by Wati-Theo        ###   ########lyon.fr   */
+/*   Updated: 2022/09/29 16:57:40 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	quit(t_global *mini_sh)
 {
 	ft_gc_clear(&mini_sh->gc_parsing);
 	ft_lst_env_clear(&mini_sh->env);
-	rl_clear_history();
+	// rl_clear_history();
 	exit(0);
 }
 

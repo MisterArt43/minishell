@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+         #
+#    By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/07 15:22:30 by abucia            #+#    #+#              #
-#    Updated: 2022/09/07 15:22:30 by abucia           ###   ########lyon.fr    #
+#    Updated: 2022/09/29 16:46:04 by tschlege         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,9 +28,6 @@ src/built_in/sort_built_in.c \
 src/exec/exec_binary.c \
 src/exec/ft_split.c \
 
-
-
-
 CC = gcc
 OBJ = $(SRC:.c=.o)
 HEADER = includes/header.h
@@ -40,7 +37,7 @@ FLAG = -I./includes/readline-8.1/ -g3 # -fsanitize=address #-Wall -Wextra -Werro
 all : $(NAME)
 
 $(NAME) : $(OBJ) $(HEADER)
-	$(CC) -o $(NAME) $(OBJ) $(FLAG) -L./includes/readline-8.1/shlib -lreadline
+	$(CC) -o $(NAME) $(OBJ) $(FLAG) -I ./includes/readline-8.1/libreadline.a -I ./includes/readline-8.1/libhistory.a -lreadline
 
 %.o : %.c $(HEADER)
 	$(CC) $(FLAG) -c $< -o $@
