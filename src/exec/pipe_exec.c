@@ -1,36 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
+/*   pipe_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Wati-Theo <wati-theo@protonmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/25 00:05:57 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/09/25 00:05:57 by Wati-Theo        ###   ########lyon.fr   */
+/*   Created: 2022/09/28 23:23:29 by Wati-Theo         #+#    #+#             */
+/*   Updated: 2022/09/29 23:23:29 by Wati-Theo        ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/header.h"
 
-
-
-int	b_in_cd(t_global *mini_sh)
+int	complicado(t_global *mini_sh, int fd_in)
 {
-	if (mini_sh->cmd->exec[1] && mini_sh->cmd->exec[2])
-	{
-		ft_putendl_fd("wati-minishell: cd: too many arguments", 2);
-		return (1);
-	}
-	else if (mini_sh->cmd->exec[1])
-	{
-		if (!chdir(mini_sh->cmd->exec[1]))
-			return (0);
-		else
-		{
-			ft_putstr_fd("wati-minishell: cd: ", 2);
-			ft_putstr_fd(mini_sh->cmd->exec[1], 2);
-			ft_putendl_fd(": No such file or directory", 2);
-			return (1);
-		}
-	}
+	int		fd[2];
+	pid_t	child_pid;
+	//on pipe
+	//plus tard check si heredoc
+	//fork et verif de fork
+	//exec child avec les bon fd
+	//close des fd * 2
+	//recursivite complicado avec les bons fds
 }

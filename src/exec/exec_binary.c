@@ -14,9 +14,12 @@
 
 char	*get_path(t_global *mini_sh)
 {
-	while(mini_sh->env && ft_strncmp(mini_sh->env->key, "PATH", -1))
-		mini_sh->env = mini_sh->env->next;
-	return (mini_sh->env->value);
+	t_lst_env *cpy;
+
+	cpy = mini_sh->env;
+	while(cpy && ft_strncmp(cpy->key, "PATH", -1))
+		cpy = cpy->next;
+	return(cpy->value);
 }
 
 char	*get_binary(t_global *mini_sh)
@@ -41,6 +44,6 @@ char	*get_binary(t_global *mini_sh)
 		free(bin);
 		bin = NULL;
 		i++;
-	} 
+	}
 	return (NULL);
 }

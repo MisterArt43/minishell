@@ -148,6 +148,10 @@ void	select_exec(t_global *mini_sh)
 		exec_built_in(mini_sh);
 	else if (ft_lst_cmd_size(mini_sh->cmd) == 1)
 		exec_cmd(mini_sh);
+	else if (ft_lst_cmd_size(mini_sh->cmd) > 1)
+	{
+		
+	}
 }
 
 void	main_mini_sh(t_global *mini_sh)
