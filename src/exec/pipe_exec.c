@@ -6,11 +6,16 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 23:23:29 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/09/29 18:13:21 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/09/29 18:18:03 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/header.h"
+
+void	close_fd(t_global *mini_sh)
+{
+	
+}
 
 void exec_child(t_global *mini_sh, int fd, int fd_in)
 {
@@ -34,7 +39,7 @@ int	complicado(t_global *mini_sh, int fd_in)
 	if (child_pid == -1)
 		return (1);
 	else if (child_pid > 0)
-		
+		exec_child(mini_sh, fd, fd_in);
 	
 }
 
