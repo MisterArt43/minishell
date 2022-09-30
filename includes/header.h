@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 16:15:55 by abucia            #+#    #+#             */
-/*   Updated: 2022/09/30 17:25:08 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/09/30 19:54:41 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,7 +209,7 @@ int		b_in_env(t_global *mini_sh);
 //  < ------------      EXEC          ------------ >
 //  ------------------------------------------------
 void    exec_cmd(t_global *mini_sh);
-void	exec_built_in(t_global *mini_sh);
+void	exec_built_in(t_global *mini_sh, t_lst_cmd *cmd);
 
 //ERROR MANAGER
 int print_er(const char *er);

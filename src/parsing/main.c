@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 16:50:14 by abucia            #+#    #+#             */
-/*   Updated: 2022/09/30 15:10:13 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/09/30 20:07:50 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ void	select_exec(t_global *mini_sh)
 		|| !ft_strncmp(mini_sh->cmd->exec[0], "env", -1)
 		|| !ft_strncmp(mini_sh->cmd->exec[0], "export", -1)
 		|| !ft_strncmp(mini_sh->cmd->exec[0], "unset", -1)))
-		exec_built_in(mini_sh);
+		exec_built_in(mini_sh, mini_sh->cmd);
 	else if (ft_lst_cmd_size(mini_sh->cmd) == 1)
 		exec_cmd(mini_sh);
 	else if (ft_lst_cmd_size(mini_sh->cmd) > 1)
@@ -167,7 +167,7 @@ void	main_mini_sh(t_global *mini_sh)
 		{
 			ft_gc_clear(&mini_sh->gc_parsing);
 			ft_lst_env_clear(&mini_sh->env);
-			// rl_clear_history();
+			// rlx_clear_history();
 			exit(0);
 			return ;
 		}

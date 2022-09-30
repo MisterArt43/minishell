@@ -6,11 +6,25 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 23:23:29 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/09/30 17:26:15 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/09/30 20:09:13 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/header.h"
+
+int	is_builtin(t_lst_cmd *cmd)
+{
+	if (!ft_strncmp(cmd->exec[0], "exit", -1)
+		|| !ft_strncmp(cmd->exec[0], "pwd", -1)
+		|| !ft_strncmp(cmd->exec[0], "cd", -1)
+		|| !ft_strncmp(cmd->exec[0], "echo", -1)
+		|| !ft_strncmp(cmd->exec[0], "env", -1)
+		|| !ft_strncmp(cmd->exec[0], "export", -1)
+		|| !ft_strncmp(cmd->exec[0], "unset", -1))
+		return (0);
+	else
+		return (1);
+}
 
 void exec_child(t_global *mini_sh, t_lst_cmd *cmd, int fd[2], int fd_in)
 {
@@ -27,7 +41,10 @@ void exec_child(t_global *mini_sh, t_lst_cmd *cmd, int fd[2], int fd_in)
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
 	}
-	execve(get_binary(mini_sh, cmd), cmd->exec, ft_split(get_path(mini_sh), ':'));
+	if (!is_builtin(cmd))
+		exec_built_in(mini_sh, cmd);
+	else
+		execve(get_binary(mini_sh, cmd), cmd->exec, ft_split(get_path(mini_sh), ':'));
 	exit(0);
 }
 
