@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_binary.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Wati-Theo <wati-theo@protonmail.com>       +#+  +:+       +#+        */
+/*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 01:08:33 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/09/28 01:08:33 by Wati-Theo        ###   ########lyon.fr   */
+/*   Updated: 2022/09/30 17:23:18 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*get_path(t_global *mini_sh)
 	return(cpy->value);
 }
 
-char	*get_binary(t_global *mini_sh)
+char	*get_binary(t_global *mini_sh, t_lst_cmd *cmd)
 {
 	char	*path;
 	char	**path_splited;
@@ -38,7 +38,7 @@ char	*get_binary(t_global *mini_sh)
 		bin = ft_calloc(sizeof(char), ft_strlen(path_splited[i]) + ft_strlen(mini_sh->cmd->exec[0]) + 2);
 		ft_strlcat(bin, path_splited[i], -1);
 		ft_strlcat(bin, "/", -1);
-		ft_strlcat(bin, mini_sh->cmd->exec[0], -1);
+		ft_strlcat(bin, cmd->exec[0], -1);
 		if (access(bin, F_OK) == 0)
 			return (bin);
 		free(bin);

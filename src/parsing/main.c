@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 16:50:14 by abucia            #+#    #+#             */
-/*   Updated: 2022/09/29 19:01:04 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/09/30 15:10:13 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,9 @@ void	select_exec(t_global *mini_sh)
 		exec_cmd(mini_sh);
 	else if (ft_lst_cmd_size(mini_sh->cmd) > 1)
 	{
-		
+		complicado(mini_sh, mini_sh->cmd, 0);
+		while(wait(NULL) != -1)
+			;
 	}
 }
 

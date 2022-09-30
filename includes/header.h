@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 16:15:55 by abucia            #+#    #+#             */
-/*   Updated: 2022/09/29 16:51:29 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/09/30 17:25:08 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,7 +216,8 @@ int print_er(const char *er);
 
 // tu connais
 void print_env(t_lst_env *env);
-char	*get_binary(t_global *mini_sh);
+char	*get_binary(t_global *mini_sh, t_lst_cmd *cmd);
 char	*get_path(t_global *mini_sh);
+int		complicado(t_global *mini_sh, t_lst_cmd *cmd, int fd_in);
 
 #endif

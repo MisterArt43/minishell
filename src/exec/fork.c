@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 02:58:37 by abucia            #+#    #+#             */
-/*   Updated: 2022/09/29 16:24:06 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/09/30 17:27:30 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	exec_cmd(t_global *mini_sh)
 		kill(pid, SIGTERM);
 	} else {
 		// Le processus enfant execute la commande ou exit si execve echoue
-		if (execve(get_binary(mini_sh), mini_sh->cmd->exec, NULL) == -1)
+		if (execve(get_binary(mini_sh, mini_sh->cmd), mini_sh->cmd->exec, NULL) == -1)
 			perror("shell");
 		exit(EXIT_FAILURE);
 	}

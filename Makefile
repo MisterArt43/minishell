@@ -6,7 +6,7 @@
 #    By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/07 15:22:30 by abucia            #+#    #+#              #
-#    Updated: 2022/09/29 16:46:04 by tschlege         ###   ########lyon.fr    #
+#    Updated: 2022/09/30 14:26:49 by tschlege         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ src/built_in/env.c \
 src/built_in/sort_built_in.c \
 src/exec/exec_binary.c \
 src/exec/ft_split.c \
+src/exec/pipe_exec.c \
 
 CC = gcc
 OBJ = $(SRC:.c=.o)
