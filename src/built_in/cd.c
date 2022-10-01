@@ -6,27 +6,27 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 00:05:57 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/10/01 17:50:22 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/01 21:12:18 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/header.h"
 
-void	change_path(t_global *mini_sh, char *key, char *newValue)
+void	change_value_of_key(t_global *mini_sh, t_lst_env **env, char *key, char *newValue)
 {
-	int i;
+	t_lst_env	*tmp;
 
-	i = 0;
-	while(mini_sh->env && ft_strncmp(mini_sh->env->key, key, -1))
+	tmp = *env;
+	while (tmp)
 	{
-		mini_sh->env = mini_sh->env->next;
-		i++;
-	}	
-	mini_sh->env->value = newValue;
-	while (i)
+		if (!ft_strncmp(tmp->key, key, -1))
+			break;
+		tmp = tmp->next;
+	}
+	if (tmp)
 	{
-		mini_sh->env = mini_sh->env->prev;
-		i--;
+		free(tmp->value);
+		tmp->value = newValue;
 	}
 }
 
@@ -44,9 +44,9 @@ int	b_in_cd(t_global *mini_sh)
 	{
 		if (!chdir(mini_sh->cmd->exec[1]))
 		{
-			change_path(mini_sh, "OLDPWD", pwd);
+			change_value_of_key(mini_sh, &mini_sh->env, "OLDPWD", ft_strdup(pwd, NULL));
 			getcwd(pwd, PATH_MAX);
-			// change_path(mini_sh, "PWD", pwd);
+			change_value_of_key(mini_sh, &mini_sh->env, "PWD", ft_strdup(pwd, NULL));
 			return (0);
 		}
 		else
