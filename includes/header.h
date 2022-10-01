@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 16:15:55 by abucia            #+#    #+#             */
-/*   Updated: 2022/09/30 19:54:41 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/01 21:29:44 by abucia           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,13 @@ typedef struct s_lst_parsed
 {
 	char				*env_var_str;
 	char				*str;
+	char				is_near_prev;
+	char				*in_quote;
 	char				type;
 	struct s_lst_parsed	*next;
 	struct s_lst_parsed	*prev;
 }	t_lst_parse;
+
 
 /**
  * @brief chained list for all command parsed passed in the prompt
@@ -80,12 +83,12 @@ typedef struct s_lst_cmd
  */
 typedef struct s_global
 {
-	char	*line;
-	int		**pid;
-	t_gc	*gc_parsing;
+	int			ret;
+	char		*line;
+	int			**pid;
+	t_gc		*gc_parsing;
 	t_lst_cmd	*cmd;
 	t_lst_env	*env;
-	int			ret;
 } t_global;
 
 //  ------------------------------------------------
@@ -117,42 +120,43 @@ int	ft_gc_size(t_gc *lst);
 char	*ft_substr(char const *s, unsigned int start, size_t len, t_global *g);
 //give the lenght of the string
 size_t	ft_strlen(const char *str);
+size_t	ft_strstrlen(char **str);
 //allocate the string passed in parameter
 char	*ft_strdup(const char *s1, t_global *g);
 
-int	ft_isalnum(int c);
+int		ft_isalnum(int c);
 
 char	*ft_strjoin(char *s1, char *s2, t_global *g);
 
-int	ft_nstrncmp(const char *s1, const char *s2, size_t n, size_t i);
+int		ft_nstrncmp(const char *s1, const char *s2, size_t n, size_t start);
 
-void	ft_putstr_fd(char	*s, int fd);
+char	*ft_itoa(int n, t_global *g);
 
-int	ft_isdigit(int c);
-
-int	ft_atoi(const char *str);
+int		ft_atoi(const char *str);
 
 void	ft_putendl_fd(char	*s, int fd);
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
 
-char	**ft_split(char const *s, char c);
+char	**ft_split(char const *s, char c, t_global *g);
 
-size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
+void	ft_putstr_fd(char	*s, int fd);
 
-void	*ft_calloc(size_t count, size_t size);
+int		ft_isdigit(int c);
+
 
 //  ------------------------------------------------
 //  < ------------      CHECKER       ------------ >
 //  ------------------------------------------------
 
 //check if the cmd is filled with nothing more than space, skip line, tab ...
-int checker_isempty(char *cmd);
+int check_isempty(char *cmd);
 //check if the cmd have a correct format of pipe
 int	check_pipe(char *cmd);
 //check if the redirection are valid
 int	check_redirection(char *cmd, int i, int state);
 
+int check_char_isempty(char c);
 
 
 
@@ -182,6 +186,8 @@ void		ft_lst_env_add_back(t_lst_env **alst, t_lst_env *new);
 
 void		ft_split_shell(t_lst_cmd **cmd, t_global *mini_sh);
 void		skip_to_next_word(char *str, int *i);
+void		skip_quote(char *str, int *i);
+void		skip_word(char *str, int *i);
 void		define_cmd(t_global *mini_sh);
 
 
@@ -199,6 +205,7 @@ void	main_mini_sh(t_global *mini_sh);
 
 //sort to see if it's a built in and execute it
 void	sort_build_in(t_lst_cmd **cmd, t_global *mini_sh);
+int		b_in_export(t_lst_cmd **cmd, t_global *mini_sh);
 void	b_in_exit(t_global *mini_sh);
 int		b_in_pwd(t_global *mini_sh);
 int		b_in_cd(t_global *mini_sh);
@@ -208,14 +215,19 @@ int		b_in_env(t_global *mini_sh);
 //  ------------------------------------------------
 //  < ------------      EXEC          ------------ >
 //  ------------------------------------------------
-void    exec_cmd(t_global *mini_sh);
-void	exec_built_in(t_global *mini_sh, t_lst_cmd *cmd);
 
-//ERROR MANAGER
-int print_er(const char *er);
+void	exec_cmd(t_global *mini_sh);
+void	exec_built_in(t_global *mini_sh, t_lst_cmd **cmd);
 
-// tu connais
-void print_env(t_lst_env *env);
+//ERROR MANAGER 
+//return 0
+int		print_er(const char *er);
+//ERRR MANAGER
+//exit program because of a malloc error.
+void	malloc_exit(t_global *g, const char *er);
+
+//yes i know
+void	print_env(t_lst_env *env);
 char	*get_binary(t_global *mini_sh, t_lst_cmd *cmd);
 char	*get_path(t_global *mini_sh);
 int		complicado(t_global *mini_sh, t_lst_cmd *cmd, int fd_in);

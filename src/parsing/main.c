@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 16:50:14 by abucia            #+#    #+#             */
-/*   Updated: 2022/09/30 20:07:50 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/01 21:21:29 by abucia           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,18 @@ int	strstrlen(char **tab)
 	return (i);
 }
 
+void	shlvl_plus_one(char **key, char **value)
+{
+	unsigned int nb;
+
+	if (ft_nstrncmp(*key, "SHLVL", 6, 0) == 0)
+	{
+		nb = ft_atoi(*value);
+		free(*value);
+		*value = ft_itoa(nb + 1, NULL);
+	}
+}
+
 void	parse_env(char *current, t_lst_env **lst_env)
 {
 	int	i;
@@ -50,6 +62,7 @@ void	parse_env(char *current, t_lst_env **lst_env)
 				value = ft_substr(current, i + 1, ft_strlen(current) - i, NULL);
 			else
 				value = ft_strdup("", NULL);
+			shlvl_plus_one(&key, &value);
 			ft_lst_env_add_back(lst_env, ft_lst_env_new(&key, &value));
 			return ;
 		}
@@ -73,18 +86,9 @@ void	load_env(char **env, t_lst_env **lst_env)
 	}
 }
 
-void print_env(t_lst_env *env)
-{
-	while (env)
-	{
-		printf("%s=%s\n", env->key, env->value);
-		env = env->next;
-	}
-}
-
 int	make_lst_cmd(char *cmd, t_global *mini_sh, int i, int j)
 {
-	if (checker_isempty(cmd) == 0)
+	if (check_isempty(cmd) == 0)
 		return (0);
 	if (check_pipe(cmd) == 0)
 		return (print_er("minishell: syntax error near unexpected token `|'\n"));
@@ -120,7 +124,7 @@ int	start_parse(char *cmd, t_global *mini_sh)
 	mini_sh->cmd = NULL;
 	if (make_lst_cmd(cmd, mini_sh, 0, 0) == 0)
 	{
-		printf("invalid command, check start_parse function\n");
+		//printf("invalid command, check start_parse function\n"); //debug
 		ft_gc_clear(&mini_sh->gc_parsing);
 		return (0);
 	}
@@ -145,7 +149,7 @@ void	select_exec(t_global *mini_sh)
 		|| !ft_strncmp(mini_sh->cmd->exec[0], "env", -1)
 		|| !ft_strncmp(mini_sh->cmd->exec[0], "export", -1)
 		|| !ft_strncmp(mini_sh->cmd->exec[0], "unset", -1)))
-		exec_built_in(mini_sh, mini_sh->cmd);
+		exec_built_in(mini_sh, &mini_sh->cmd);
 	else if (ft_lst_cmd_size(mini_sh->cmd) == 1)
 		exec_cmd(mini_sh);
 	else if (ft_lst_cmd_size(mini_sh->cmd) > 1)
@@ -160,14 +164,22 @@ void	main_mini_sh(t_global *mini_sh)
 {
 	while (1)
 	{
-		mini_sh->line = (char *)ft_gc_add_back(&mini_sh->gc_parsing,ft_gc_new(readline("wati-minishell> "), "an error occured when mallocing readline", mini_sh));
+		mini_sh->line = readline("wati-minishell> ");
 		if (mini_sh->line)
+		{
+			if (mini_sh->line[0] == 0)
+			{
+				free(mini_sh->line);
+				continue ;
+			}
+			ft_gc_add_back(&mini_sh->gc_parsing,ft_gc_new(mini_sh->line, "an error occured when mallocing readline", mini_sh));
 			add_history(mini_sh->line);
-		if (mini_sh->line[0] == 0)
+		}
+		else
 		{
 			ft_gc_clear(&mini_sh->gc_parsing);
 			ft_lst_env_clear(&mini_sh->env);
-			// rlx_clear_history();
+			//rl_clear_history();
 			exit(0);
 			return ;
 		}
@@ -179,7 +191,7 @@ void	main_mini_sh(t_global *mini_sh)
 		define_cmd(mini_sh);
 		printf("GC SIZE : %d\n\n",ft_gc_size(mini_sh->gc_parsing));
 		select_exec(mini_sh);
-		// exec_cmd(mini_sh);
+		//sort_build_in(&mini_sh->cmd, mini_sh);
 		ft_gc_clear(&mini_sh->gc_parsing);
 	}
 }

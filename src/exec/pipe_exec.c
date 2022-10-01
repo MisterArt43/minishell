@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 23:23:29 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/10/01 18:29:19 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/01 21:26:55 by abucia           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ void exec_child(t_global *mini_sh, t_lst_cmd *cmd, int fd[2], int fd_in)
 		close(fd[1]);
 	}
 	if (!is_builtin(cmd))
-		exec_built_in(mini_sh, cmd);
+		exec_built_in(mini_sh, &cmd);
 	else
-		execve(get_binary(mini_sh, cmd), cmd->exec, ft_split(get_path(mini_sh), ':'));
+		execve(get_binary(mini_sh, cmd), cmd->exec, ft_split(get_path(mini_sh), ':', mini_sh));
 	exit(0);
 }
 

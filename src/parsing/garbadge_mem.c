@@ -18,17 +18,12 @@ t_gc	*ft_gc_new(void *var, const char *er, t_global *g)
 	t_gc	*newl;
 
 	if (!var)
-	{
-		print_er(er);
-		ft_gc_clear(&g->gc_parsing);
-		return (NULL);
-	}
+		malloc_exit(g, er);
 	newl = malloc(sizeof(t_gc));
 	if (!newl)
 	{
-		print_er(er);
-		ft_gc_clear(&g->gc_parsing);
-		return (NULL);
+		free(var);
+		malloc_exit(g, "malloc error: new gc chain");
 	}
 	newl->src = var;
 	newl->next = NULL;
@@ -74,9 +69,7 @@ void	ft_gc_delone(t_gc *lst)
 	if (!lst)
 		return ;
 	if (!lst->src)
-	{
 		return (free(lst));
-	}
 	else
 	{
 		free(lst->src);

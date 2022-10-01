@@ -3,14 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 04:28:26 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/01 15:58:56 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/01 21:32:50 by abucia           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/header.h"
+
+size_t	ft_strstrlen(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
 
 size_t	ft_strlen(const char *str)
 {
@@ -54,7 +64,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len, t_global *g)
 		return (ft_strdup("", g));
 	while (s[start + i] && i != len)
 		i++;
-	if (g != NULL && &g->gc_parsing != NULL)
+	if (g != NULL)
 	{
 		res = (char *)ft_gc_add_back(&g->gc_parsing, ft_gc_new(malloc((i + 1) * sizeof(char)), \
 		"An error occur while mallocing", g));
@@ -98,7 +108,13 @@ char	*ft_strjoin(char *s1, char *s2, t_global *g)
 		return (s1);
 	i = 0;
 	len = ft_strlen(s1) + ft_strlen(s2);
-	res = ft_gc_add_back(&g->gc_parsing, ft_gc_new(malloc((len + 1) * sizeof(char)), "invalid malloc in strjoin", g));
+	if (g != NULL)
+	{
+		res = ft_gc_add_back(&g->gc_parsing, ft_gc_new(\
+		malloc((len + 1) * sizeof(char)), "invalid malloc in strjoin", g));
+	}
+	else
+		res = malloc((len + 1) * sizeof(char));
 	if (!res)
 		return (NULL);
 	while (s1[i])
@@ -117,17 +133,19 @@ char	*ft_strjoin(char *s1, char *s2, t_global *g)
 	return (res);
 }
 
-int	ft_nstrncmp(const char *s1, const char *s2, size_t n, size_t i)
+int	ft_nstrncmp(const char *s1, const char *s2, size_t n, size_t start)
 {
-	while (s1[i] != '\0' && s2[i] != '\0' && i < n)
+	if (ft_strlen(s1) < start || ft_strlen(s2) < start)
+		return (1);
+	while (s1[start] != '\0' && s2[start] != '\0' && start < n)
 	{
-		if ((unsigned char)s1[i] != (unsigned char)s2[i])
-			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-		i++;
+		if ((unsigned char)s1[start] != (unsigned char)s2[start])
+			return ((unsigned char)s1[start] - (unsigned char)s2[start]);
+		start++;
 	}
-	if (i == n)
+	if (start == n)
 		return (0);
-	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+	return ((unsigned char)s1[start] - (unsigned char)s2[start]);
 }
 
 void	ft_putstr_fd(char	*s, int fd)
@@ -149,32 +167,6 @@ int	ft_isdigit(int c)
 	if (c >= '0' && c <= '9')
 		return (1);
 	return (0);
-}
-
-int	ft_atoi(const char *str)
-{
-	int	i;
-	int	res;
-	int	neg;
-
-	i = 0;
-	res = 0;
-	neg = 1;
-	while (str[i] == '\f' || str[i] == '\n' || str[i] == '\r'
-		|| str[i] == '\t' || str[i] == '\v' || str[i] == ' ')
-		i++;
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
-			neg = -1;
-		i++;
-	}
-	while (ft_isdigit(str[i]))
-	{
-		res = (res * 10) + (str[i] - 48);
-		i++;
-	}
-	return (res * neg);
 }
 
 void	ft_putendl_fd(char	*s, int fd)

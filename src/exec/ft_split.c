@@ -3,143 +3,96 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Wati-Theo <wati-theo@protonmail.com>       +#+  +:+       +#+        */
+/*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 00:44:37 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/09/28 00:44:37 by Wati-Theo        ###   ########lyon.fr   */
+/*   Updated: 2022/10/01 20:59:20 by abucia           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/header.h"
 
-void	*ft_memset(void *b, int c, size_t len)
+static int	ft_lensplit(char const *str, char c, int *start)
 {
-	void	*retturn;
-
-	retturn = b;
-	while (len)
-	{
-		len--;
-		*((unsigned char *)b + len) = (unsigned char)c;
-	}
-	return (retturn);
-}
-
-void	*ft_calloc(size_t count, size_t size)
-{
-	void	*retturn;
-
-	retturn = malloc(count * size);
-	if (!retturn)
-		return (NULL);
-	return (ft_memset(retturn, '\0', count * size));
-}
-
-char	*ft_substrw(char const *s, unsigned int start, size_t len)
-{
-	size_t	s_len;
-	char	*the_nouvelle;
-	size_t	i;
-
-	if (!s)
-		return (NULL);
-	s_len = ft_strlen(s);
-	i = 0;
-	if (start > s_len)
-		return (ft_calloc(1, sizeof(char)));
-	if ((s_len - start) > len)
-		the_nouvelle = ft_calloc((len + 1), sizeof(char));
-	else
-	{
-		the_nouvelle = ft_calloc((s_len - start + 1), sizeof(char));
-		len = s_len - start + 1;
-	}
-	if (!the_nouvelle)
-		return (NULL);
-	while (s[start + i] && i < len)
-	{
-		the_nouvelle[i] = s[start + i];
-		i++;
-	}
-	return (the_nouvelle);
-}
-
-char	**ft_freebox(char **array)
-{
-	int	i;
+	int		res;
+	int		i;
 
 	i = 0;
-	while (array[i])
+	res = 0;
+	while (str[i] == c && str[i])
+		i++;
+	if (str[i] && str[i] != c)
+		res++;
+	while (str[i])
 	{
-		free(array[i]);
+		if (str[i] == c)
+		{
+			while (str[i] == c)
+				i++;
+			if (str[i] != 0)
+				res++;
+		}
+		else
+			i++;
+	}
+	while (str[*start] == c && str[*start])
+		*start += 1;
+	return (res);
+}
+
+static int	ft_end(char const *str, char c, int start)
+{
+	int		end;
+
+	end = start;
+	while (str[end] && str[end] != c)
+		end++;
+	return (end);
+}
+
+static char	*ft_fill(char const *str, char c, char *res, int *start)
+{
+	int		i;
+
+	i = 0;
+	while (ft_end(str, c, *start) != *start)
+	{
+		res[i] = str[*start];
+		*start += 1;
 		i++;
 	}
-	free(array);
+	res[i] = '\0';
+	while (str[*start] == c && str[*start])
+		*start += 1;
+	return (res);
+}
+
+static char	**ft_free(char **res, int i)
+{
+	while (i != 0)
+		free(res[i--]);
+	free(res);
 	return (NULL);
 }
 
-static	size_t	ft_word_count(char const *s, char c)
+char	**ft_split(char const *str, char c, t_global *g)
 {
-	int		i;
-	size_t	wc;
-
-	i = 0;
-	wc = 0;
-	while (s[i])
-	{
-		while (s[i] == (unsigned char)c)
-			i++;
-		while (s[i] && s[i] != (unsigned char)c)
-			i++;
-		if (!s[i] && s[i - 1] != (unsigned char)c)
-			wc++;
-		wc++;
-	}
-	return (wc);
-}
-
-static	int	ft_word_len(char const *s, char c, int *start)
-{
-	size_t	word_len;
-
-	word_len = 0;
-	while (s[*start] == (unsigned char)c)
-		*start = *start + 1;
-	while (s[*start] && s[*start] != (unsigned char)c)
-	{
-		*start = *start + 1;
-		word_len++;
-	}
-	if (s[*start] == (unsigned char)c || !s[*start])
-		return (word_len);
-	return (0);
-}
-
-char	**ft_split(char const *s, char c)
-{
-	size_t	wc;
-	char	**str;
+	char	**res;
 	int		start;
-	size_t	word_len;
-	size_t	i;
+	int		i;
 
-	if (!s)
-		return (NULL);
-	wc = ft_word_count(s, c);
-	if (!wc)
-		return (ft_calloc(1, sizeof(char *)));
-	str = ft_calloc(wc, sizeof(char *));
-	if (!str)
-		return (NULL);
 	start = 0;
 	i = 0;
-	while (i + 1 < wc)
+	res = ft_gc_add_back(&g->gc_parsing, ft_gc_new(malloc((1 + ft_lensplit(\
+	str, c, &start)) * (sizeof(char *))), "malloc error in ft_split", g));
+	while (str[start])
 	{
-		word_len = ft_word_len(s, c, &start);
-		str[i] = ft_substrw(s, start - word_len, word_len);
-		if (!str[i++])
-			return (ft_freebox(str));
+		res[i] = ft_gc_add_back(&g->gc_parsing, ft_gc_new(\
+		malloc((1 + ft_end(str, c, start) - start) * sizeof(char)), \
+		"malloc error in ft_split", g));
+		res[i] = ft_fill(str, c, res[i], &start);
+		i++;
 	}
-	str[i] = 0;
-	return (str);
+	res[i] = NULL;
+	return (res);
 }

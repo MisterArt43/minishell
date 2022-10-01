@@ -12,7 +12,16 @@
 
 #include "../../includes/header.h"
 
-int checker_isempty(char *cmd)
+int check_char_isempty(char c)
+{
+	if (c == 0)
+		return (0);
+	if (c != ' ' && c != '\t' && c != '\n' && c != '\r')
+		return (1);
+	return (0);
+}
+
+int check_isempty(char *cmd)
 {
 	int	i;
 
@@ -80,18 +89,17 @@ int	check_redirect2(char *cmd, int *i, int *state)
 
 int	redirect_erno(char *cmd, int i, int state)
 {
-	printf("--------------i :%d\n",i);
 	if (cmd[i] == '>')
 	{
 		if (cmd[i + 1] == '>')
-			return (print_er("minishell: syntax error near unexpected token `>>'"));
-		return (print_er("minishell: syntax error near unexpected token `>'"));
+			return (print_er("minishell: syntax error near unexpected token `>>'\n"));
+		return (print_er("minishell: syntax error near unexpected token `>'\n"));
 	}
 	else if (cmd[i] == '<')
 	{
 		if (cmd[i + 1] == '<')
-			return (print_er("minishell: syntax error near unexpected token `<<'"));
-		return (print_er("minishell: syntax error near unexpected token `<'"));
+			return (print_er("minishell: syntax error near unexpected token `<<'\n"));
+		return (print_er("minishell: syntax error near unexpected token `<'\n"));
 	}
 	return (0);
 }

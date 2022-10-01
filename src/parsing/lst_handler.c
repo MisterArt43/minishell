@@ -80,6 +80,8 @@ t_lst_parse	*ft_lst_parse_new(t_gc **cmd_gc, char *cmd, t_global *g)
 	newl->env_var_str = NULL;
 	newl->str = cmd;
 	newl->type = 0;
+	newl->is_near_prev = 0;
+	newl->in_quote = NULL;
 	return (newl);
 }
 
@@ -134,6 +136,8 @@ t_lst_env	*ft_lst_env_new(char **key, char **value)
 	if (!newl)
 		return (NULL);
 	newl->key = *key;
+	if (!value)
+		newl->value = NULL;
 	newl->value = *value;
 	newl->prev = NULL;
 	newl->next = NULL;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_binary.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 01:08:33 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/10/01 18:28:37 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/01 21:25:23 by abucia           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*get_binary(t_global *mini_sh, t_lst_cmd *cmd)
 		mini_sh->ret = 127;
 		exit(1);
 	}	
-	path_splited = ft_split(path, ':');
+	path_splited = ft_split(path, ':', mini_sh);
 	bin = NULL;
 	i = 0;
 	while (path_splited[i])
