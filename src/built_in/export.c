@@ -6,7 +6,7 @@
 /*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 03:04:43 by abucia            #+#    #+#             */
-/*   Updated: 2022/09/20 03:04:43 by abucia           ###   ########lyon.fr   */
+/*   Updated: 2022/10/01 22:20:36 by abucia           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ void	export_put_value(char *key, char *value, t_global *g, t_lst_env **env)
 	if (tmp != NULL)
 	{
 		free(key);
+		free(tmp->value);
 		tmp->value = value;
 	}
 	else
