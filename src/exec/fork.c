@@ -30,7 +30,8 @@ void	exec_cmd(t_global *mini_sh)
 		kill(pid, SIGTERM);
 	} else {
 		// Le processus enfant execute la commande ou exit si execve echoue
-		if (execve(get_binary(mini_sh, mini_sh->cmd), mini_sh->cmd->exec, ft_split(get_path(mini_sh), ':', mini_sh)) == -1)
+
+		if (get_path(mini_sh) != NULL && execve(get_binary(mini_sh, mini_sh->cmd), mini_sh->cmd->exec, ft_split(get_path(mini_sh), ':', mini_sh)) == -1)
 			perror("shell");
 		exit(EXIT_FAILURE);
 	}
