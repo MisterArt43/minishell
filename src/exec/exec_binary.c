@@ -32,15 +32,6 @@ char	*get_binary(t_global *mini_sh, t_lst_cmd *cmd)
 	int		i;
 
 	path = get_path(mini_sh);
-	printf("\n\n%s\n\n\n", path);
-	if (!path || !ft_strncmp(path, "NULL", -1))
-	{
-		ft_putstr_fd("wati-minishell: ", 2);
-		ft_putstr_fd(cmd->exec[0], 2);
-		ft_putendl_fd(": command not found", 2);
-		mini_sh->ret = 127;
-		exit(1);
-	}
 	path_splited = ft_split(path, ':', mini_sh);
 	bin = NULL;
 	i = 0;
