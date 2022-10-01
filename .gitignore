@@ -2,3 +2,4 @@
 .vscode/settings.json
 .vscode/tasks.json
 *.o
+minishell
