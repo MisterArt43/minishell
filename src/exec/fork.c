@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fork.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 02:58:37 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/01 21:30:29 by abucia           ###   ########lyon.fr   */
+/*   Updated: 2022/10/01 23:43:06 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,12 @@ void	exec_cmd(t_global *mini_sh)
 		kill(pid, SIGTERM);
 	} else {
 		// Le processus enfant execute la commande ou exit si execve echoue
-		if (!get_path(mini_sh) || !ft_strncmp(get_path(mini_sh), "NULL", -1))
+		if (!check_path(mini_sh, mini_sh->cmd))
 		{
-			ft_putstr_fd("wati-minishell: ", 2);
-			ft_putstr_fd(mini_sh->cmd->exec[0], 2);
-			ft_putendl_fd(": command not found", 2);
-			mini_sh->ret = 127;
-			exit(EXIT_FAILURE);
+			if (execve(get_binary(mini_sh, mini_sh->cmd), mini_sh->cmd->exec, ft_split(get_path(mini_sh), ':', mini_sh)) == -1)
+				perror("shell");
+				exit(EXIT_FAILURE);
 		}
-		else if (execve(get_binary(mini_sh, mini_sh->cmd), mini_sh->cmd->exec, ft_split(get_path(mini_sh), ':', mini_sh)) == -1)
-			perror("shell");
-		exit(EXIT_FAILURE);
 	}
 }
 

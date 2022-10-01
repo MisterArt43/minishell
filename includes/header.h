@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 16:15:55 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/01 21:29:44 by abucia           ###   ########lyon.fr   */
+/*   Updated: 2022/10/01 23:42:48 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,6 +223,7 @@ void	exec_built_in(t_global *mini_sh, t_lst_cmd **cmd);
 //return 0
 int		print_er(const char *er);
 //ERRR MANAGER
+int	check_path(t_global *mini_sh, t_lst_cmd *cmd);
 //exit program because of a malloc error.
 void	malloc_exit(t_global *g, const char *er);
 

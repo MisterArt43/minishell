@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+         #
+#    By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/07 15:22:30 by abucia            #+#    #+#              #
-#    Updated: 2022/10/01 22:03:51 by abucia           ###   ########lyon.fr    #
+#    Updated: 2022/10/01 23:37:04 by tschlege         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,7 @@ src/exec/ft_split.c \
 src/exec/pipe_exec.c \
 src/parsing/utils2.c \
 src/er_malloc.c \
+src/exec/check_path.c \
 
 CC = gcc
 OBJ = $(SRC:.c=.o)
