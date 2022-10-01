@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 23:23:29 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/09/30 20:09:13 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/01 18:29:19 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int	is_builtin(t_lst_cmd *cmd)
 
 void exec_child(t_global *mini_sh, t_lst_cmd *cmd, int fd[2], int fd_in)
 {
-	printf("%s: fd[0]=%d, fd[1]=%d, fd_in=%d\n", cmd->command, fd[0], fd[1], fd_in);
 	if (fd[0] > 0)
 		close(fd[0]);
 	if  (fd_in > 0)
@@ -55,7 +54,6 @@ int	complicado(t_global *mini_sh, t_lst_cmd *cmd, int fd_in)
 
 	fd[0] = -1;
 	fd[1] = -1;
-	printf("jul\n");
 	if (cmd->next && pipe(fd) < 0)
 	{
 		ft_putendl_fd("PIPE ERR", 2);

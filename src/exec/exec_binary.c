@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 01:08:33 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/09/30 17:23:18 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/01 18:28:37 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,26 @@ char	*get_binary(t_global *mini_sh, t_lst_cmd *cmd)
 	int		i;
 
 	path = get_path(mini_sh);
+	if (!ft_strncmp(path, "NULL", -1))
+	{
+		ft_putstr_fd("wati-minishell: ", 2);
+		ft_putstr_fd(cmd->exec[0], 2);
+		ft_putendl_fd(": command not found", 2);
+		mini_sh->ret = 127;
+		exit(1);
+	}	
 	path_splited = ft_split(path, ':');
 	bin = NULL;
 	i = 0;
 	while (path_splited[i])
 	{
-		bin = ft_calloc(sizeof(char), ft_strlen(path_splited[i]) + ft_strlen(mini_sh->cmd->exec[0]) + 2);
-		ft_strlcat(bin, path_splited[i], -1);
-		ft_strlcat(bin, "/", -1);
-		ft_strlcat(bin, cmd->exec[0], -1);
-		if (access(bin, F_OK) == 0)
-			return (bin);
-		free(bin);
-		bin = NULL;
+		// bin = ft_calloc(sizeof(char), ft_strlen(path_splited[i]) + ft_strlen(cmd->exec[0]) + 2);
+		// ft_strjoin(ft_strjoin(path_splited[i], "/", mini_sh), cmd->exec[0], mini_sh);
+		// ft_strlcat(bin, path_splited[i], -1);
+		// ft_strlcat(bin, "/", -1);
+		// ft_strlcat(bin, cmd->exec[0], -1);
+		if (access(ft_strjoin(ft_strjoin(path_splited[i], "/", mini_sh), cmd->exec[0], mini_sh), F_OK) == 0)
+			return (ft_strjoin(ft_strjoin(path_splited[i], "/", mini_sh), cmd->exec[0], mini_sh));
 		i++;
 	}
 	return (NULL);
