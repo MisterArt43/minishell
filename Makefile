@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+         #
+#    By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/07 15:22:30 by abucia            #+#    #+#              #
-#    Updated: 2022/09/30 14:26:49 by tschlege         ###   ########lyon.fr    #
+#    Updated: 2022/10/01 22:03:51 by abucia           ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ src/parsing/checker_cmd.c \
 src/parsing/ft_split.c \
 src/parsing/define_parsing.c \
 src/exec/fork.c \
+src/built_in/export.c \
 src/built_in/exit.c \
 src/built_in/pwd.c \
 src/built_in/cd.c \
@@ -28,12 +29,14 @@ src/built_in/sort_built_in.c \
 src/exec/exec_binary.c \
 src/exec/ft_split.c \
 src/exec/pipe_exec.c \
+src/parsing/utils2.c \
+src/er_malloc.c \
 
 CC = gcc
 OBJ = $(SRC:.c=.o)
 HEADER = includes/header.h
 READLINE_LIB = ./includes/readline-8.1
-FLAG = -I./includes/readline-8.1/ -g3 # -fsanitize=address #-Wall -Wextra -Werror
+FLAG = -I./includes/readline-8.1/ -g3 -fsanitize=address #-Wall -Wextra -Werror
 
 all : $(NAME)
 
@@ -52,3 +55,4 @@ clean :
 fclean : clean
 	@rm -rf $(NAME)
 	@echo "$(GREEN)************ $@ fclean !$(RST)"
+
