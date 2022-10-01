@@ -74,7 +74,7 @@ typedef struct s_lst_cmd
  */
 typedef struct s_global
 {
-	int			status;
+	int			ret;
 	char		*line;
 	int			**pid;
 	t_gc		*gc_parsing;
@@ -111,14 +111,19 @@ int	ft_gc_size(t_gc *lst);
 char	*ft_substr(char const *s, unsigned int start, size_t len, t_global *g);
 //give the lenght of the string
 size_t	ft_strlen(const char *str);
+size_t	ft_strstrlen(char **str);
 //allocate the string passed in parameter
 char	*ft_strdup(const char *s1, t_global *g);
 
-int	ft_isalnum(int c);
+int		ft_isalnum(int c);
 
 char	*ft_strjoin(char *s1, char *s2, t_global *g);
 
-int	ft_nstrncmp(const char *s1, const char *s2, size_t n, size_t start);
+int		ft_nstrncmp(const char *s1, const char *s2, size_t n, size_t start);
+
+char	*ft_itoa(int n, t_global *g);
+
+int		ft_atoi(const char *str);
 
 
 //  ------------------------------------------------
@@ -126,13 +131,13 @@ int	ft_nstrncmp(const char *s1, const char *s2, size_t n, size_t start);
 //  ------------------------------------------------
 
 //check if the cmd is filled with nothing more than space, skip line, tab ...
-int checker_isempty(char *cmd);
+int check_isempty(char *cmd);
 //check if the cmd have a correct format of pipe
 int	check_pipe(char *cmd);
 //check if the redirection are valid
 int	check_redirection(char *cmd, int i, int state);
 
-int checker_char_isempty(char cmd);
+int check_char_isempty(char c);
 
 
 
@@ -162,6 +167,8 @@ void		ft_lst_env_add_back(t_lst_env **alst, t_lst_env *new);
 
 void		ft_split_shell(t_lst_cmd **cmd, t_global *mini_sh);
 void		skip_to_next_word(char *str, int *i);
+void		skip_quote(char *str, int *i);
+void		skip_word(char *str, int *i);
 void		define_cmd(t_global *mini_sh);
 
 
@@ -179,10 +186,15 @@ void	main_mini_sh(t_global *mini_sh);
 
 //sort to see if it's a built in and execute it
 void	sort_build_in(t_lst_cmd **cmd, t_global *mini_sh);
+int		b_in_export(t_lst_cmd **cmd, t_global *mini_sh);
 
 
 
-//ERROR MANAGER
-int print_er(const char *er);
+//ERROR MANAGER 
+//return 0
+int		print_er(const char *er);
+//ERRR MANAGER
+//exit program because of a malloc error.
+void	malloc_exit(t_global *g, const char *er);
 
 #endif

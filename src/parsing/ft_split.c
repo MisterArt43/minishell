@@ -6,7 +6,7 @@
 /*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 00:39:49 by abucia            #+#    #+#             */
-/*   Updated: 2022/09/28 11:06:11 by abucia           ###   ########lyon.fr   */
+/*   Updated: 2022/09/30 15:50:23 by abucia           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	sort_split(t_lst_cmd **cmd, int *i, t_global *g, int start)
 	if ((*cmd)->command[*i] == '\'' || (*cmd)->command[*i] == '\"')
 	{
 		parse_quote((*cmd)->command, i, g, cmd);
-		if (start - 1 >= 0 && checker_char_isempty((*cmd)->command[start - 1]) == 1)
+		if (start - 1 >= 0 && check_char_isempty((*cmd)->command[start - 1]) == 1)
 			ft_lst_parse_last((*cmd)->split_cmd)->is_near_prev = 1;
 		printf("Quote / %d\n", ft_lst_parse_last((*cmd)->split_cmd)->is_near_prev);
 	}
@@ -93,7 +93,7 @@ void	sort_split(t_lst_cmd **cmd, int *i, t_global *g, int start)
 		skip_redirection((*cmd)->command, i);
 		ft_lst_parse_add_back(&(*cmd)->split_cmd, ft_lst_parse_new(&g->gc_parsing, \
 		ft_substr((*cmd)->command, start, *i - start, g), g));
-		if (start - 1 >= 0 && checker_char_isempty((*cmd)->command[start - 1]) == 1)
+		if (start - 1 >= 0 && check_char_isempty((*cmd)->command[start - 1]) == 1)
 			ft_lst_parse_last((*cmd)->split_cmd)->is_near_prev = 1;
 		printf("Redirect\n");
 	}
@@ -102,7 +102,7 @@ void	sort_split(t_lst_cmd **cmd, int *i, t_global *g, int start)
 		skip_word((*cmd)->command, i);
 		ft_lst_parse_add_back(&(*cmd)->split_cmd, ft_lst_parse_new(&g->gc_parsing, \
 		ft_substr((*cmd)->command, start, *i - start, g), g));
-		if (start - 1 >= 0 && checker_char_isempty((*cmd)->command[start - 1]) == 1)
+		if (start - 1 >= 0 && check_char_isempty((*cmd)->command[start - 1]) == 1)
 			ft_lst_parse_last((*cmd)->split_cmd)->is_near_prev = 1;
 		printf("Word\n");
 	}
@@ -166,6 +166,15 @@ void	replace_env_var(t_lst_parse **lst, t_global *g)
 					ret = ft_strjoin(ret, ft_strjoin(ft_substr((*lst)->str, start, end - start, g), find->value, g), g);
 				start = i;
 				i--;
+			}
+			else if ((*lst)->str[i + 1] == '?')
+			{
+				if (ret == NULL)
+					ret = ft_strjoin(ft_substr((*lst)->str, start, end - start, g), ft_itoa(g->ret, g), g);
+				else
+					ret = ft_strjoin(ret, ft_strjoin(ft_substr((*lst)->str, start, end - start, g), ft_itoa(g->ret, g), g), g);
+				i++;
+				start = i + 1;
 			}
 		}
 		i++;

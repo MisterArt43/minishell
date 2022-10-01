@@ -12,6 +12,16 @@
 
 #include "../../includes/header.h"
 
+size_t	ft_strstrlen(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
+
 size_t	ft_strlen(const char *str)
 {
 	int	i;
@@ -98,7 +108,13 @@ char	*ft_strjoin(char *s1, char *s2, t_global *g)
 		return (s1);
 	i = 0;
 	len = ft_strlen(s1) + ft_strlen(s2);
-	res = ft_gc_add_back(&g->gc_parsing, ft_gc_new(malloc((len + 1) * sizeof(char)), "invalid malloc in strjoin", g));
+	if (g != NULL && &g->gc_parsing != NULL)
+	{
+		res = ft_gc_add_back(&g->gc_parsing, ft_gc_new(\
+		malloc((len + 1) * sizeof(char)), "invalid malloc in strjoin", g));
+	}
+	else
+		res = malloc((len + 1) * sizeof(char));
 	if (!res)
 		return (NULL);
 	while (s1[i])

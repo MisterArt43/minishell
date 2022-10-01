@@ -1,21 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sort_built_in.c                                    :+:      :+:    :+:   */
+/*   er_malloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/20 03:13:00 by abucia            #+#    #+#             */
-/*   Updated: 2022/09/20 03:13:00 by abucia           ###   ########lyon.fr   */
+/*   Created: 2022/09/30 21:05:09 by abucia            #+#    #+#             */
+/*   Updated: 2022/09/30 21:05:09 by abucia           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/header.h"
+#include "../includes/header.h"
 
-void	sort_build_in(t_lst_cmd **cmd, t_global *mini_sh)
+void	malloc_exit(t_global *g, const char *er)
 {
-	if (ft_nstrncmp((*cmd)->exec[0], "export", 7, 0) == 0)
-	{
-		b_in_export(cmd, mini_sh);
-	}
+	write(2, er, ft_strlen(er));
+	write(2, "\n", 1);
+	ft_gc_clear(&g->gc_parsing);
+	ft_lst_env_clear(&g->env);
+	exit(1);
 }
