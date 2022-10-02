@@ -34,6 +34,7 @@ src/parsing/utils2.c \
 src/er_malloc.c \
 src/exec/check_path.c \
 src/exec/cmd_not_valid.c \
+src/exec/rebuild_env.c \
 
 
 CC = gcc
