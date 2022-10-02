@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 00:44:37 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/10/02 19:40:35 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/02 20:13:23 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ char	**ft_split(char const *str, char c, t_global *g)
 		malloc((1 + ft_end(str, c, start) - start) * sizeof(char)), \
 		"malloc error in ft_split", g));
 		res[i] = ft_fill(str, c, res[i], &start);
-		printf("%s\n", res[i]);
 		i++;
 	}
 	res[i] = NULL;

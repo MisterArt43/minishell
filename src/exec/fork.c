@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 02:58:37 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/02 19:34:08 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/02 20:08:52 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	exec_cmd(t_global *mini_sh)
 		// Le processus enfant execute la commande ou exit si execve echoue
 		if (!check_path(mini_sh, mini_sh->cmd)) // si un binary
 		{
-			if (execve(get_binary(mini_sh, mini_sh->cmd), mini_sh->cmd->exec, ft_split(get_path(mini_sh), ':', mini_sh)) == -1)
+			if (execve(get_binary(mini_sh, mini_sh->cmd), mini_sh->cmd->exec, rebuild_env(mini_sh->env, mini_sh)) == -1)
 				cmd_not_vld(mini_sh, mini_sh->cmd);
 		}
 		exit(EXIT_FAILURE);

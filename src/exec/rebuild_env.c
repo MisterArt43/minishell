@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rebuild_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 19:43:47 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/02 19:43:47 by abucia           ###   ########lyon.fr   */
+/*   Updated: 2022/10/02 20:14:55 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ char	*rebuild_env_tab(t_lst_env *current, t_global *g)
 {
 	char *res;
 
-	if (current->value = NULL)
+	if (current->value == NULL)
 		return (NULL);
 	res = ft_strdup(current->key, g);
-	ft_strjoin(res, "=", g);
-	ft_strjoin(res, current->value, g);
+	res = ft_strjoin(res, "=", g);
+	res = ft_strjoin(res, current->value, g);
 	return(res);
 }
 
@@ -32,8 +32,8 @@ char	**rebuild_env(t_lst_env *env, t_global *g)
 
 	i = 0;
 	tmp = env;
-	res = ft_gc_add_back(&g->gc_parsing, ft_gc_new((\
-	malloc(ft_lst_env_size(env)) + 1) * sizeof(char *), \
+	res = ft_gc_add_back(&g->gc_parsing, \
+	ft_gc_new(malloc((ft_lst_env_size(env) + 1) * sizeof(char *)), \
 	"malloc error in rebuild env", g));
 	while (tmp)
 	{

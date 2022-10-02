@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 16:15:55 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/02 17:56:08 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/02 20:08:06 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,6 +222,7 @@ void	b_in_unset(t_lst_cmd **cmd, t_global *g);
 
 void	exec_cmd(t_global *mini_sh);
 void	exec_built_in(t_global *mini_sh, t_lst_cmd **cmd);
+char	**rebuild_env(t_lst_env *env, t_global *g);
 
 //ERROR MANAGER 
 //return 0
