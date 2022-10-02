@@ -69,10 +69,11 @@ int	complicado(t_global *mini_sh, t_lst_cmd *cmd, int fd_in)
 	}
 	else if (child_pid == 0)
 		exec_child(mini_sh, cmd, fd, fd_in);
-	if (fd_in > 0) 
+	if (fd_in > 0)
 		close(fd_in);
-	if (fd[1] > 0) 
+	if (fd[1] > 0)
 		close(fd[1]);
+	printf("--------------------DEBUG fd[1] : %d, fd_in : %d\n", fd[1], fd_in);
 	if (cmd->next)
 		complicado(mini_sh, cmd->next, fd[0]);
 	else
