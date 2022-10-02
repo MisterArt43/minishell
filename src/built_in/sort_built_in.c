@@ -23,7 +23,7 @@ void	exec_built_in(t_global *mini_sh, t_lst_cmd **cmd)
 	else if (!ft_strncmp((*cmd)->exec[0], "cd", -1))
 		b_in_cd(mini_sh);
 	else if (!ft_strncmp((*cmd)->exec[0], "echo", -1))
-		b_in_echo(mini_sh);
+		b_in_echo(mini_sh, cmd);
 	else if (!check_path(mini_sh, *cmd) && !ft_strncmp((*cmd)->exec[0], "env", -1))
 		b_in_env(mini_sh);
 	else if (!ft_nstrncmp((*cmd)->exec[0], "unset", 6, 0))

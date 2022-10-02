@@ -239,7 +239,7 @@ char	*rebuild_command(t_lst_cmd *cmd, t_global *g)
 		}
 		tmp = tmp->next;
 	}
-	printf("###################\n%s\n", ret);
+	//printf("###################\n%s\n", ret);
 	return (ret);
 }
 

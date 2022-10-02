@@ -212,7 +212,7 @@ int		b_in_export(t_lst_cmd **cmd, t_global *mini_sh);
 void	b_in_exit(t_global *mini_sh);
 int		b_in_pwd(t_global *mini_sh);
 int		b_in_cd(t_global *mini_sh);
-int		b_in_echo(t_global *mini_sh);
+int		b_in_echo(t_global *mini_sh, t_lst_cmd **cmd);
 int		b_in_env(t_global *mini_sh);
 void	b_in_unset(t_lst_cmd **cmd, t_global *g);
 
