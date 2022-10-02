@@ -31,6 +31,8 @@ char	*get_binary(t_global *mini_sh, t_lst_cmd *cmd)
 	char	*bin;
 	int		i;
 
+	if (access(cmd->exec[0], F_OK) == 0)
+		return (cmd->exec[0]);
 	path = get_path(mini_sh);
 	path_splited = ft_split(path, ':', mini_sh);
 	bin = NULL;
