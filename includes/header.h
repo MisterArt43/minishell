@@ -174,6 +174,7 @@ t_lst_parse	*ft_lst_parse_last(t_lst_parse *lst);
 void		ft_lst_parse_add_back(t_lst_parse **alst, t_lst_parse *new);
 int			ft_lst_parse_size(t_lst_parse *lst);
 void		ft_lst_env_clear(t_lst_env **lst);
+int			ft_lst_env_size(t_lst_env *lst);
 
 t_lst_env	*ft_lst_env_new(char **key, char **value);
 t_lst_env	*ft_lst_env_last(t_lst_env *lst);

@@ -213,3 +213,18 @@ void	ft_lst_env_clear(t_lst_env **lst)
 	}
 	*lst = NULL;
 }
+
+int	ft_lst_env_size(t_lst_env *lst)
+{
+	unsigned int	i;
+
+	i = 1;
+	if (!lst)
+		return (0);
+	while (lst->next)
+	{
+		lst = lst->next;
+		i++;
+	}
+	return (i);
+}
