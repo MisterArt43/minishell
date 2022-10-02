@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 16:15:55 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/02 20:08:06 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/03 00:10:47 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,6 +238,6 @@ int		check_no_arg(t_lst_cmd **cmd, char *er_cmd, t_global *g);
 void	print_env(t_lst_env *env);
 char	*get_binary(t_global *mini_sh, t_lst_cmd *cmd);
 char	*get_path(t_global *mini_sh);
-int		complicado(t_global *mini_sh, t_lst_cmd *cmd, int fd_in);
+int		complicado(t_global *mini_sh, t_lst_cmd *cmd, int fd_in, pid_t *c_pid);
 
 #endif

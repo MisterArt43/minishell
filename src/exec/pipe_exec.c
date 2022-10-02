@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 23:23:29 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/10/02 23:32:58 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/03 00:43:38 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ void exec_child(t_global *mini_sh, t_lst_cmd *cmd, int fd[2], int fd_in)
 		if (execve(get_binary(mini_sh, cmd), cmd->exec, ft_split(get_path(mini_sh), ':', mini_sh)) == - 1)
 			cmd_not_vld(mini_sh, cmd);
 	perror("wati-minishell:");
-	exit(0);
+	exit(EXIT_FAILURE);
 }
 
-int	complicado(t_global *mini_sh, t_lst_cmd *cmd, int fd_in)
+int	complicado(t_global *mini_sh, t_lst_cmd *cmd, int fd_in, pid_t *c_pid)
 {
 	int		fd[2];
 	pid_t	child_pid;
@@ -75,9 +75,10 @@ int	complicado(t_global *mini_sh, t_lst_cmd *cmd, int fd_in)
 		close(fd[1]);
 	printf("--------------------DEBUG fd[1] : %d, fd_in : %d\n", fd[1], fd_in);
 	if (cmd->next)
-		complicado(mini_sh, cmd->next, fd[0]);
+		complicado(mini_sh, cmd->next, fd[0], c_pid);
 	else
-		return (child_pid);
+		*c_pid = child_pid;
+	return (child_pid);
 }
 
 
