@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 16:15:55 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/01 23:42:48 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/01 21:29:44 by abucia           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,7 @@ void		ft_lst_env_clear(t_lst_env **lst);
 t_lst_env	*ft_lst_env_new(char **key, char **value);
 t_lst_env	*ft_lst_env_last(t_lst_env *lst);
 void		ft_lst_env_add_back(t_lst_env **alst, t_lst_env *new);
+void		ft_lst_env_del_in(t_lst_env *lst);
 
 
 //  ------------------------------------------------
@@ -189,6 +190,7 @@ void		skip_to_next_word(char *str, int *i);
 void		skip_quote(char *str, int *i);
 void		skip_word(char *str, int *i);
 void		define_cmd(t_global *mini_sh);
+char		*rebuild_command(t_lst_cmd *cmd, t_global *g);
 
 
 
@@ -211,6 +213,7 @@ int		b_in_pwd(t_global *mini_sh);
 int		b_in_cd(t_global *mini_sh);
 int		b_in_echo(t_global *mini_sh);
 int		b_in_env(t_global *mini_sh);
+void	b_in_unset(t_lst_cmd **cmd, t_global *g);
 
 //  ------------------------------------------------
 //  < ------------      EXEC          ------------ >

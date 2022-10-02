@@ -169,6 +169,25 @@ void	ft_lst_env_add_back(t_lst_env **alst, t_lst_env *new)
 	new->prev = tmp;
 }
 
+void	ft_lst_env_del_in(t_lst_env *lst)
+{
+	if (lst->prev != NULL)
+	{
+		if (lst->next != NULL)
+			lst->prev->next = lst->next;
+		else
+			lst->prev->next = NULL;
+	}
+	else
+		if (lst->next != NULL)
+			lst->next->prev = NULL;
+	if (!lst)
+		return ;
+	free(lst->key);
+	free(lst->value);
+	free(lst);
+}
+
 void	ft_lst_env_delone(t_lst_env *lst)
 {
 	if (!lst)
