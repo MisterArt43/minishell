@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 23:23:29 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/10/02 17:58:42 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/02 20:28:25 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,10 @@ int	complicado(t_global *mini_sh, t_lst_cmd *cmd, int fd_in)
 	}
 	child_pid = fork();
 	if (child_pid == -1)
+	{
+		ft_putendl_fd("wati-minishell: fork: Resource temporarily unavailable", 2);
 		return (1);
+	}
 	else if (child_pid == 0)
 		exec_child(mini_sh, cmd, fd, fd_in);
 	if (fd_in > 0) 

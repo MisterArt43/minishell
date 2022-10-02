@@ -6,7 +6,7 @@
 #    By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/07 15:22:30 by abucia            #+#    #+#              #
-#    Updated: 2022/10/02 17:47:22 by tschlege         ###   ########lyon.fr    #
+#    Updated: 2022/10/02 20:20:56 by tschlege         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,8 @@ CC = gcc
 OBJ = $(SRC:.c=.o)
 HEADER = includes/header.h
 READLINE_LIB = ./includes/readline-8.1
-FLAG = -I./includes/readline-8.1/ -g3 -fsanitize=address #-Wall -Wextra -Werror
+FLAG = -I./includes/readline-8.1/ 
+#-g3 -fsanitize=address #-Wall -Wextra -Werror
 
 all : $(NAME)
 
