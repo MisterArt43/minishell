@@ -177,6 +177,7 @@ void	main_mini_sh(t_global *mini_sh)
 		}
 		else
 		{
+			printf("\n");
 			ft_gc_clear(&mini_sh->gc_parsing);
 			ft_lst_env_clear(&mini_sh->env);
 			//rl_clear_history();
