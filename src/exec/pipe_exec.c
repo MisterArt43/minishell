@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 23:23:29 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/10/02 22:14:03 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/02 23:32:58 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ int	complicado(t_global *mini_sh, t_lst_cmd *cmd, int fd_in)
 		close(fd[1]);
 	if (cmd->next)
 		complicado(mini_sh, cmd->next, fd[0]);
+	if (!cmd->next)
+		return (child_pid);
 	return (child_pid);
 }
 

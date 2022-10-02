@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 16:50:14 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/02 22:30:54 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/02 23:30:16 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,8 @@ int	start_parse(char *cmd, t_global *mini_sh)
 
 void	select_exec(t_global *mini_sh)
 {
-	int	status;
+	int		status;
+	pid_t	c_pid;
 
 	status = 0;
 	if (ft_lst_cmd_size(mini_sh->cmd) == 1 &&
@@ -157,11 +158,11 @@ void	select_exec(t_global *mini_sh)
 		exec_cmd(mini_sh);
 	else if (ft_lst_cmd_size(mini_sh->cmd) > 1)
 	{
-		complicado(mini_sh, mini_sh->cmd, 0);
-		while(wait(&status) != -1)
-			;
+		c_pid = complicado(mini_sh, mini_sh->cmd, 0);
+		waitpid(c_pid, &status, 0);
 		if (WIFEXITED(status))
     		printf("Child exited with RC=%d\n", WEXITSTATUS(status));
+		kill(c_pid, SIGTERM);
 	}
 }
 

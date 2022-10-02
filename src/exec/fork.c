@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 02:58:37 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/02 22:43:22 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/02 23:00:37 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	exec_cmd(t_global *mini_sh)
 		// on kill le processus enfant
 		waitpid(pid, &status, 0);
 		if (WIFEXITED(status))
-    		printf("Child exited with RC=%d\n", WEXITSTATUS(status));
+    		mini_sh->ret = WEXITSTATUS(status);
 		kill(pid, SIGTERM);
 	}
 	else 
