@@ -12,8 +12,11 @@
 
 #include "../../includes/header.h"
 
-int	b_in_env(t_global *mini_sh)
+int	b_in_env(t_global *mini_sh, t_lst_cmd **cmd)
 {
+	mini_sh->ret = 0;
+	if (check_no_arg(cmd, "env", mini_sh) == 0) // pas d'option "-..."
+		return (0);
 	if (!ft_strncmp(get_path(mini_sh), "NULL", -1))
 	{
 		ft_putendl_fd("wati-minishell: env: command not found", 2);

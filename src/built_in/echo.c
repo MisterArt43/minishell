@@ -85,6 +85,7 @@ int	b_in_echo(t_global *mini_sh, t_lst_cmd **cmd)
 	int		is_nl;
 	char	*str;
 
+	mini_sh->ret = 0;
 	is_nl = 1;
 	i = 0;
 	if (!mini_sh->cmd->exec[1])

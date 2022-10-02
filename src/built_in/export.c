@@ -12,7 +12,7 @@
 
 #include "../../includes/header.h"
 
-int	check_no_arg(t_lst_cmd **cmd)
+int	check_no_arg(t_lst_cmd **cmd, char *er_cmd, t_global *g)
 {
 	t_lst_parse *tmp;
 
@@ -21,7 +21,8 @@ int	check_no_arg(t_lst_cmd **cmd)
 	{
 		if (ft_nstrncmp(tmp->str, "-", 1, 0) == 0)
 		{
-			printf("bash: export: %s: invalid option\n", tmp->str);
+			g->ret = 1;
+			printf("wati-minishell: %s: %s: invalid option\n",er_cmd, tmp->str);
 			return (0);
 		}
 		tmp = tmp->next;
@@ -255,7 +256,7 @@ int	b_in_export(t_lst_cmd **cmd, t_global *mini_sh)
 		//si ya un pipe c'est inutile
 		if (ft_lst_cmd_size(*cmd) != 1)
 			return (1);
-		if (check_no_arg(cmd) == 0) // pas d'option "-..."
+		if (check_no_arg(cmd, "export", mini_sh) == 0) // pas d'option "-..."
 			return (0);
 		line = rebuild_command(*cmd, mini_sh);
 		return (exec_export(*cmd, mini_sh, line));

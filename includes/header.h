@@ -213,7 +213,7 @@ void	b_in_exit(t_global *mini_sh);
 int		b_in_pwd(t_global *mini_sh);
 int		b_in_cd(t_global *mini_sh);
 int		b_in_echo(t_global *mini_sh, t_lst_cmd **cmd);
-int		b_in_env(t_global *mini_sh);
+int		b_in_env(t_global *mini_sh, t_lst_cmd **cmd);
 void	b_in_unset(t_lst_cmd **cmd, t_global *g);
 
 //  ------------------------------------------------
@@ -234,6 +234,7 @@ void	cmd_not_vld(t_global *mini_sh, t_lst_cmd *cmd);
 void	malloc_exit(t_global *g, const char *er);
 
 //yes i know
+int		check_no_arg(t_lst_cmd **cmd, char *er_cmd, t_global *g);
 void	print_env(t_lst_env *env);
 char	*get_binary(t_global *mini_sh, t_lst_cmd *cmd);
 char	*get_path(t_global *mini_sh);

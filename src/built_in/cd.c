@@ -34,6 +34,7 @@ int	b_in_cd(t_global *mini_sh)
 {
 	char	pwd[PATH_MAX];
 
+	mini_sh->ret = 0;
 	getcwd(pwd, PATH_MAX);
 	if (mini_sh->cmd->exec[1] && mini_sh->cmd->exec[2])
 	{
