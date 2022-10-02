@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 23:31:19 by tschlege          #+#    #+#             */
-/*   Updated: 2022/10/02 19:18:12 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/02 19:34:36 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	check_path(t_global *mini_sh, t_lst_cmd *cmd)
 {
-	if ((access(mini_sh->cmd->exec[0], F_OK) != 0) && (!get_path(mini_sh) || !ft_strncmp(get_path(mini_sh), "NULL", -1)))
+	if ((!get_path(mini_sh) || !ft_strncmp(get_path(mini_sh), "NULL", -1)))
 		{
 			ft_putstr_fd("wati-minishell: ", 2);
 			ft_putstr_fd(cmd->exec[0], 2);
