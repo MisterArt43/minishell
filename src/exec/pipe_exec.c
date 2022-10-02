@@ -45,6 +45,7 @@ void exec_child(t_global *mini_sh, t_lst_cmd *cmd, int fd[2], int fd_in)
 	else if (!check_path(mini_sh, cmd))
 		if (execve(get_binary(mini_sh, cmd), cmd->exec, ft_split(get_path(mini_sh), ':', mini_sh)) == - 1)
 			cmd_not_vld(mini_sh, cmd);
+	perror("wati-minishell:");
 	exit(0);
 }
 
@@ -74,9 +75,8 @@ int	complicado(t_global *mini_sh, t_lst_cmd *cmd, int fd_in)
 		close(fd[1]);
 	if (cmd->next)
 		complicado(mini_sh, cmd->next, fd[0]);
-	if (!cmd->next)
+	else
 		return (child_pid);
-	return (child_pid);
 }
 
 
