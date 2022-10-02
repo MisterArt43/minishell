@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 16:50:14 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/01 21:21:29 by abucia           ###   ########lyon.fr   */
+/*   Updated: 2022/10/02 22:30:54 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,9 @@ int	start_parse(char *cmd, t_global *mini_sh)
 
 void	select_exec(t_global *mini_sh)
 {
+	int	status;
+
+	status = 0;
 	if (ft_lst_cmd_size(mini_sh->cmd) == 1 &&
 		(!ft_strncmp(mini_sh->cmd->exec[0], "exit", -1)
 		|| !ft_strncmp(mini_sh->cmd->exec[0], "pwd", -1)
@@ -155,8 +158,10 @@ void	select_exec(t_global *mini_sh)
 	else if (ft_lst_cmd_size(mini_sh->cmd) > 1)
 	{
 		complicado(mini_sh, mini_sh->cmd, 0);
-		while(wait(NULL) != -1)
+		while(wait(&status) != -1)
 			;
+		if (WIFEXITED(status))
+    		printf("Child exited with RC=%d\n", WEXITSTATUS(status));
 	}
 }
 
