@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 23:23:29 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/10/01 23:43:39 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/02 17:58:42 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ void exec_child(t_global *mini_sh, t_lst_cmd *cmd, int fd[2], int fd_in)
 	if (!is_builtin(cmd))
 		exec_built_in(mini_sh, &cmd);
 	else if (!check_path(mini_sh, cmd))
-		execve(get_binary(mini_sh, cmd), cmd->exec, ft_split(get_path(mini_sh), ':', mini_sh));
+		if (execve(get_binary(mini_sh, cmd), cmd->exec, ft_split(get_path(mini_sh), ':', mini_sh)) == - 1)
+			cmd_not_vld(mini_sh, cmd);
 	exit(0);
 }
 

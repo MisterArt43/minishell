@@ -1,27 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_path.c                                       :+:      :+:    :+:   */
+/*   cmd_not_valid.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/01 23:31:19 by tschlege          #+#    #+#             */
-/*   Updated: 2022/10/02 19:18:12 by tschlege         ###   ########lyon.fr   */
+/*   Created: 2022/10/02 17:43:26 by tschlege          #+#    #+#             */
+/*   Updated: 2022/10/02 17:54:35 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/header.h"
 
-int	check_path(t_global *mini_sh, t_lst_cmd *cmd)
+void	cmd_not_vld(t_global *mini_sh, t_lst_cmd *cmd)
 {
-	if ((access(mini_sh->cmd->exec[0], F_OK) != 0) && (!get_path(mini_sh) || !ft_strncmp(get_path(mini_sh), "NULL", -1)))
-		{
-			ft_putstr_fd("wati-minishell: ", 2);
-			ft_putstr_fd(cmd->exec[0], 2);
-			ft_putendl_fd(": command not found", 2);
-			mini_sh->ret = 127;
-			return (1);
-		}
-	else
-		return (0);
+	ft_putstr_fd("wati-minishell: ", 2);
+	ft_putstr_fd(cmd->exec[0], 2);
+	ft_putendl_fd(": command not found", 2);
+	mini_sh->ret = 127;
 }

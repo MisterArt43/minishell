@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 02:58:37 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/02 17:40:14 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/02 19:16:41 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,24 +23,27 @@ void	exec_cmd(t_global *mini_sh)
 	if (pid == -1)
 		perror("fork");
 	// Si le fork a reussit, le processus pere attend l'enfant (process fork)
-	else if (pid > 0) {
+	else if (pid > 0)
+	{
 		// On block le processus parent jusqu'a ce que l'enfant termine puis
 		// on kill le processus enfant
 		waitpid(pid, &status, 0);
 		kill(pid, SIGTERM);
-	} else {
+	}
+	else 
+	{
 		// Le processus enfant execute la commande ou exit si execve echoue
-		if (!check_path(mini_sh, mini_sh->cmd))
+		if ((access(mini_sh->cmd->exec[0], F_OK) == 0) && check_path(mini_sh, mini_sh->cmd)) // si ./binary
+		{
+			if (execve((const char *)mini_sh->cmd->exec[0], (char * const *)mini_sh->cmd, ft_split(get_path(mini_sh), ':', mini_sh)) == -1)
+				cmd_not_vld(mini_sh, mini_sh->cmd);	
+		}
+		else if (!check_path(mini_sh, mini_sh->cmd)) // si un binary
 		{
 			if (execve(get_binary(mini_sh, mini_sh->cmd), mini_sh->cmd->exec, ft_split(get_path(mini_sh), ':', mini_sh)) == -1)
-			{
-				ft_putstr_fd("wati-minishell: ", 2);
-				ft_putstr_fd(mini_sh->cmd->exec[0], 2);
-				ft_putendl_fd(": command not found", 2);
-				mini_sh->ret = 127;
-				exit(EXIT_FAILURE);
-			}
+				cmd_not_vld(mini_sh, mini_sh->cmd);
 		}
+		exit(EXIT_FAILURE);
 	}
 }
 

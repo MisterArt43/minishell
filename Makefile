@@ -6,7 +6,7 @@
 #    By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/07 15:22:30 by abucia            #+#    #+#              #
-#    Updated: 2022/10/01 23:37:04 by tschlege         ###   ########lyon.fr    #
+#    Updated: 2022/10/02 17:47:22 by tschlege         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,8 @@ src/exec/pipe_exec.c \
 src/parsing/utils2.c \
 src/er_malloc.c \
 src/exec/check_path.c \
+src/exec/cmd_not_valid.c \
+
 
 CC = gcc
 OBJ = $(SRC:.c=.o)
