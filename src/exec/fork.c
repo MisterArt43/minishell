@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 02:58:37 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/01 23:43:06 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/02 17:40:14 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,13 @@ void	exec_cmd(t_global *mini_sh)
 		if (!check_path(mini_sh, mini_sh->cmd))
 		{
 			if (execve(get_binary(mini_sh, mini_sh->cmd), mini_sh->cmd->exec, ft_split(get_path(mini_sh), ':', mini_sh)) == -1)
-				perror("shell");
+			{
+				ft_putstr_fd("wati-minishell: ", 2);
+				ft_putstr_fd(mini_sh->cmd->exec[0], 2);
+				ft_putendl_fd(": command not found", 2);
+				mini_sh->ret = 127;
 				exit(EXIT_FAILURE);
+			}
 		}
 	}
 }
