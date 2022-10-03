@@ -72,8 +72,7 @@ typedef struct s_lst_cmd
 	struct s_lst_parsed	*split_cmd;
 	char				**exec; //ls -a
 	//STDIN_FILENO -> fd_out = write && fd_in = read
-	int					fd_in;
-	int					fd_out;
+	int					fd[2];
 	struct s_lst_cmd	*next;
 }	t_lst_cmd;
 

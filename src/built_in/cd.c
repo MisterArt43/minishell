@@ -74,15 +74,15 @@ int	check_file_dir(char *str, t_global *g, int mode)
 	}
 	if (access(ft_strjoin(ft_strjoin(pwd, "/", g), str, g), F_OK) != 0)
 	{
-		ft_putstr_fd(ft_strjoin(ft_strjoin(ft_strjoin("wati-minishell: cd: ", \
-		g), str, g), ": No such file or directory", g), 2);
+		ft_putstr_fd(ft_strjoin(ft_strjoin("wati-minishell: cd: ", str, g), \
+		": No such file or directory", g), 2);
 		g->ret = 1;
 		return (1);
 	}
 	else if (mode == 0)
 	{
-		ft_putstr_fd(ft_strjoin(ft_strjoin(ft_strjoin("wati-minishell: cd: ", \
-		g), str, g), ": Not a directory", g), 2);
+		ft_putstr_fd(ft_strjoin(ft_strjoin("wati-minishell: cd: ", str, g), \
+		": Not a directory", g), 2);
 		g->ret = 1;
 		return (1);
 	}

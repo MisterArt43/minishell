@@ -19,48 +19,34 @@ void	check_fd_in(int *fd_in, t_lst_cmd *cmd, t_global *g)
 	tmp = cmd->split_cmd;
 	while (tmp)
 	{
+		printf("WAS HERE : %d\n", tmp->type);
 		if (tmp->type == 5 || tmp->type == 6)
 		{
 			if (tmp->type == 6)
 			{
-				if (access(remove_quote(tmp->next->str, g), F_OK))
+				if (!access(remove_quote(tmp->next->str, g), F_OK))
 				{
 					if (check_file_dir(remove_quote(tmp->next->str, g), g, 1) == 2)
 					{
 						if (*fd_in > 0)
-							close(fd_in);
-						fd_in = open(remove_quote(tmp->next->str, g));
-						dup2(fd_in, STDIN_FILENO);
+							close(*fd_in);
+						*fd_in = open(remove_quote(tmp->next->str, g), O_RDONLY);
+						dup2(*fd_in, STDIN_FILENO);
+						if (*fd_in < 0)
+							close(*fd_in);
 					}
 				}
+				else
+					printf("ERROR ACCESS\n");
 			}
 			else //HEREDOC
 			{
 				if (*fd_in > 0)
-					close(fd_in);
+					close(*fd_in);
 			}
 		}
-		tmp->next;
+		tmp = tmp->next;
 	}
-}
-
-void	redirect_fork(t_global *g)
-{
-	if (g->cmd->fd_in > 0)
-		if (dup2(g->cmd->fd_in, STDIN_FILENO))
-			malloc_exit(g, "malloc error dup2");
-	if (g->cmd->fd_out > 0)
-	{
-		if (dup2(g->cmd->fd_out, STDOUT_FILENO))
-		{
-			close(g->cmd->fd_in);
-			malloc_exit(g, "malloc error dup2");
-		}
-	}
-	if (g->cmd->fd_in > 0)
-		close(g->cmd->fd_in);
-	if (g->cmd->fd_out > 0)
-		close(g->cmd->fd_out);
 }
 
 void	exec_cmd(t_global *mini_sh)
@@ -85,6 +71,16 @@ void	exec_cmd(t_global *mini_sh)
 	}
 	else 
 	{
+		if (pipe(mini_sh->cmd->fd) < 0)
+		{
+			ft_putendl_fd("PIPE ERR", 2);
+			return ;
+		}
+		check_fd_in(&mini_sh->cmd->fd[0], mini_sh->cmd, mini_sh);
+		if (mini_sh->cmd->fd[0] > 0)
+			close(mini_sh->cmd->fd[0]);
+		if (mini_sh->cmd->fd[1] > 0)
+			close(mini_sh->cmd->fd[1]);
 		// Le processus enfant execute la commande ou exit si execve echoue
 		if (!check_path(mini_sh, mini_sh->cmd)) // si un binary
 		{
