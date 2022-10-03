@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 01:08:33 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/10/03 21:33:47 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/03 23:53:30 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,7 @@ char	*get_path(t_global *mini_sh)
 int	is_relative(t_global *mini_sh, t_lst_cmd *cmd)
 {
 	if ((cmd->exec[0][0] == '.' || cmd->exec[0][0] == '/'))
-	{
-		ft_putstr_fd("wati-minishell: ", 2);
-		ft_putstr_fd(cmd->exec[0], 2);
-		ft_putendl_fd(": Permission denied", 2);
-		mini_sh->ret = 126;
-		exit(126);
-	}
+		return (1);
 	return (0);
 }
 
@@ -63,3 +57,9 @@ char	*get_binary(t_global *mini_sh, t_lst_cmd *cmd)
 	}
 	return (NULL);
 }
+
+/*ft_putstr_fd("wati-minishell: ", 2);
+	ft_putstr_fd(cmd->exec[0], 2);
+	ft_putendl_fd(": Permission denied", 2);
+	mini_sh->ret = 126;
+	exit(126);*/
