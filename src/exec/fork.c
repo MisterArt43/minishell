@@ -23,16 +23,25 @@ void	check_fd_in(int *fd_in, t_lst_cmd *cmd, t_global *g)
 		{
 			if (tmp->type == 6)
 			{
-				access(remove_quote(tmp->str, g), F_OK);
-
+				if (access(remove_quote(tmp->next->str, g), F_OK))
+				{
+					if (check_file_dir(remove_quote(tmp->next->str, g), g, 1) == 2)
+					{
+						if (*fd_in > 0)
+							close(fd_in);
+						fd_in = open(remove_quote(tmp->next->str, g));
+						dup2(fd_in, STDIN_FILENO);
+					}
+				}
 			}
-
-			if (*fd_in > 0)
-				close(*fd_in);
+			else //HEREDOC
+			{
+				if (*fd_in > 0)
+					close(fd_in);
+			}
 		}
 		tmp->next;
 	}
-	
 }
 
 void	redirect_fork(t_global *g)
@@ -79,7 +88,8 @@ void	exec_cmd(t_global *mini_sh)
 		// Le processus enfant execute la commande ou exit si execve echoue
 		if (!check_path(mini_sh, mini_sh->cmd)) // si un binary
 		{
-			if (execve(get_binary(mini_sh, mini_sh->cmd), mini_sh->cmd->exec, rebuild_env(mini_sh->env, mini_sh)) == -1)
+			if (execve(get_binary(mini_sh, mini_sh->cmd), mini_sh->cmd->exec, \
+			rebuild_env(mini_sh->env, mini_sh)) == -1)
 				cmd_not_vld(mini_sh, mini_sh->cmd);
 		}
 		exit(EXIT_FAILURE);

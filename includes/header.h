@@ -163,6 +163,8 @@ int	check_redirection(char *cmd, int i, int state);
 
 int check_char_isempty(char c);
 
+int	check_file_dir(char *str, t_global *g, int mode);
+
 
 
 //  ------------------------------------------------

@@ -61,7 +61,7 @@ void	change_value_of_key(t_global *mini_sh, t_lst_env **env, char *key, char *ne
 	}
 }
 
-int	check_file_dir(char *str, t_global *g)
+int	check_file_dir(char *str, t_global *g, int mode)
 {
 	char	pwd[PATH_MAX];
 
@@ -69,22 +69,25 @@ int	check_file_dir(char *str, t_global *g)
 	{
 		ft_putendl_fd("cd: error retrieving current directory: getcwd: cannot \
 		access parent directories: No such file or directory", 2);
+		g->ret = 0;
 		return (0);
 	}
 	if (access(ft_strjoin(ft_strjoin(pwd, "/", g), str, g), F_OK) != 0)
 	{
-		ft_putstr_fd("wati-minishell: cd: ", 2);
-		ft_putstr_fd(str, 2);
-		ft_putendl_fd(": No such file or directory", 2);
+		ft_putstr_fd(ft_strjoin(ft_strjoin(ft_strjoin("wati-minishell: cd: ", \
+		g), str, g), ": No such file or directory", g), 2);
+		g->ret = 1;
+		return (1);
+	}
+	else if (mode == 0)
+	{
+		ft_putstr_fd(ft_strjoin(ft_strjoin(ft_strjoin("wati-minishell: cd: ", \
+		g), str, g), ": Not a directory", g), 2);
+		g->ret = 1;
 		return (1);
 	}
 	else
-	{
-		ft_putstr_fd("wati-minishell: cd: ", 2);
-		ft_putstr_fd(str, 2);
-		ft_putendl_fd(": Not a directory", 2);
-		return (1);
-	}
+		return (2);
 }
 
 void	b_in_cd(t_global *mini_sh, t_lst_cmd **cmd)
@@ -141,7 +144,7 @@ void	b_in_cd(t_global *mini_sh, t_lst_cmd **cmd)
 			return ;
 		}
 		else
-			mini_sh->ret = check_file_dir((*cmd)->exec[1], mini_sh);
+			check_file_dir((*cmd)->exec[1], mini_sh, 0);
 		return ;
 	}
 		mini_sh->ret = 1;
