@@ -240,7 +240,6 @@ char	*rebuild_command(t_lst_cmd *cmd, t_global *g)
 		}
 		tmp = tmp->next;
 	}
-	//printf("###################\n%s\n", ret);
 	return (ret);
 }
 
@@ -254,14 +253,14 @@ void	b_in_export(t_lst_cmd **cmd, t_global *mini_sh)
 	if (ft_strstrlen((*cmd)->exec) > 1)
 	{
 		//si ya un pipe c'est inutile
-		if (ft_lst_cmd_size(*cmd) != 1)
-		{
-			mini_sh->ret = 1;
-			return ;
-		}
 		if (check_no_arg(cmd, "export", mini_sh) == 0) // pas d'option "-..."
 		{
-			mini_sh->ret = 1;
+			mini_sh->ret = 2;
+			return ;
+		}
+		if (ft_lst_cmd_size(*cmd) != 1)
+		{
+			mini_sh->ret = 0;
 			return ;
 		}
 		line = rebuild_command(*cmd, mini_sh);

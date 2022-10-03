@@ -144,7 +144,7 @@ void	b_in_cd(t_global *mini_sh, t_lst_cmd **cmd)
 			mini_sh->ret = check_file_dir((*cmd)->exec[1], mini_sh);
 		return ;
 	}
-		mini_sh->ret = 01;
+		mini_sh->ret = 1;
 		return ;
 }
 
