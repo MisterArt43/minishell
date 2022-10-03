@@ -28,6 +28,7 @@ int	is_builtin(t_lst_cmd *cmd)
 
 void exec_child(t_global *mini_sh, t_lst_cmd *cmd, int fd[2], int fd_in)
 {
+	check_fd_in(&fd[0], cmd, mini_sh);
 	if (fd[0] > 0)
 		close(fd[0]);
 	if  (fd_in > 0)

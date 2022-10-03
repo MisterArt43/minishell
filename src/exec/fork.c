@@ -12,6 +12,7 @@
 
 #include "../../includes/header.h"
 
+//EXIT ?
 void	check_fd_in(int *fd_in, t_lst_cmd *cmd, t_global *g)
 {
 	t_lst_parse *tmp;
