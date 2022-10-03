@@ -12,6 +12,48 @@
 
 #include "../../includes/header.h"
 
+void	check_fd_in(int *fd_in, t_lst_cmd *cmd, t_global *g)
+{
+	t_lst_parse *tmp;
+
+	tmp = cmd->split_cmd;
+	while (tmp)
+	{
+		if (tmp->type == 5 || tmp->type == 6)
+		{
+			if (tmp->type == 6)
+			{
+				access(remove_quote(tmp->str, g), F_OK);
+
+			}
+
+			if (*fd_in > 0)
+				close(*fd_in);
+		}
+		tmp->next;
+	}
+	
+}
+
+void	redirect_fork(t_global *g)
+{
+	if (g->cmd->fd_in > 0)
+		if (dup2(g->cmd->fd_in, STDIN_FILENO))
+			malloc_exit(g, "malloc error dup2");
+	if (g->cmd->fd_out > 0)
+	{
+		if (dup2(g->cmd->fd_out, STDOUT_FILENO))
+		{
+			close(g->cmd->fd_in);
+			malloc_exit(g, "malloc error dup2");
+		}
+	}
+	if (g->cmd->fd_in > 0)
+		close(g->cmd->fd_in);
+	if (g->cmd->fd_out > 0)
+		close(g->cmd->fd_out);
+}
+
 void	exec_cmd(t_global *mini_sh)
 {
 	// printf("CMD TO EXEC: $%s$, ENV: $%s$\n", mini_sh->cmd->exec[0], mini_sh->env->value);

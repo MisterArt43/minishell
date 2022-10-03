@@ -23,6 +23,8 @@ t_lst_cmd	*ft_lst_cmd_new(t_gc **cmd_gc, char *cmd, t_global *g)
 	newl->next = NULL;
 	newl->split_cmd = NULL;
 	newl->command = cmd;
+	newl->fd_in = -1;
+	newl->fd_out = -1;
 	return (newl);
 }
 

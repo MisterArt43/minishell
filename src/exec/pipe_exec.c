@@ -80,8 +80,6 @@ int	complicado(t_global *mini_sh, t_lst_cmd *cmd, int fd_in, pid_t *c_pid)
 		*c_pid = child_pid;
 	return (child_pid);
 }
-
-
 	//on pipe et check de pipe
 	//plus tard check si heredoc
 	//fork et verif de fork

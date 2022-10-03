@@ -55,6 +55,7 @@ typedef struct s_lst_parsed
 	char				is_near_prev;
 	char				*in_quote;
 	char				type;
+	char				*heredoc;
 	struct s_lst_parsed	*next;
 	struct s_lst_parsed	*prev;
 }	t_lst_parse;
@@ -144,6 +145,10 @@ void	ft_putstr_fd(char	*s, int fd);
 
 int		ft_isdigit(int c);
 
+char	*remove_quote(char *str, t_global *g);
+
+t_lst_env	*cmp_env_key(int *i, char *str, t_global *g, t_lst_env	*tmp);
+
 
 //  ------------------------------------------------
 //  < ------------      CHECKER       ------------ >
@@ -211,7 +216,7 @@ void	sort_build_in(t_lst_cmd **cmd, t_global *mini_sh);
 int		b_in_export(t_lst_cmd **cmd, t_global *mini_sh);
 void	b_in_exit(t_global *mini_sh);
 int		b_in_pwd(t_global *mini_sh);
-int		b_in_cd(t_global *mini_sh);
+int		b_in_cd(t_global *mini_sh, t_lst_cmd **cmd);
 int		b_in_echo(t_global *mini_sh, t_lst_cmd **cmd);
 int		b_in_env(t_global *mini_sh, t_lst_cmd **cmd);
 void	b_in_unset(t_lst_cmd **cmd, t_global *g);
