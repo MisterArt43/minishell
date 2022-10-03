@@ -12,6 +12,37 @@
 
 #include "../../includes/header.h"
 
+char	*find_env_value(char *str, t_global *g, t_lst_env *tmp)
+{
+	int i;
+	int	j;
+	int	tmp_i;
+
+	i = 0;
+	while (tmp)
+	{
+		tmp_i = i + 1;
+		j = 0;
+		if (tmp->key[j] == str[i])
+		{
+			while (1)
+			{
+				if (tmp->key[j] == 0 && ft_isalnum(str[tmp_i]) == 0)
+				{
+					i = tmp_i;
+					return (tmp->value);
+				}
+				if (str[tmp_i] != tmp->key[j] || !ft_isalnum(str[tmp_i]))
+					break ;
+				j++;
+				tmp_i++;
+			}
+		}
+		tmp = tmp->next;
+	}
+	return (NULL);
+}
+
 void	change_value_of_key(t_global *mini_sh, t_lst_env **env, char *key, char *newValue)
 {
 	t_lst_env	*tmp;
@@ -72,7 +103,7 @@ void	b_in_cd(t_global *mini_sh, t_lst_cmd **cmd)
 	}
 	if ((*cmd)->exec[1] == NULL)
 	{
-		if (!chdir(cmp_env_key(&i, "HOME", mini_sh, mini_sh->env)->value))
+		if (!chdir(find_env_value("HOME", mini_sh, mini_sh->env)))
 		{
 			change_value_of_key(mini_sh, &mini_sh->env, "OLDPWD", ft_strdup(pwd, NULL));
 			if (!getcwd(pwd, PATH_MAX))
