@@ -21,7 +21,7 @@ char	*find_env_value(char *str, t_global *g, t_lst_env *tmp)
 	i = 0;
 	while (tmp)
 	{
-		tmp_i = i + 1;
+		tmp_i = i;
 		j = 0;
 		if (tmp->key[j] == str[i])
 		{
@@ -103,7 +103,13 @@ void	b_in_cd(t_global *mini_sh, t_lst_cmd **cmd)
 	}
 	if ((*cmd)->exec[1] == NULL)
 	{
-		if (!chdir(find_env_value("HOME", mini_sh, mini_sh->env)))
+		if (!find_env_value("HOME", mini_sh, mini_sh->env))
+		{
+			ft_putendl_fd("wati-minishell: cd: HOME not set", 2);
+			mini_sh->ret = 1;
+			return ;
+		}
+		else if (!chdir(find_env_value("HOME", mini_sh, mini_sh->env)))
 		{
 			change_value_of_key(mini_sh, &mini_sh->env, "OLDPWD", ft_strdup(pwd, NULL));
 			if (!getcwd(pwd, PATH_MAX))
