@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 02:58:37 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/02 23:00:37 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/03 21:12:36 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ void	exec_cmd(t_global *mini_sh)
 			close(mini_sh->cmd->fd[0]);
 		if (mini_sh->cmd->fd[1] > 0)
 			close(mini_sh->cmd->fd[1]);
+		printf("-------------------DEBUG fd[1] : %d, fd_in : %d\n", mini_sh->cmd->fd[1], mini_sh->cmd->fd[0]);
+		printf("-------------------DEBUG fd[0] : %d, fd_in : %d\n", mini_sh->cmd->fd[0], mini_sh->cmd->fd[0]);
 		// Le processus enfant execute la commande ou exit si execve echoue
 		if (!check_path(mini_sh, mini_sh->cmd)) // si un binary
 		{

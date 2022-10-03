@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 23:23:29 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/10/03 00:43:38 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/03 21:12:33 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void exec_child(t_global *mini_sh, t_lst_cmd *cmd, int fd[2], int fd_in)
 	else if (!check_path(mini_sh, cmd))
 		if (execve(get_binary(mini_sh, cmd), cmd->exec, ft_split(get_path(mini_sh), ':', mini_sh)) == - 1)
 			cmd_not_vld(mini_sh, cmd);
-	perror("wati-minishell:");
+	perror("wati-minishell");
 	exit(EXIT_FAILURE);
 }
 
@@ -74,7 +74,8 @@ int	complicado(t_global *mini_sh, t_lst_cmd *cmd, int fd_in, pid_t *c_pid)
 		close(fd_in);
 	if (fd[1] > 0)
 		close(fd[1]);
-	printf("--------------------DEBUG fd[1] : %d, fd_in : %d\n", fd[1], fd_in);
+	printf("--------PIPE--------DEBUG fd[1] : %d, fd_in : %d\n", fd[1], fd_in);
+	printf("--------PIPE--------DEBUG fd[0] : %d, fd_in : %d\n", fd[0], fd_in);
 	if (cmd->next)
 		complicado(mini_sh, cmd->next, fd[0], c_pid);
 	else
@@ -87,3 +88,4 @@ int	complicado(t_global *mini_sh, t_lst_cmd *cmd, int fd_in, pid_t *c_pid)
 	//exec child avec les bon fd
 	//close des fd * 2
 	//recursivite complicado avec les bons fds
+	
