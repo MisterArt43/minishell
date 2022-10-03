@@ -155,10 +155,12 @@ t_lst_env	*ft_lst_env_last(t_lst_env *lst)
 	return (lst);
 }
 
-void	ft_lst_env_add_back(t_lst_env **alst, t_lst_env *new)
+void	ft_lst_env_add_back(t_lst_env **alst, t_lst_env *new, t_global *g)
 {
 	t_lst_env	*tmp;
 
+	if (!new)
+		malloc_exit(g, "malloc error NEW ENV");
 	if (!alst || !new)
 		return ;
 	if (!*alst)

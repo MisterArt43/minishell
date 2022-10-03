@@ -43,7 +43,14 @@ void	check_fd_in(int *fd_in, t_lst_cmd *cmd, t_global *g)
 			else //HEREDOC
 			{
 				if (*fd_in > 0)
+				{
+					printf("HEREDOC : %s\n", tmp->heredoc);
+					write(*fd_in, tmp->heredoc, ft_strlen(tmp->heredoc));
+					dup2(*fd_in, STDIN_FILENO);
 					close(*fd_in);
+				}
+				else
+					printf("CANT REDIRECT HEREDOC\n");
 			}
 		}
 		tmp = tmp->next;

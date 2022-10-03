@@ -105,19 +105,20 @@ int	define_exec(t_lst_cmd **lst, t_global *g, int i)
 		parse = parse->next;
 	}
 	(*lst)->exec = ft_gc_add_back(&g->gc_parsing, ft_gc_new(malloc(sizeof(char *) * (i + 1)), "invalide malloc in define exec", g));
+	(*lst)->exec[0] = NULL;
 	(*lst)->exec[i] = NULL;
 	i = 0;
 	parse = (*lst)->split_cmd;
 	while (parse)
 	{
-		if (i == 0)
+		if (i == 0 && parse->type == 0)
 		{
 			if (parse->env_var_str != NULL)
 				(*lst)->exec[i++] = parse->env_var_str;
 			else
 				(*lst)->exec[i++] = parse->str;
 		}
-		else if (parse->type == 1 && parse->prev->type <= 2)
+		else if (parse->type == 1)
 		{
 			if (parse->env_var_str != NULL)
 				(*lst)->exec[i++] = parse->env_var_str;
@@ -128,26 +129,35 @@ int	define_exec(t_lst_cmd **lst, t_global *g, int i)
 	}
 }
 
-void	ft_heredoc(char *c)
+char	*ft_heredoc(char *c, t_global *g)
 {
 	char	*cmd;
+	char	*res;
 
-	cmd = readline("heredoc> ");
-	if (!cmd)
-		return ;
+	res = NULL;
 	while (1)
 	{
-		if (ft_nstrncmp(c, cmd, strlen(cmd), 0) == 0)
-			break ;
-		free(cmd);
 		cmd = readline("heredoc> ");
 		if (!cmd)
-			return ;
+			break ;
+		if (ft_nstrncmp(c, cmd, strlen(cmd), 0) == 0)
+			break ;
+		if (!res)
+			res = ft_strdup(cmd, g);
+		else
+		{
+			res = ft_strjoin(res, "\n", g);
+			res = ft_strjoin(res, cmd, g);
+		}
+		free(cmd);
+		if (!cmd)
+			return (res);
 	}
 	free(cmd);
+	return (res);
 }
 
-void	do_heredoc(t_lst_cmd *lst)
+void	do_heredoc(t_lst_cmd *lst, t_global *g)
 {
 	t_lst_parse	*parse;
 
@@ -157,9 +167,9 @@ void	do_heredoc(t_lst_cmd *lst)
 		if (parse->type == 5)
 		{
 			if (parse->next->in_quote != NULL)
-				ft_heredoc(parse->next->in_quote);
+				parse->heredoc = ft_heredoc(remove_quote(parse->next->str, g), g);
 			else
-				ft_heredoc(parse->next->str);
+				parse->heredoc = ft_heredoc(parse->next->str, g);
 		}
 		parse = parse->next;
 	}
@@ -191,7 +201,7 @@ void	define_cmd(t_global *mini_sh)
 	tmp_cmd = mini_sh->cmd;
 	while (tmp_cmd)
 	{
-		do_heredoc(tmp_cmd);
+		do_heredoc(tmp_cmd, mini_sh);
 		tmp_cmd = tmp_cmd->next;
 	}
 	//debug

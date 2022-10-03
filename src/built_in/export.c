@@ -142,7 +142,7 @@ void	export_put_value(char *key, char *value, t_global *g, t_lst_env **env)
 		tmp->value = value;
 	}
 	else
-		ft_lst_env_add_back(env, ft_lst_env_new(&key, &value));
+		ft_lst_env_add_back(env, ft_lst_env_new(&key, &value), g);
 }
 
 void	sort_export(t_global *g, int *i, char *str, int start)

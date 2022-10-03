@@ -89,7 +89,14 @@ typedef struct s_global
 	t_gc		*gc_parsing;
 	t_lst_cmd	*cmd;
 	t_lst_env	*env;
-} t_global;
+}	t_global;
+
+typedef struct s_dual_int
+{
+	int	a;
+	int	b;
+}	t_dual_int;
+
 
 //  ------------------------------------------------
 //  < ------------ GARBADGE COLLECTOR ------------ >
@@ -184,7 +191,7 @@ int			ft_lst_env_size(t_lst_env *lst);
 
 t_lst_env	*ft_lst_env_new(char **key, char **value);
 t_lst_env	*ft_lst_env_last(t_lst_env *lst);
-void		ft_lst_env_add_back(t_lst_env **alst, t_lst_env *new);
+void		ft_lst_env_add_back(t_lst_env **alst, t_lst_env *new, t_global *g);
 void		ft_lst_env_del_in(t_lst_env *lst);
 
 
