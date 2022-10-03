@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 23:55:58 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/01 23:55:58 by abucia           ###   ########lyon.fr   */
+/*   Updated: 2022/10/03 04:01:06 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,13 @@ void	b_in_unset(t_lst_cmd **cmd, t_global *g)
 	char		**exec;
 	t_lst_env	*tmp;
 
+	g->ret = 0;
 	i = 0;
+	if (!check_no_arg(cmd, "unset: usage: unset [-f] [-v] [name ...]", g))
+	{
+		g->ret = 2;
+		return ;	
+	}	
 	tmp = g->env;
 	exec = ft_split(rebuild_command(*cmd, g), ' ', g);
 	while (exec[i])

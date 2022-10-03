@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Wati-Theo <wati-theo@protonmail.com>       +#+  +:+       +#+        */
+/*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 02:27:02 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/09/27 02:27:02 by Wati-Theo        ###   ########lyon.fr   */
+/*   Updated: 2022/10/03 03:48:17 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char	*skip_echo_option(char *str, int *i, int *is_nl, t_global *g)
 	return (ft_substr(str, start, ft_strlen(str), g));
 }
 
-int	b_in_echo(t_global *mini_sh, t_lst_cmd **cmd)
+void	b_in_echo(t_global *mini_sh, t_lst_cmd **cmd)
 {
 	int		i;
 	int		is_nl;

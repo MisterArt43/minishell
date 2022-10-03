@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 03:04:43 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/01 22:20:36 by abucia           ###   ########lyon.fr   */
+/*   Updated: 2022/10/03 03:55:45 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,14 +192,14 @@ void	sort_export(t_global *g, int *i, char *str, int start)
 }
 
 //faire attention au redirection et fichier a ignorer
-int	exec_export(t_lst_cmd *cmd, t_global *mini_sh, char *str)
+void	exec_export(t_lst_cmd *cmd, t_global *mini_sh, char *str)
 {
 	int	i;
 	char *key;
 	char *value;
 
 	if (str == NULL)
-		return (0);
+		return ;
 	i = 0;
 	while (str[i])
 	{
@@ -207,7 +207,7 @@ int	exec_export(t_lst_cmd *cmd, t_global *mini_sh, char *str)
 		sort_export(mini_sh, &i, str, i);
 		printf("%c / %d\n", str[i], i);
 	}
-	return (1);
+	mini_sh->ret = 1;
 }
 
 char	*rebuild_command(t_lst_cmd *cmd, t_global *g)
@@ -244,7 +244,7 @@ char	*rebuild_command(t_lst_cmd *cmd, t_global *g)
 	return (ret);
 }
 
-int	b_in_export(t_lst_cmd **cmd, t_global *mini_sh)
+void	b_in_export(t_lst_cmd **cmd, t_global *mini_sh)
 {
 	t_lst_parse	*tmp;
 	char *line;
@@ -255,13 +255,20 @@ int	b_in_export(t_lst_cmd **cmd, t_global *mini_sh)
 	{
 		//si ya un pipe c'est inutile
 		if (ft_lst_cmd_size(*cmd) != 1)
-			return (1);
+		{
+			mini_sh->ret = 1;
+			return ;
+		}
 		if (check_no_arg(cmd, "export", mini_sh) == 0) // pas d'option "-..."
-			return (0);
+		{
+			mini_sh->ret = 1;
+			return ;
+		}
 		line = rebuild_command(*cmd, mini_sh);
-		return (exec_export(*cmd, mini_sh, line));
+		exec_export(*cmd, mini_sh, line);
+		return ;
 	}
 	else
 		print_export(mini_sh->env);
-	return (1);
+	mini_sh->ret = 1;
 }

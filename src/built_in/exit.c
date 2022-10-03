@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 15:40:57 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/09/29 16:57:40 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/03 04:22:20 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	quit(t_global *mini_sh)
 	ft_gc_clear(&mini_sh->gc_parsing);
 	ft_lst_env_clear(&mini_sh->env);
 	// rl_clear_history();
-	exit(0);
+	exit(mini_sh->ret);
 }
 
 int	check_exit_arg(char *arg)
@@ -46,7 +46,10 @@ void	b_in_exit(t_global *mini_sh)
 		quit(mini_sh);
 	}
 	else if (mini_sh->cmd->exec[1] && mini_sh->cmd->exec[2])
+	{
 		ft_putendl_fd("wati-minishell: exit: too many arguments", 2);
+		mini_sh->ret = 1;
+	}
 	else if (mini_sh->cmd->exec[1])
 	{
 		mini_sh->ret = ft_atoi(mini_sh->cmd->exec[1]);

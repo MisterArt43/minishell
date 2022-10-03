@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 16:15:55 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/03 00:10:47 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/03 03:48:57 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,12 +213,12 @@ void	main_mini_sh(t_global *mini_sh);
 
 //sort to see if it's a built in and execute it
 void	sort_build_in(t_lst_cmd **cmd, t_global *mini_sh);
-int		b_in_export(t_lst_cmd **cmd, t_global *mini_sh);
+void	b_in_export(t_lst_cmd **cmd, t_global *mini_sh);
 void	b_in_exit(t_global *mini_sh);
-int		b_in_pwd(t_global *mini_sh);
-int		b_in_cd(t_global *mini_sh, t_lst_cmd **cmd);
-int		b_in_echo(t_global *mini_sh, t_lst_cmd **cmd);
-int		b_in_env(t_global *mini_sh, t_lst_cmd **cmd);
+void	b_in_pwd(t_global *mini_sh);
+void	b_in_cd(t_global *mini_sh, t_lst_cmd **cmd);
+void	b_in_echo(t_global *mini_sh, t_lst_cmd **cmd);
+void	b_in_env(t_global *mini_sh, t_lst_cmd **cmd);
 void	b_in_unset(t_lst_cmd **cmd, t_global *g);
 
 //  ------------------------------------------------

@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 00:05:57 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/10/03 03:29:13 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/03 04:06:09 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	check_file_dir(char *str, t_global *g)
 	}
 }
 
-int	b_in_cd(t_global *mini_sh, t_lst_cmd **cmd)
+void	b_in_cd(t_global *mini_sh, t_lst_cmd **cmd)
 {
 	char	pwd[PATH_MAX];
 	int		i;
@@ -67,7 +67,8 @@ int	b_in_cd(t_global *mini_sh, t_lst_cmd **cmd)
 	{
 		ft_putendl_fd("cd: error retrieving current directory: getcwd: cannot \
 		access parent directories: No such file or directory", 2);
-		return (0);
+		mini_sh->ret = 0;
+		return ;
 	}
 	if ((*cmd)->exec[1] == NULL)
 	{
@@ -77,10 +78,12 @@ int	b_in_cd(t_global *mini_sh, t_lst_cmd **cmd)
 			if (!getcwd(pwd, PATH_MAX))
 			{
 				ft_putendl_fd("wati-minishell: cd: HOME not set", 2);
-				return (0);
+				mini_sh->ret = 0;
+				return ;
 			}
 			change_value_of_key(mini_sh, &mini_sh->env, "PWD", ft_strdup(pwd, NULL));
-			return (0);
+			mini_sh->ret = 0;
+			return ;
 		}
 	}
 	else if ((*cmd)->exec[1])
@@ -93,15 +96,19 @@ int	b_in_cd(t_global *mini_sh, t_lst_cmd **cmd)
 				ft_putendl_fd("cd: error retrieving current directory: \
 				getcwd: cannot access parent directories: No such file \
 				or directory", 2);
-				return (0);
+				mini_sh->ret = 0;
+				return ;
 			}
 			change_value_of_key(mini_sh, &mini_sh->env, "PWD", ft_strdup(pwd, NULL));
-			return (0);
+			mini_sh->ret = 0;
+			return ;
 		}
 		else
-			return (check_file_dir((*cmd)->exec[1], mini_sh));
+			mini_sh->ret = check_file_dir((*cmd)->exec[1], mini_sh);
+		return ;
 	}
-	return (1);
+		mini_sh->ret = 01;
+		return ;
 }
 
 
