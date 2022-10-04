@@ -138,7 +138,7 @@ char	*ft_heredoc(char *c, t_global *g)
 		cmd = readline("heredoc> ");
 		if (!cmd)
 			break ;
-		if (ft_nstrncmp(c, cmd, strlen(cmd), 0) == 0)
+		if (ft_strncmp(c, cmd, -1) == 0)
 			break ;
 		if (!res)
 			res = ft_strdup(cmd, g);
