@@ -71,17 +71,35 @@ int	exec_len(t_lst_parse *tmp)
 	int	i;
 
 	i = 0;
-	while (parse)
+	while (tmp)
 	{
-		if (parse->prev->type < 2)
+		if (tmp->is_near_prev == 0)
 			i++;
-		parse = parse->next;
+		tmp = tmp->next;
 	}
+	return (i);
 }
 
-void	add_exec(t_lst_parse **parse, int i, char **ret, t_global *g)
+char	*add_exec(t_lst_parse **parse, t_lst_cmd **lst, t_global *g)
 {
-	
+	char *ret;
+
+	ret = NULL;
+	while ((*parse))
+	{
+		if ((*parse)->type == 0 || (*parse)->type == 1)
+		{
+			if ((*parse)->env_var_str != NULL)
+				ret = ft_strjoin(ret, remove_quote(\
+				(*parse)->env_var_str, g), g);
+			else
+				ret = ft_strjoin(ret, remove_quote((*parse)->str, g), g);
+		}
+		if ((*parse)->next && (*parse)->next->is_near_prev == 0)
+			break ;
+		(*parse) = (*parse)->next;
+	}
+	return (ret);
 }
 
 int	define_exec(t_lst_cmd **lst, t_global *g, int i)
@@ -97,20 +115,9 @@ int	define_exec(t_lst_cmd **lst, t_global *g, int i)
 	parse = (*lst)->split_cmd;
 	while (parse)
 	{
-		if (i == 0 && parse->type == 0)
-		{
-			if (parse->env_var_str != NULL)
-				(*lst)->exec[i++] = parse->env_var_str;
-			else
-				(*lst)->exec[i++] = parse->str;
-		}
-		else if (parse->type == 1)
-		{
-			if (parse->env_var_str != NULL)
-				(*lst)->exec[i++] = parse->env_var_str;
-			else
-				(*lst)->exec[i++] = parse->str;
-		}
+		(*lst)->exec[i++] = add_exec(&parse, lst, g);
+		if ((*lst)->exec[i - 1] == NULL || parse == NULL)
+			break ;
 		parse = parse->next;
 	}
 }

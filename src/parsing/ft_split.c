@@ -74,9 +74,9 @@ void	parse_quote(char *str, int *i, t_global *g, t_lst_cmd **cmd)
 	ft_lst_parse_new(&g->gc_parsing, \
 	ft_substr((*cmd)->command, start - 1, *i - start + 1, g), g));
 	if (str[start] == 0)
-		ft_lst_parse_last((*cmd)->split_cmd)->in_quote = ft_strdup("", g);
+		(ft_lst_parse_last((*cmd)->split_cmd))->in_quote = ft_strdup("", g);
 	else
-		ft_lst_parse_last((*cmd)->split_cmd)->in_quote = \
+		(ft_lst_parse_last((*cmd)->split_cmd))->in_quote = \
 		ft_substr((*cmd)->command, start, *i - start - 1, g);
 }
 
