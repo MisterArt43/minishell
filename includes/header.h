@@ -97,6 +97,7 @@ typedef struct s_dual_int
 {
 	int	a;
 	int	b;
+	int	c;
 }	t_dual_int;
 
 

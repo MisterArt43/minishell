@@ -38,7 +38,7 @@ char	*ft_strdup(const char *s1, t_global *g)
 	size_t	i;
 
 	i = 0;
-	if (g != NULL && g->gc_parsing != NULL)
+	if (g != NULL)
 		cpy = (char *)ft_gc_add_back(&g->gc_parsing, ft_gc_new(malloc((ft_strlen(s1) + 1) * \
 	sizeof(char)), "An error occur while mallocing", g));
 	else

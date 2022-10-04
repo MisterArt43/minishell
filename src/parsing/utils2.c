@@ -30,7 +30,7 @@ char	*ft_itoa(int n, t_global *g)
 	char	*num;
 
 	numlen = ft_intlen(n, 1);
-	if (g != NULL && &g->gc_parsing != NULL)
+	if (g != NULL)
 		num = ft_gc_add_back(&g->gc_parsing,ft_gc_new(\
 		malloc(numlen), "error malloc in itoa", g));
 	else

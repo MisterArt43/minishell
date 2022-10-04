@@ -93,22 +93,17 @@ void	check_fd_in(int *fd_in, int *fd_out, t_lst_cmd *cmd, t_global *g)
 
 void	exec_cmd(t_global *mini_sh)
 {
-	// printf("CMD TO EXEC: $%s$, ENV: $%s$\n", mini_sh->cmd->exec[0], mini_sh->env->value);
 	pid_t	pid = 0;
 	int		status = 0;
 
-	// On fork
 	pid = fork();
 	if (pid == -1)
 		perror("fork");
-	// Si le fork a reussit, le processus pere attend l'enfant (process fork)
 	else if (pid > 0)
 	{
-		// On block le processus parent jusqu'a ce que l'enfant termine puis
-		// on kill le processus enfant
 		waitpid(pid, &status, 0);
 		if (WIFEXITED(status))
-    		mini_sh->ret = WEXITSTATUS(status);
+			mini_sh->ret = WEXITSTATUS(status);
 		kill(pid, SIGTERM);
 	}
 	else 
@@ -118,13 +113,13 @@ void	exec_cmd(t_global *mini_sh)
 			ft_putendl_fd("PIPE ERR", 2);
 			return ;
 		}
-		check_fd_in(&mini_sh->cmd->fd[0], &mini_sh->cmd->fd[1], mini_sh->cmd, mini_sh);
+		check_fd_in(&mini_sh->cmd->fd[0], &mini_sh->cmd->fd[1], \
+		mini_sh->cmd, mini_sh);
 		if (mini_sh->cmd->fd[0] > 0)
 			close(mini_sh->cmd->fd[0]);
 		if (mini_sh->cmd->fd[1] > 0)
 			close(mini_sh->cmd->fd[1]);
-		// Le processus enfant execute la commande ou exit si execve echoue
-		if (!check_path(mini_sh, mini_sh->cmd)) // si un binary
+		if (!check_path(mini_sh, mini_sh->cmd))
 		{
 			if (execve(get_binary(mini_sh, mini_sh->cmd), mini_sh->cmd->exec, \
 			rebuild_env(mini_sh->env, mini_sh)) == -1)
@@ -132,11 +127,4 @@ void	exec_cmd(t_global *mini_sh)
 		}
 		exit(EXIT_FAILURE);
 	}
-}
-
-void	make_fork(t_global *mini_sh)
-{
-	int size;
-
-	size = ft_lst_cmd_size(mini_sh->cmd);
 }

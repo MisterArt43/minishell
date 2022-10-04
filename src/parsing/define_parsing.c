@@ -12,30 +12,28 @@
 
 #include "../../includes/header.h"
 
-void d_print_exec(char **exec, t_global *g)
-{
-	int i = 0;
+// void d_print_exec(char **exec, t_global *g)
+// {
+// 	int i = 0;
 
-	while (exec[i])
-	{
-		printf("\n  %d : %s\n", i, exec[i]);
-		i++;
-	}
-	printf("--------\n\n");
+// 	while (exec[i])
+// 	{
+// 		printf("\n  %d : %s\n", i, exec[i]);
+// 		i++;
+// 	}
+// 	printf("--------\n\n");
 
-	t_lst_cmd *cmd;
-	t_lst_parse *parse;
+// 	t_lst_cmd *cmd;
+// 	t_lst_parse *parse;
 
-	cmd = g->cmd;
-	parse = cmd->split_cmd;
-	while (parse)
-	{
-		//printf("debug pour argument coller CMD : %s\n --- is near prev : %d\n", parse->str, parse->is_near_prev);
-		parse = parse->next;
-	}
+// 	cmd = g->cmd;
+// 	parse = cmd->split_cmd;
+// 	while (parse)
+// 	{
+// 		parse = parse->next;
+// 	}
 	
-}
-
+// }
 
 /**
  * 0:command
@@ -181,11 +179,6 @@ void	define_cmd(t_global *mini_sh)
 	while (tmp_cmd)
 	{
 		define_parse(&tmp_cmd->split_cmd);
-		tmp_cmd = tmp_cmd->next;
-	}
-	tmp_cmd = mini_sh->cmd;
-	while (tmp_cmd)
-	{
 		if (check_no_cmd(tmp_cmd) == 0)
 		{
 			tmp_cmd->exec = ft_gc_add_back(&mini_sh->gc_parsing, ft_gc_new(\
@@ -200,13 +193,6 @@ void	define_cmd(t_global *mini_sh)
 	while (tmp_cmd)
 	{
 		do_heredoc(tmp_cmd, mini_sh);
-		tmp_cmd = tmp_cmd->next;
-	}
-	//debug
-	tmp_cmd = mini_sh->cmd;
-	while (tmp_cmd)
-	{
-		d_print_exec(tmp_cmd->exec, mini_sh);
 		tmp_cmd = tmp_cmd->next;
 	}
 }

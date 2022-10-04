@@ -70,7 +70,8 @@ void	parse_quote(char *str, int *i, t_global *g, t_lst_cmd **cmd)
 
 	start = *i + 1;
 	skip_quote(str, i);
-	ft_lst_parse_add_back(&(*cmd)->split_cmd, ft_lst_parse_new(&g->gc_parsing, \
+	ft_lst_parse_add_back(&(*cmd)->split_cmd, \
+	ft_lst_parse_new(&g->gc_parsing, \
 	ft_substr((*cmd)->command, start - 1, *i - start + 1, g), g));
 	if (str[start] == 0)
 		ft_lst_parse_last((*cmd)->split_cmd)->in_quote = ft_strdup("", g);
@@ -79,32 +80,29 @@ void	parse_quote(char *str, int *i, t_global *g, t_lst_cmd **cmd)
 		ft_substr((*cmd)->command, start, *i - start - 1, g);
 }
 
-void	sort_split(t_lst_cmd **cmd, int *i, t_global *g, int start)
+void	sort_split(t_lst_cmd **cmd, int *i, t_global *g, int beg)
 {
 	if ((*cmd)->command[*i] == '\'' || (*cmd)->command[*i] == '\"')
 	{
 		parse_quote((*cmd)->command, i, g, cmd);
-		if (start - 1 >= 0 && check_char_isempty((*cmd)->command[start - 1]) == 1)
+		if (beg - 1 >= 0 && check_char_isempty((*cmd)->command[beg - 1]) == 1)
 			ft_lst_parse_last((*cmd)->split_cmd)->is_near_prev = 1;
-		printf("Quote / %d\n", ft_lst_parse_last((*cmd)->split_cmd)->is_near_prev);
 	}
 	else if ((*cmd)->command[*i] == '<' || (*cmd)->command[*i] == '>')
 	{
 		skip_redirection((*cmd)->command, i);
-		ft_lst_parse_add_back(&(*cmd)->split_cmd, ft_lst_parse_new(&g->gc_parsing, \
-		ft_substr((*cmd)->command, start, *i - start, g), g));
-		if (start - 1 >= 0 && check_char_isempty((*cmd)->command[start - 1]) == 1)
+		ft_lst_parse_add_back(&(*cmd)->split_cmd, ft_lst_parse_new(\
+		&g->gc_parsing, ft_substr((*cmd)->command, beg, *i - beg, g), g));
+		if (beg - 1 >= 0 && check_char_isempty((*cmd)->command[beg - 1]) == 1)
 			ft_lst_parse_last((*cmd)->split_cmd)->is_near_prev = 1;
-		printf("Redirect\n");
 	}
 	else
 	{
 		skip_word((*cmd)->command, i);
-		ft_lst_parse_add_back(&(*cmd)->split_cmd, ft_lst_parse_new(&g->gc_parsing, \
-		ft_substr((*cmd)->command, start, *i - start, g), g));
-		if (start - 1 >= 0 && check_char_isempty((*cmd)->command[start - 1]) == 1)
+		ft_lst_parse_add_back(&(*cmd)->split_cmd, ft_lst_parse_new(\
+		&g->gc_parsing, ft_substr((*cmd)->command, beg, *i - beg, g), g));
+		if (beg - 1 >= 0 && check_char_isempty((*cmd)->command[beg - 1]) == 1)
 			ft_lst_parse_last((*cmd)->split_cmd)->is_near_prev = 1;
-		printf("Word\n");
 	}
 }
 
@@ -117,11 +115,11 @@ t_lst_env	*cmp_env_key(int *i, char *str, t_global *g, t_lst_env	*tmp)
 		return (NULL);
 	while (tmp)
 	{
-		tmp_i = *i + 1;
-		j = 0;
-		if (tmp->key[j] == str[*i + 1])
+		tmp_i = *i;
+		j = -1;
+		if (tmp->key[j + 1] == str[*i + 1])
 		{
-			while (1)
+			while (1 && ++j != -2 && ++tmp_i != -2)
 			{
 				if (tmp->key[j] == 0 && ft_isalnum(str[tmp_i]) == 0)
 				{
@@ -130,8 +128,6 @@ t_lst_env	*cmp_env_key(int *i, char *str, t_global *g, t_lst_env	*tmp)
 				}
 				if (str[tmp_i] != tmp->key[j] || !ft_isalnum(str[tmp_i]))
 					break ;
-				j++;
-				tmp_i++;
 			}
 		}
 		tmp = tmp->next;
@@ -139,51 +135,59 @@ t_lst_env	*cmp_env_key(int *i, char *str, t_global *g, t_lst_env	*tmp)
 	return (NULL);
 }
 
+void	do_dollar(char **ret, t_dual_int *sub, t_lst_parse **lst, t_global *g)
+{
+	t_lst_env	*find;
+
+	find = cmp_env_key(&sub->c, (*lst)->str, g, g->env);
+	if (find != NULL)
+	{
+		if (*ret == NULL)
+			*ret = ft_strjoin(ft_substr((*lst)->str, sub->a, sub->b - sub->a, \
+			g), find->value, g);
+		else
+			*ret = ft_strjoin(*ret, ft_strjoin(ft_substr((*lst)->str, sub->a, \
+			sub->b - sub->a, g), find->value, g), g);
+		sub->a = sub->c;
+		sub->c--;
+	}
+	else if ((*lst)->str[sub->c + 1] == '?')
+	{
+		if (*ret == NULL)
+			*ret = ft_strjoin(ft_substr((*lst)->str, sub->a, sub->b - sub->a, \
+			g), ft_itoa(g->ret, g), g);
+		else
+			*ret = ft_strjoin(*ret, ft_strjoin(ft_substr((*lst)->str, sub->a, \
+			sub->b - sub->a, g), ft_itoa(g->ret, g), g), g);
+		sub->c++;
+		sub->a = sub->c + 1;
+	}
+}
+
 void	replace_env_var(t_lst_parse **lst, t_global *g)
 {
-	int	i;
-	int start;
-	int end;
-	char *ret;
-	t_lst_env	*find;
+	t_dual_int	sub;
+	char		*ret;
 
 	if ((*lst)->str[0] == '\'')
 		return ;
-	i = 0;
-	start = 0;
+	sub.c = 0;
+	sub.a = 0;
 	ret = NULL;
-	while ((*lst)->str[i])
+	while ((*lst)->str[sub.c])
 	{
-		if ((*lst)->str[i] == '$')
+		if ((*lst)->str[sub.c] == '$')
 		{
-			end = i;
-			find = cmp_env_key(&i, (*lst)->str, g, g->env);
-			if (find != NULL)
-			{
-				if (ret == NULL)
-					ret = ft_strjoin(ft_substr((*lst)->str, start, end - start, g), find->value, g);
-				else
-					ret = ft_strjoin(ret, ft_strjoin(ft_substr((*lst)->str, start, end - start, g), find->value, g), g);
-				start = i;
-				i--;
-			}
-			else if ((*lst)->str[i + 1] == '?')
-			{
-				if (ret == NULL)
-					ret = ft_strjoin(ft_substr((*lst)->str, start, end - start, g), ft_itoa(g->ret, g), g);
-				else
-					ret = ft_strjoin(ret, ft_strjoin(ft_substr((*lst)->str, start, end - start, g), ft_itoa(g->ret, g), g), g);
-				i++;
-				start = i + 1;
-			}
+			sub.b = sub.c;
+			do_dollar(&ret, &sub, lst, g);
 		}
-		i++;
+		sub.c++;
 	}
 	if (ret != NULL)
 	{
-		ret = ft_strjoin(ret, ft_substr((*lst)->str, start , i - start, g), g);
+		ret = ft_strjoin(ret, \
+		ft_substr((*lst)->str, sub.a, sub.c - sub.a, g), g);
 		(*lst)->env_var_str = ret;
-		printf("->env var detected : before = '%s' after = '%s'\n", (*lst)->str, (*lst)->env_var_str);
 	}
 }
 
