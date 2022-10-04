@@ -12,29 +12,6 @@
 
 #include "../../includes/header.h"
 
-// void d_print_exec(char **exec, t_global *g)
-// {
-// 	int i = 0;
-
-// 	while (exec[i])
-// 	{
-// 		printf("\n  %d : %s\n", i, exec[i]);
-// 		i++;
-// 	}
-// 	printf("--------\n\n");
-
-// 	t_lst_cmd *cmd;
-// 	t_lst_parse *parse;
-
-// 	cmd = g->cmd;
-// 	parse = cmd->split_cmd;
-// 	while (parse)
-// 	{
-// 		parse = parse->next;
-// 	}
-	
-// }
-
 /**
  * 0:command
  * 1:param
