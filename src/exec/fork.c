@@ -12,8 +12,23 @@
 
 #include "../../includes/header.h"
 
+void	heredoc(t_lst_parse *tmp)
+{
+	int	fd[2];
+
+	if (pipe(fd) < 0)
+	{
+		ft_putendl_fd("PIPE ERR", 2);
+		return ;
+	}
+	write(fd[1], tmp->heredoc, ft_strlen(tmp->heredoc));
+	dup2(fd[0], STDIN_FILENO);
+	close(fd[1]);
+	close(fd[0]);
+}
+
 //EXIT ?
-void	check_fd_in(int *fd_in, t_lst_cmd *cmd, t_global *g)
+void	check_fd_in(int *fd_in, int *fd_out, t_lst_cmd *cmd, t_global *g)
 {
 	t_lst_parse *tmp;
 
@@ -42,12 +57,9 @@ void	check_fd_in(int *fd_in, t_lst_cmd *cmd, t_global *g)
 			}
 			else //HEREDOC
 			{
-				if (*fd_in > 0)
+				if (*fd_out > 0)
 				{
-					printf("HEREDOC : %s\n", tmp->heredoc);
-					write(*fd_in, tmp->heredoc, ft_strlen(tmp->heredoc));
-					dup2(*fd_in, STDIN_FILENO);
-					close(*fd_in);
+					heredoc(tmp);
 				}
 				else
 					printf("CANT REDIRECT HEREDOC\n");
@@ -84,7 +96,7 @@ void	exec_cmd(t_global *mini_sh)
 			ft_putendl_fd("PIPE ERR", 2);
 			return ;
 		}
-		check_fd_in(&mini_sh->cmd->fd[0], mini_sh->cmd, mini_sh);
+		check_fd_in(&mini_sh->cmd->fd[0], &mini_sh->cmd->fd[1], mini_sh->cmd, mini_sh);
 		if (mini_sh->cmd->fd[0] > 0)
 			close(mini_sh->cmd->fd[0]);
 		if (mini_sh->cmd->fd[1] > 0)

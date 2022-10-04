@@ -40,7 +40,7 @@ void exec_child(t_global *mini_sh, t_lst_cmd *cmd, int fd[2], int fd_in)
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
 	}
-	check_fd_in(&fd[0], cmd, mini_sh);
+	check_fd_in(&fd[0], &fd[1], cmd, mini_sh);
 	if (!is_builtin(cmd))
 		exec_built_in(mini_sh, &cmd);
 	else if (!check_path(mini_sh, cmd))

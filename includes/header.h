@@ -25,6 +25,8 @@
 # include <signal.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <errno.h>
+# include <termios.h>
 
 # include <limits.h> // For cd and pwd to get PATH_MAX
 
@@ -236,7 +238,7 @@ void	b_in_unset(t_lst_cmd **cmd, t_global *g);
 void	exec_cmd(t_global *mini_sh);
 void	exec_built_in(t_global *mini_sh, t_lst_cmd **cmd);
 char	**rebuild_env(t_lst_env *env, t_global *g);
-void	check_fd_in(int *fd_in, t_lst_cmd *cmd, t_global *g);
+void	check_fd_in(int *fd_in, int *fd_out, t_lst_cmd *cmd, t_global *g);
 
 //ERROR MANAGER 
 //return 0

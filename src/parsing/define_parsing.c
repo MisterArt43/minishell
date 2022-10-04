@@ -145,14 +145,12 @@ char	*ft_heredoc(char *c, t_global *g)
 		if (!res)
 			res = ft_strdup(cmd, g);
 		else
-		{
-			res = ft_strjoin(res, "\n", g);
-			res = ft_strjoin(res, cmd, g);
-		}
+			res = ft_strjoin(ft_strjoin(res, "\n", g), cmd, g);
 		free(cmd);
 		if (!cmd)
 			return (res);
 	}
+	res = ft_strjoin(res, "\n", g);
 	free(cmd);
 	return (res);
 }
