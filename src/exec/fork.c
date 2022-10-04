@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 02:58:37 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/04 19:37:00 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/04 20:03:06 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,10 @@ void	heredoc(t_lst_parse *tmp)
 	}
 	write(fd[1], tmp->heredoc, ft_strlen(tmp->heredoc));
 	dup2(fd[0], STDIN_FILENO);
-	close(fd[1]);
-	close(fd[0]);
+	if (fd[1] > 0)
+		close(fd[1]);
+	if (fd[0] > 0)
+		close(fd[0]);
 }
 
 void	left_redirect(int *fd_in, t_lst_parse *tmp, t_global *g)
