@@ -66,22 +66,33 @@ int	check_no_cmd(t_lst_cmd *cmd)
 	return (0);
 }
 
+int	exec_len(t_lst_parse *tmp)
+{
+	int	i;
+
+	i = 0;
+	while (parse)
+	{
+		if (parse->prev->type < 2)
+			i++;
+		parse = parse->next;
+	}
+}
+
+void	add_exec(t_lst_parse **parse, int i, char **ret, t_global *g)
+{
+	
+}
+
 int	define_exec(t_lst_cmd **lst, t_global *g, int i)
 {
 	t_lst_parse	*parse;
 
-	parse = (*lst)->split_cmd;
-	while (parse)
-	{
-		if (i == 0)
-			i++;
-		else if (parse->type == 1 && parse->prev->type <= 2)
-			i++;
-		parse = parse->next;
-	}
-	(*lst)->exec = ft_gc_add_back(&g->gc_parsing, ft_gc_new(malloc(sizeof(char *) * (i + 1)), "invalide malloc in define exec", g));
+	(*lst)->exec = ft_gc_add_back(&g->gc_parsing, ft_gc_new(\
+	malloc(sizeof(char *) * (exec_len((*lst)->split_cmd) + 1)), \
+	"invalide malloc in define exec", g));
 	(*lst)->exec[0] = NULL;
-	(*lst)->exec[i] = NULL;
+	(*lst)->exec[exec_len((*lst)->split_cmd)] = NULL;
 	i = 0;
 	parse = (*lst)->split_cmd;
 	while (parse)

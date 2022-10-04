@@ -74,8 +74,6 @@ int	complicado(t_global *mini_sh, t_lst_cmd *cmd, int fd_in, pid_t *c_pid)
 		close(fd_in);
 	if (fd[1] > 0)
 		close(fd[1]);
-	printf("--------PIPE--------DEBUG fd[1] : %d, fd_in : %d\n", fd[1], fd_in);
-	printf("--------PIPE--------DEBUG fd[0] : %d, fd_in : %d\n", fd[0], fd_in);
 	if (cmd->next)
 		complicado(mini_sh, cmd->next, fd[0], c_pid);
 	else
