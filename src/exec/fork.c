@@ -6,11 +6,19 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 02:58:37 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/03 21:12:36 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/04 19:37:00 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/header.h"
+
+void	close_fds(int *fd_in, int *fd_out)
+{
+	if (*fd_in > 0)
+		close(*fd_in);
+	if (*fd_out > 0)
+		close(*fd_out);
+}
 
 void	heredoc(t_lst_parse *tmp)
 {
@@ -44,7 +52,7 @@ void	right_right_redirect(int *fd_in, int *fd_out, t_lst_parse *tmp, t_global *g
 	if (*fd_out > 0)
 		close(*fd_out);
 	*fd_out = open(remove_quote(tmp->next->str, g), \
-	O_CREAT | O_RDWR | O_APPEND, 777);
+	O_CREAT | O_RDWR | O_APPEND, S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR);
 	dup2(*fd_out, STDOUT_FILENO);
 	if (*fd_out > 0)
 		close(*fd_out);
@@ -56,7 +64,7 @@ void	right_redirect(int	*fd_in, int *fd_out, t_lst_parse *tmp, t_global *g)
 		close(*fd_in);
 	if (*fd_out > 0)
 		close(*fd_out);
-	*fd_out = open(remove_quote(tmp->next->str, g), O_CREAT | O_RDWR, 777);
+	*fd_out = open(remove_quote(tmp->next->str, g), O_CREAT | O_RDWR | O_TRUNC, S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR);
 	dup2(*fd_out, STDOUT_FILENO);
 	if (*fd_out > 0)
 		close(*fd_out);

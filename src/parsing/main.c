@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 16:50:14 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/03 00:45:22 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/04 18:50:00 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,12 +213,13 @@ void	select_exec(t_global *mini_sh)
 	{
 		l_c_pid = complicado(mini_sh, mini_sh->cmd, 0, &c_pid);
 		printf("c_pid:%d, l_c_pid:%d, %d\n", c_pid, l_c_pid, getpid());
-		waitpid(c_pid, &status, 0);
-		kill(c_pid, SIGTERM);
-		waitpid(l_c_pid, &l_status, 0);
-		if (WIFEXITED(l_status))
-    		mini_sh->ret = WEXITSTATUS(status);
-		kill(l_c_pid, SIGTERM);
+		// waitpid(c_pid, &status, 0);
+		// kill(c_pid, SIGTERM);
+		// waitpid(l_c_pid, &l_status, 0);
+		// if (WIFEXITED(l_status))
+    	// 	mini_sh->ret = WEXITSTATUS(status);
+		// kill(l_c_pid, SIGTERM);
+		
 	}
 }
 
