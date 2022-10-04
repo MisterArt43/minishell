@@ -27,45 +27,67 @@ void	heredoc(t_lst_parse *tmp)
 	close(fd[0]);
 }
 
+void	left_redirect(int *fd_in, t_lst_parse *tmp, t_global *g)
+{
+	if (*fd_in > 0)
+		close(*fd_in);
+	*fd_in = open(remove_quote(tmp->next->str, g), O_RDONLY);
+	dup2(*fd_in, STDIN_FILENO);
+	if (*fd_in > 0)
+		close(*fd_in);
+}
+
+void	right_right_redirect(int *fd_in, int *fd_out, t_lst_parse *tmp, t_global *g)
+{
+	if (*fd_in > 0)
+		close(*fd_in);
+	if (*fd_out > 0)
+		close(*fd_out);
+	*fd_out = open(remove_quote(tmp->next->str, g), \
+	O_CREAT | O_RDWR | O_APPEND, 777);
+	dup2(*fd_out, STDOUT_FILENO);
+	if (*fd_out > 0)
+		close(*fd_out);
+}
+
+void	right_redirect(int	*fd_in, int *fd_out, t_lst_parse *tmp, t_global *g)
+{
+	if (*fd_in > 0)
+		close(*fd_in);
+	if (*fd_out > 0)
+		close(*fd_out);
+	*fd_out = open(remove_quote(tmp->next->str, g), O_CREAT | O_RDWR, 777);
+	dup2(*fd_out, STDOUT_FILENO);
+	if (*fd_out > 0)
+		close(*fd_out);
+}
+
 //EXIT ?
 void	check_fd_in(int *fd_in, int *fd_out, t_lst_cmd *cmd, t_global *g)
 {
-	t_lst_parse *tmp;
+	t_lst_parse	*tmp;
+	t_lst_parse	*tmp2;
 
+	tmp2 = NULL;
 	tmp = cmd->split_cmd;
 	while (tmp)
 	{
-		printf("WAS HERE : %d\n", tmp->type);
-		if (tmp->type == 5 || tmp->type == 6)
-		{
-			if (tmp->type == 6)
-			{
-				if (!access(remove_quote(tmp->next->str, g), F_OK))
-				{
-					if (check_file_dir(remove_quote(tmp->next->str, g), g, 1) == 2)
-					{
-						if (*fd_in > 0)
-							close(*fd_in);
-						*fd_in = open(remove_quote(tmp->next->str, g), O_RDONLY);
-						dup2(*fd_in, STDIN_FILENO);
-						if (*fd_in < 0)
-							close(*fd_in);
-					}
-				}
-				else
-					printf("ERROR ACCESS\n");
-			}
-			else //HEREDOC
-			{
-				if (*fd_out > 0)
-				{
-					heredoc(tmp);
-				}
-				else
-					printf("CANT REDIRECT HEREDOC\n");
-			}
-		}
+		if (tmp->type == 4 || tmp->type == 3)
+			tmp2 = tmp;
+		if (tmp->type == 6)
+			if (!access(remove_quote(tmp->next->str, g), F_OK))
+				if (check_file_dir(remove_quote(tmp->next->str, g), g, 1) == 2)
+					left_redirect(fd_in, tmp, g);
+		if (tmp->type == 5) // HEREDOC
+			heredoc(tmp);
 		tmp = tmp->next;
+	}
+	if (tmp2 != NULL)
+	{
+		if (tmp2->type == 4)
+			right_redirect(fd_in, fd_out, tmp2, g);
+		if (tmp2->type == 3)
+			right_right_redirect(fd_in, fd_out, tmp2, g);
 	}
 }
 
@@ -101,8 +123,6 @@ void	exec_cmd(t_global *mini_sh)
 			close(mini_sh->cmd->fd[0]);
 		if (mini_sh->cmd->fd[1] > 0)
 			close(mini_sh->cmd->fd[1]);
-		printf("-------------------DEBUG fd[1] : %d, fd_in : %d\n", mini_sh->cmd->fd[1], mini_sh->cmd->fd[0]);
-		printf("-------------------DEBUG fd[0] : %d, fd_in : %d\n", mini_sh->cmd->fd[0], mini_sh->cmd->fd[0]);
 		// Le processus enfant execute la commande ou exit si execve echoue
 		if (!check_path(mini_sh, mini_sh->cmd)) // si un binary
 		{
