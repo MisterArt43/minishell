@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 00:05:57 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/10/05 02:54:29 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/05 08:19:09 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ int	check_file_dir(char *str, t_global *g, int mode)
 		g->ret = 0;
 		return (0);
 	}
-	if (access(ft_strjoin(ft_strjoin(pwd, "/", g), str, g), F_OK) != 0)
+	
+	else if (access(ft_strjoin(ft_strjoin(pwd, "/", g), str, g), F_OK) != 0)
 	{
 		ft_putstr_fd(ft_strjoin(ft_strjoin("wati-minishell: cd: ", str, g), \
 		": No such file or directory", g), 2);
@@ -81,10 +82,21 @@ int	check_file_dir(char *str, t_global *g, int mode)
 	}
 	else if (mode == 0)
 	{
-		ft_putendl_fd(ft_strjoin(ft_strjoin("wati-minishell: cd: ", str, g), \
-		": Not a directory", g), 2);
-		g->ret = 1;
-		return (1);
+		printf("%s\n", str);
+		if (chdir(str) != EACCES)
+		{
+			ft_putendl_fd(ft_strjoin(ft_strjoin("wati-minishell: cd: ", str, g), \
+			": Permission denied", g), 2);
+			g->ret = 1;
+			return (1);
+		}
+		else
+		{
+			ft_putendl_fd(ft_strjoin(ft_strjoin("wati-minishell: cd: ", str, g), \
+			": Not a directory", g), 2);
+			g->ret = 1;
+			return (1);		
+		}
 	}
 	else
 		return (2);
