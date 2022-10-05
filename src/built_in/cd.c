@@ -6,13 +6,13 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 00:05:57 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/10/03 04:06:09 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/05 02:27:02 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/header.h"
 
-char	*find_env_value(char *str, t_global *g, t_lst_env *tmp)
+t_lst_env	*find_env_value(char *str, t_global *g, t_lst_env *tmp)
 {
 	int i;
 	int	j;
@@ -30,7 +30,7 @@ char	*find_env_value(char *str, t_global *g, t_lst_env *tmp)
 				if (tmp->key[j] == 0 && ft_isalnum(str[tmp_i]) == 0)
 				{
 					i = tmp_i;
-					return (tmp->value);
+					return (tmp);
 				}
 				if (str[tmp_i] != tmp->key[j] || !ft_isalnum(str[tmp_i]))
 					break ;
@@ -81,7 +81,7 @@ int	check_file_dir(char *str, t_global *g, int mode)
 	}
 	else if (mode == 0)
 	{
-		ft_putstr_fd(ft_strjoin(ft_strjoin("wati-minishell: cd: ", str, g), \
+		ft_putendl_fd(ft_strjoin(ft_strjoin("wati-minishell: cd: ", str, g), \
 		": Not a directory", g), 2);
 		g->ret = 1;
 		return (1);
@@ -106,13 +106,13 @@ void	b_in_cd(t_global *mini_sh, t_lst_cmd **cmd)
 	}
 	if ((*cmd)->exec[1] == NULL)
 	{
-		if (!find_env_value("HOME", mini_sh, mini_sh->env))
+		if (!find_env_value("HOME", mini_sh, mini_sh->env)->value)
 		{
 			ft_putendl_fd("wati-minishell: cd: HOME not set", 2);
 			mini_sh->ret = 1;
 			return ;
 		}
-		else if (!chdir(find_env_value("HOME", mini_sh, mini_sh->env)))
+		else if (!chdir(find_env_value("HOME", mini_sh, mini_sh->env)->value))
 		{
 			change_value_of_key(mini_sh, &mini_sh->env, "OLDPWD", ft_strdup(pwd, NULL));
 			if (!getcwd(pwd, PATH_MAX))
@@ -128,7 +128,9 @@ void	b_in_cd(t_global *mini_sh, t_lst_cmd **cmd)
 	}
 	else if ((*cmd)->exec[1])
 	{
-		if (!chdir((*cmd)->exec[1]))
+		if (find_env_value("OLDPWD", mini_sh, mini_sh->env)->value == NULL)
+			change_value_of_key(mini_sh, &mini_sh->env, "OLDPWD", ft_strdup("", NULL));
+		else if (!chdir((*cmd)->exec[1]))
 		{
 			change_value_of_key(mini_sh, &mini_sh->env, "OLDPWD", ft_strdup(pwd, NULL));
 			if (!getcwd(pwd, PATH_MAX))
