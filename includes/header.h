@@ -206,7 +206,7 @@ void		ft_split_shell(t_lst_cmd **cmd, t_global *mini_sh);
 void		skip_to_next_word(char *str, int *i);
 void		skip_quote(char *str, int *i);
 void		skip_word(char *str, int *i);
-void		define_cmd(t_global *mini_sh);
+int			define_cmd(t_global *mini_sh);
 char		*rebuild_command(t_lst_cmd *cmd, t_global *g);
 
 

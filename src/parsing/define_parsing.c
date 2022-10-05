@@ -162,7 +162,21 @@ void	do_heredoc(t_lst_cmd *lst, t_global *g)
 	}
 }
 
-void	define_cmd(t_global *mini_sh)
+int	check_redirect_has_fd(t_lst_cmd *cmd)
+{
+	t_lst_parse *tmp;
+
+	tmp = cmd->split_cmd;
+	while (tmp)
+	{
+		if (tmp->type > 1 && (tmp->next == NULL || tmp->next->type != 1))
+			return (1);
+		tmp = tmp->next;
+	}
+	return (0);
+}
+
+int	define_cmd(t_global *mini_sh)
 {
 	t_lst_cmd	*tmp_cmd;
 
@@ -170,6 +184,8 @@ void	define_cmd(t_global *mini_sh)
 	while (tmp_cmd)
 	{
 		define_parse(&tmp_cmd->split_cmd, 0, 0, tmp_cmd->split_cmd);
+		if (check_redirect_has_fd(tmp_cmd) == 1)
+			return (0);
 		if (check_no_cmd(tmp_cmd) == 0)
 		{
 			tmp_cmd->exec = ft_gc_add_back(&mini_sh->gc_parsing, ft_gc_new(\
@@ -179,12 +195,8 @@ void	define_cmd(t_global *mini_sh)
 		}
 		else
 			define_exec(&tmp_cmd, mini_sh, 0);
-		tmp_cmd = tmp_cmd->next;
-	}
-	tmp_cmd = mini_sh->cmd;
-	while (tmp_cmd)
-	{
 		do_heredoc(tmp_cmd, mini_sh);
 		tmp_cmd = tmp_cmd->next;
 	}
+	return  (1);
 }
