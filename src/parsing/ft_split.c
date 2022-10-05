@@ -135,13 +135,19 @@ t_lst_env	*cmp_env_key(int *i, char *str, t_global *g, t_lst_env	*tmp)
 	return (NULL);
 }
 
-void	do_dollar(char **ret, t_dual_int *sub, t_lst_parse **lst, t_global *g)
+t_lst_cmd	*do_dollar(char **ret, t_dual_int *sub, t_lst_parse **lst, t_global *g)
 {
 	t_lst_env	*find;
+	t_lst_cmd	*new_cmd;
 
 	find = cmp_env_key(&sub->c, (*lst)->str, g, g->env);
 	if (find != NULL)
 	{
+		new_cmd = ft_lst_cmd_new(&g->gc_parsing, find->value, g);
+		new_cmd->command = find->value;
+		ft_split_shell(&new_cmd, g);
+		ft_lst_parse_last(new_cmd->split_cmd)->next = (*lst)->next;
+		(*lst)->next = new_cmd->split_cmd;
 		if (*ret == NULL)
 			*ret = ft_strjoin(ft_substr((*lst)->str, sub->a, sub->b - sub->a, \
 			g), find->value, g);

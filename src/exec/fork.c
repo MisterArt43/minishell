@@ -109,6 +109,9 @@ int sig_child_hndlr(const int signal, void *ptr)
 	if (signal == SIGINT)
 	{
 		saved->ret = 130;
+		rl_on_new_line();
+		rl_replace_line("\0", 1);
+		rl_redisplay();
 		write(1, "\nwati-minishell> ", 17);
 		if (saved->in_cmd == 0)
 			ft_gc_clear(&saved->gc_parsing);

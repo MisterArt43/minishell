@@ -75,7 +75,6 @@ void	parse_env(char *current, t_lst_env **lst_env, t_global *g, t_dual_int *forc
 		}
 		i++;
 	}
-	printf("unhandled env in 'parse_env' function  : %s\n", current);
 }
 
 void	add_shlvl(t_lst_env **lst_env, t_global *g)
@@ -257,7 +256,7 @@ void	main_mini_sh(t_global *mini_sh)
 			continue ;
 		}
 		define_cmd(mini_sh);
-		mini_sh->in_cmd = 1;		
+		mini_sh->in_cmd = 1;
 		select_exec(mini_sh);
 		ft_gc_clear(&mini_sh->gc_parsing);
 	}

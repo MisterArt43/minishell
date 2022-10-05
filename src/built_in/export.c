@@ -187,7 +187,6 @@ void	sort_export(t_global *g, int *i, char *str, int start)
 		print_er("wati-minishell: export: `");
 		print_er(str);
 		print_er("': not a valid identifier\n");
-		//printf invalid key error;
 	}
 }
 
@@ -205,7 +204,6 @@ void	exec_export(t_lst_cmd *cmd, t_global *mini_sh, char *str)
 	{
 		skip_to_next_word(str, &i);
 		sort_export(mini_sh, &i, str, i);
-		printf("%c / %d\n", str[i], i);
 	}
 	mini_sh->ret = 1;
 }
