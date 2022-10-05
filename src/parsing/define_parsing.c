@@ -84,11 +84,21 @@ char	*add_exec(t_lst_parse **parse, t_lst_cmd **lst, t_global *g)
 	{
 		if ((*parse)->type == 0 || (*parse)->type == 1)
 		{
-			if ((*parse)->env_var_str != NULL)
-				ret = ft_strjoin(ret, remove_quote(\
-				(*parse)->env_var_str, g), g);
+			if (ret == NULL)
+			{
+				if ((*parse)->env_var_str != NULL)
+					ret = remove_quote((*parse)->env_var_str, g);
+				else
+					ret = remove_quote((*parse)->str, g);
+			}
 			else
-				ret = ft_strjoin(ret, remove_quote((*parse)->str, g), g);
+			{
+				if ((*parse)->env_var_str != NULL)
+					ret = ft_strjoin(ret, remove_quote(\
+					(*parse)->env_var_str, g), g);
+				else
+					ret = ft_strjoin(ret, remove_quote((*parse)->str, g), g);
+			}
 		}
 		if ((*parse)->next && (*parse)->next->is_near_prev == 0)
 			break ;
@@ -110,11 +120,13 @@ int	define_exec(t_lst_cmd **lst, t_global *g, int i)
 	parse = (*lst)->split_cmd;
 	while (parse)
 	{
-		(*lst)->exec[i++] = add_exec(&parse, lst, g);
+		(*lst)->exec[i] = add_exec(&parse, lst, g);
+		i++;
 		if ((*lst)->exec[i - 1] == NULL || parse == NULL)
 			break ;
 		parse = parse->next;
 	}
+	(*lst)->exec[i] = NULL;
 }
 
 char	*ft_heredoc(char *c, t_global *g)
@@ -169,8 +181,13 @@ int	check_redirect_has_fd(t_lst_cmd *cmd)
 	tmp = cmd->split_cmd;
 	while (tmp)
 	{
-		if (tmp->type > 1 && (tmp->next == NULL || tmp->next->type != 1))
-			return (1);
+		if (tmp->type > 2)
+		{
+			if (tmp->next == NULL || tmp->next->type != 2)
+			{
+				return (1);
+			}
+		}
 		tmp = tmp->next;
 	}
 	return (0);
@@ -189,7 +206,7 @@ int	define_cmd(t_global *mini_sh)
 		if (check_no_cmd(tmp_cmd) == 0)
 		{
 			tmp_cmd->exec = ft_gc_add_back(&mini_sh->gc_parsing, ft_gc_new(\
-			malloc(sizeof(char *)), \
+			ft_strdup("", mini_sh), \
 			"error malloc while creating exec", mini_sh));
 			tmp_cmd->exec[0] = NULL;
 		}
