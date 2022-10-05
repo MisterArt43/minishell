@@ -49,6 +49,8 @@ void	shlvl_plus_one(char **key, char **value, t_dual_int *forced_env)
 	}
 	else if (ft_nstrncmp(*key, "PWD", 6, 0) == 0)
 		forced_env->b = 1;
+	else if (ft_nstrncmp(*key, "OLDPWD", 6, 0) == 0)
+		forced_env->c = 1;
 }
 
 void	parse_env(char *current, t_lst_env **lst_env, t_global *g, t_dual_int *forced_env)
@@ -114,6 +116,18 @@ void	add_pwd(t_lst_env **lst_env, t_global *g)
 	}
 }
 
+void	add_oldpwd(t_lst_env **lst_env, t_global *g)
+{
+	char	*key;
+	char	*value;
+
+	key = ft_strdup("OLDPWD", NULL);
+	if (!key)
+		malloc_exit(g, "error malloc ENV KEY");
+	value = NULL;
+	ft_lst_env_add_back(lst_env, ft_lst_env_new(&key, &value), g);
+}
+
 void	load_env(char **env, t_lst_env **lst_env, t_global *g)
 {
 	int	i;
@@ -121,6 +135,7 @@ void	load_env(char **env, t_lst_env **lst_env, t_global *g)
 
 	forced_env.a = 0;
 	forced_env.b = 0;
+	forced_env.c = 0;
 	i = 0;
 	if (env != NULL)
 	{
@@ -134,6 +149,8 @@ void	load_env(char **env, t_lst_env **lst_env, t_global *g)
 		add_shlvl(lst_env, g);
 	if (forced_env.b == 0)
 		add_pwd(lst_env, g);
+	if (forced_env.c == 0)
+		add_oldpwd(lst_env, g);
 }
 
 int	make_lst_cmd(char *cmd, t_global *mini_sh, int i, int j)
