@@ -62,8 +62,6 @@ int	complicado(t_global *mini_sh, t_lst_cmd *cmd, int fd_in, pid_t *c_pid)
 		ft_putendl_fd("PIPE ERR", 2);
 		return (1);
 	}
-	signal(SIGINT, (void (*)(int))sig_child_hndlr);
-	sig_child_hndlr(0, mini_sh);
 	child_pid = fork();
 	if (child_pid == -1)
 	{

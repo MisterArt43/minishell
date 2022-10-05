@@ -19,35 +19,25 @@ char	*remove_quote(char *str, t_global *g)
 	return (str);
 }
 
-char	*rebuild_command_without_quote(t_lst_cmd *cmd, t_global *g)
+char	*rebuild_exec(t_lst_cmd *cmd, t_global *g)
 {
-	t_lst_parse	*tmp;
+	t_lst_cmd	*tmp;
 	char		*ret;
+	int			i;
 
 	ret = NULL;
-	tmp = cmd->split_cmd;
-	while (tmp)
+	tmp = cmd;
+	i = 0;
+	while (tmp->exec[i])
 	{
-		if (tmp->type == 1)
+		if (i == 1)
 		{
 			if (ret == NULL)
-			{
-				if (tmp->env_var_str != NULL)
-					ret = remove_quote(tmp->env_var_str, g);
-				else
-					ret = remove_quote(tmp->str, g);
-			}
-			else 
-			{
-				if (tmp->is_near_prev == 0)
-					ret =ft_strjoin(ret, " ", g);
-				if (tmp->env_var_str != NULL)
-					ret =ft_strjoin(ret, remove_quote(tmp->env_var_str, g), g);
-				else if (tmp->str)	
-					ret =ft_strjoin(ret, remove_quote(tmp->str, g), g);
-			}
+				ret = tmp->exec[i];
+			else
+				ret = ft_strjoin(ft_strjoin(ret, " ", g), tmp->exec[i], g);
 		}
-		tmp = tmp->next;
+		i++;
 	}
 	return (ret);
 }
@@ -92,7 +82,7 @@ void	b_in_echo(t_global *mini_sh, t_lst_cmd **cmd)
 		printf("\n");
 	else
 	{
-		str = rebuild_command_without_quote(*cmd, mini_sh);
+		str = rebuild_exec(*cmd, mini_sh);
 		str = skip_echo_option(str, &i, &is_nl, mini_sh);
 		if (is_nl == 1)
 			printf("%s\n", str);

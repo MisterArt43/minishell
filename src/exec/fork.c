@@ -104,15 +104,16 @@ void	check_fd_in(int *fd_in, int *fd_out, t_lst_cmd *cmd, t_global *g)
 int sig_child_hndlr(const int signal, void *ptr)
 {
 	static t_global *saved = NULL;
-
 	if (saved == NULL)
 		saved = ptr;
-	if (signal == SIGINT && saved && saved->in_cmd >= 1)
+	if (signal == SIGINT)
 	{
-		ft_gc_clear(&saved->gc_parsing);
-		main_mini_sh(saved);
 		saved->ret = 130;
-		exit(130);
+		write(1, "\nwati-minishell> ", 17);
+		if (saved->in_cmd == 0)
+			ft_gc_clear(&saved->gc_parsing);
+		//kill(0, signal);
+		//main_mini_sh(saved);
 	}
 }
 
@@ -121,8 +122,6 @@ void	exec_cmd(t_global *mini_sh)
 	pid_t	pid = 0;
 	int		status = 0;
 
-	signal(SIGINT, (void (*)(int))sig_child_hndlr);
-	sig_child_hndlr(0, mini_sh);
 	pid = fork();
 	if (pid == -1)
 		perror("fork");

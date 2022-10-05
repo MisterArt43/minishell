@@ -230,7 +230,6 @@ void	main_mini_sh(t_global *mini_sh)
 	while (1)
 	{
 		signal(SIGINT, (void (*)(int))sig_child_hndlr);
-		sig_child_hndlr(0, mini_sh);
 		mini_sh->in_cmd = 0;
 		mini_sh->line = readline("wati-minishell> ");
 		if (mini_sh->line)
@@ -275,6 +274,7 @@ int	main(int argc, char **argv, char **env)
 	mini_sh.line = (char *)NULL;
 	mini_sh.ret = 0;
 	mini_sh.in_cmd = 0;
+	sig_child_hndlr(0, &mini_sh);
 	load_env(env, &mini_sh.env, &mini_sh);
 	main_mini_sh(&mini_sh);
 	return (0);
