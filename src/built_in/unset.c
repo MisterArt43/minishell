@@ -19,6 +19,8 @@ void	b_in_unset(t_lst_cmd **cmd, t_global *g)
 	char		**exec;
 	t_lst_env	*tmp;
 
+	if (ft_strstrlen((*cmd)->exec) == 1)
+		return ;
 	g->ret = 0;
 	i = 0;
 	if (!check_no_arg(cmd, "unset: usage: unset [-f] [-v] [name ...]", g))
