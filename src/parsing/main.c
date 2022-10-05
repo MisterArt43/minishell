@@ -157,7 +157,7 @@ int	make_lst_cmd(char *cmd, t_global *mini_sh, int i, int j)
 {
 	if (check_isempty(cmd) == 0)
 		return (0);
-	if (check_pipe(cmd) == 0)
+	if (check_pipe(cmd, 0, 0) == 0)
 		return (print_er("minishell: syntax error near unexpected token `|'\n"));
 	if (check_redirection(cmd, 0, 0) == 0)
 		return (0);

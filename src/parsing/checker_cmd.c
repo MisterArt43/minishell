@@ -38,11 +38,8 @@ int check_isempty(char *cmd)
 	return (0);
 }
 
-int	check_pipe(char *cmd)
+int	check_pipe(char *cmd, int i, int state)
 {
-	int	i = 0;
-	int	state = 0;
-
 	while (cmd[i])
 	{
 		if (cmd[i] == '|')

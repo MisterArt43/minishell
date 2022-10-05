@@ -166,7 +166,7 @@ t_lst_env	*cmp_env_key(int *i, char *str, t_global *g, t_lst_env	*tmp);
 //check if the cmd is filled with nothing more than space, skip line, tab ...
 int check_isempty(char *cmd);
 //check if the cmd have a correct format of pipe
-int	check_pipe(char *cmd);
+int	check_pipe(char *cmd, int i, int state);
 //check if the redirection are valid
 int	check_redirection(char *cmd, int i, int state);
 
