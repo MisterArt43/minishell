@@ -30,7 +30,6 @@ int check_isempty(char *cmd)
 	i = 0;
 	while (cmd[i])
 	{
-		//printf("%c",cmd[i]);
 		if (cmd[i] != ' ' || cmd[i] != '\t' || cmd[i] != '\n' || cmd[i] != '\r')
 			return (1);
 		i++;

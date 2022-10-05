@@ -171,16 +171,6 @@ int	make_lst_cmd(char *cmd, t_global *mini_sh, int i, int j)
 		i++;
 	}
 	ft_lst_cmd_add_back(&mini_sh->cmd, ft_lst_cmd_new(&mini_sh->gc_parsing, ft_substr(cmd, j, i - j, mini_sh), mini_sh));
-
-	//debug
-	t_lst_cmd *c = mini_sh->cmd;
-	while (c)
-	{
-		printf("%s\n",c->command);
-		c = c->next;
-	}
-	//end debug
-	
 	return (1);
 }
 
@@ -191,16 +181,13 @@ int	start_parse(char *cmd, t_global *mini_sh)
 	mini_sh->cmd = NULL;
 	if (make_lst_cmd(cmd, mini_sh, 0, 0) == 0)
 	{
-		//printf("invalid command, check start_parse function\n"); //debug
 		ft_gc_clear(&mini_sh->gc_parsing);
 		return (0);
 	}
-	printf("LST SIZE : %d\n\n",ft_lst_cmd_size(mini_sh->cmd));
 	tmp = mini_sh->cmd;
 	while (tmp)
 	{
 		ft_split_shell(&tmp, mini_sh);
-		printf("  -CMD SIZE : %d\n", ft_lst_parse_size(tmp->split_cmd));
 		tmp = tmp->next;
 	}
 	return (1);
@@ -229,7 +216,6 @@ void	select_exec(t_global *mini_sh)
 	else if (ft_lst_cmd_size(mini_sh->cmd) > 1)
 	{
 		l_c_pid = complicado(mini_sh, mini_sh->cmd, 0, &c_pid);
-		printf("c_pid:%d, l_c_pid:%d, %d\n", c_pid, l_c_pid, getpid());
 		waitpid(c_pid, &status, 0);
 		kill(c_pid, SIGTERM);
 		waitpid(l_c_pid, &l_status, 0);
@@ -256,10 +242,10 @@ void	main_mini_sh(t_global *mini_sh)
 		}
 		else
 		{
-			printf("\n");
+			printf("exit\n");
 			ft_gc_clear(&mini_sh->gc_parsing);
 			ft_lst_env_clear(&mini_sh->env);
-			//rl_clear_history();
+			clear_history();
 			exit(0);
 			return ;
 		}
@@ -269,9 +255,7 @@ void	main_mini_sh(t_global *mini_sh)
 			continue ;
 		}
 		define_cmd(mini_sh);
-		printf("GC SIZE : %d\n\n",ft_gc_size(mini_sh->gc_parsing));
 		select_exec(mini_sh);
-		//sort_build_in(&mini_sh->cmd, mini_sh);
 		ft_gc_clear(&mini_sh->gc_parsing);
 	}
 }
