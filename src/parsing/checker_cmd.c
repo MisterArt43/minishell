@@ -12,7 +12,7 @@
 
 #include "../../includes/header.h"
 
-int check_char_isempty(char c)
+int	check_char_isempty(char c)
 {
 	if (c == 0)
 		return (0);
@@ -21,7 +21,7 @@ int check_char_isempty(char c)
 	return (0);
 }
 
-int check_isempty(char *cmd)
+int	check_isempty(char *cmd)
 {
 	int	i;
 
@@ -30,7 +30,7 @@ int check_isempty(char *cmd)
 	i = 0;
 	while (cmd[i])
 	{
-		if (cmd[i] != ' ' || cmd[i] != '\t' || cmd[i] != '\n' || cmd[i] != '\r')
+		if (check_char_isempty(cmd[i]))
 			return (1);
 		i++;
 	}
@@ -88,14 +88,18 @@ int	redirect_erno(char *cmd, int i, int state)
 	if (cmd[i] == '>')
 	{
 		if (cmd[i + 1] == '>')
-			return (print_er("minishell: syntax error near unexpected token `>>'\n"));
-		return (print_er("minishell: syntax error near unexpected token `>'\n"));
+			return (print_er(\
+			"wati-minishell: syntax error near unexpected token `>>'\n"));
+		return (print_er(\
+		"wati-minishell: syntax error near unexpected token `>'\n"));
 	}
 	else if (cmd[i] == '<')
 	{
 		if (cmd[i + 1] == '<')
-			return (print_er("minishell: syntax error near unexpected token `<<'\n"));
-		return (print_er("minishell: syntax error near unexpected token `<'\n"));
+			return (print_er(\
+			"wati-minishell: syntax error near unexpected token `<<'\n"));
+		return (print_er(\
+		"wati-minishell: syntax error near unexpected token `<'\n"));
 	}
 	return (0);
 }
@@ -104,14 +108,17 @@ int	check_redirection(char *cmd, int i, int state)
 {
 	while (cmd[i])
 	{
+		if (cmd[i] == '\"' || cmd[i] == '\'')
+			skip_quote(cmd, &i);
 		if (cmd[i] == '>' || cmd[i] == '<')
 		{
-			if(check_redirect2(cmd, &i, &state))
+			if (check_redirect2(cmd, &i, &state))
 				return (redirect_erno(cmd, i, state));
 		}
-		else if (cmd[i] != ' ' && cmd[i] != '\t' && cmd[i] != '\n' && cmd[i] != '\r')
+		else if (check_char_isempty(cmd[i]))
 			state = 0;
-		i++;
+		if (cmd[i] != 0)
+			i++;
 	}
 	if (state == 1)
 		return (redirect_erno(cmd, i, state));
