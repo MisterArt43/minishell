@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 03:04:43 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/03 03:55:45 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/05 03:08:42 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,7 +184,7 @@ void	sort_export(t_global *g, int *i, char *str, int start)
 		g->ret = 1;
 		while (check_char_isempty(str[*i]) == 1)
 			*i += 1;
-		print_er("bash: export: `");
+		print_er("wati-minishell: export: `");
 		print_er(str);
 		print_er("': not a valid identifier\n");
 		//printf invalid key error;

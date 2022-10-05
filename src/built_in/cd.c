@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 00:05:57 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/10/05 02:27:02 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/05 02:54:29 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ void	b_in_cd(t_global *mini_sh, t_lst_cmd **cmd)
 
 	i = 0;
 	mini_sh->ret = 0;
+	if (find_env_value("OLDPWD", mini_sh, mini_sh->env)->value == NULL)
+			change_value_of_key(mini_sh, &mini_sh->env, "OLDPWD", ft_strdup("", NULL));
 	if (!getcwd(pwd, PATH_MAX))
 	{
 		ft_putendl_fd("cd: error retrieving current directory: getcwd: cannot \
@@ -128,9 +130,7 @@ void	b_in_cd(t_global *mini_sh, t_lst_cmd **cmd)
 	}
 	else if ((*cmd)->exec[1])
 	{
-		if (find_env_value("OLDPWD", mini_sh, mini_sh->env)->value == NULL)
-			change_value_of_key(mini_sh, &mini_sh->env, "OLDPWD", ft_strdup("", NULL));
-		else if (!chdir((*cmd)->exec[1]))
+		if (!chdir((*cmd)->exec[1]))
 		{
 			change_value_of_key(mini_sh, &mini_sh->env, "OLDPWD", ft_strdup(pwd, NULL));
 			if (!getcwd(pwd, PATH_MAX))
