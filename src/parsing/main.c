@@ -86,7 +86,7 @@ void	add_shlvl(t_lst_env **lst_env, t_global *g)
 	key = ft_strdup("SHLVL", NULL);
 	if (!key)
 		malloc_exit(g, "error malloc ENV KEY");
-	value = ft_strdup("0", NULL);
+	value = ft_strdup("1", NULL);
 	if (!value)
 	{
 		free(key);
