@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 16:15:55 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/03 03:48:57 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/05 06:48:36 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ typedef struct s_lst_cmd
  */
 typedef struct s_global
 {
+	int			in_cmd;
 	int			ret;
 	char		*line;
 	int			**pid;
@@ -256,5 +257,8 @@ void	print_env(t_lst_env *env);
 char	*get_binary(t_global *mini_sh, t_lst_cmd *cmd);
 char	*get_path(t_global *mini_sh);
 int		complicado(t_global *mini_sh, t_lst_cmd *cmd, int fd_in, pid_t *c_pid);
+
+// SIGNAUX
+int sig_child_hndlr(const int signal, void *ptr);
 
 #endif

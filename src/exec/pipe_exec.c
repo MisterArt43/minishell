@@ -3,31 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 23:23:29 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/10/05 06:14:54 by abucia           ###   ########lyon.fr   */
+/*   Updated: 2022/10/05 06:49:48 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/header.h"
-
-int sighandler(const int signal, void *ptr)
-{
-	printf("%p\n", ptr);
-	static t_global *saved = NULL;
-
-	if (saved == NULL)
-		saved = ptr;
-	if (signal == SIGINT)
-		printf("%p\n", saved);
-	return (0);
-}
-
-void	sig_c_pipe_hndlr(int sig)
-{
-	printf("\n");
-}
 
 int	is_builtin(t_lst_cmd *cmd)
 {
@@ -79,9 +62,8 @@ int	complicado(t_global *mini_sh, t_lst_cmd *cmd, int fd_in, pid_t *c_pid)
 		ft_putendl_fd("PIPE ERR", 2);
 		return (1);
 	}
-	signal(SIGINT, (void (*)(int))sighandler);
-	sighandler(0, mini_sh);
-	//signal(SIGINT, (void (*)(int))sig_c_pipe_hndlr);
+	signal(SIGINT, (void (*)(int))sig_child_hndlr);
+	sig_child_hndlr(0, mini_sh);
 	child_pid = fork();
 	if (child_pid == -1)
 	{
