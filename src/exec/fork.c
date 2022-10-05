@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 02:58:37 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/05 06:55:25 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/05 06:57:22 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,8 +121,8 @@ void	exec_cmd(t_global *mini_sh)
 	pid_t	pid = 0;
 	int		status = 0;
 
-	// signal(SIGINT, (void (*)(int))sig_child_hndlr);
-	// sig_child_hndlr(0, mini_sh);
+	signal(SIGINT, (void (*)(int))sig_child_hndlr);
+	sig_child_hndlr(0, mini_sh);
 	pid = fork();
 	if (pid == -1)
 		perror("fork");
