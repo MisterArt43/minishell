@@ -30,7 +30,7 @@ char	*rebuild_exec(t_lst_cmd *cmd, t_global *g)
 	i = 0;
 	while (tmp->exec[i])
 	{
-		if (i == 1)
+		if (i != 0)
 		{
 			if (ret == NULL)
 				ret = tmp->exec[i];

@@ -44,10 +44,13 @@ void exec_child(t_global *mini_sh, t_lst_cmd *cmd, int fd[2], int fd_in)
 	if (!is_builtin(cmd))
 		exec_built_in(mini_sh, &cmd);
 	else if (!check_path(mini_sh, cmd))
+	{
 		if (execve(get_binary(mini_sh, cmd), cmd->exec, ft_split(get_path(mini_sh), ':', mini_sh)) == - 1)
 			cmd_not_vld(mini_sh, cmd);
-	perror("wati-minishell");
-	exit(EXIT_FAILURE);
+		perror("wati-minishell");
+		exit(EXIT_FAILURE);
+	}
+	exit(mini_sh->ret);
 }
 
 int	complicado(t_global *mini_sh, t_lst_cmd *cmd, int fd_in, pid_t *c_pid)

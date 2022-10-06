@@ -70,6 +70,8 @@ void	parse_quote(char *str, int *i, t_global *g, t_lst_cmd **cmd)
 
 	start = *i + 1;
 	skip_quote(str, i);
+	if (str[*i] == 0)
+		ft_strjoin(str, &str[start - 1], g);
 	ft_lst_parse_add_back(&(*cmd)->split_cmd, \
 	ft_lst_parse_new(&g->gc_parsing, \
 	ft_substr((*cmd)->command, start - 1, *i - start + 1, g), g));
@@ -143,11 +145,6 @@ t_lst_cmd	*do_dollar(char **ret, t_dual_int *sub, t_lst_parse **lst, t_global *g
 	find = cmp_env_key(&sub->c, (*lst)->str, g, g->env);
 	if (find != NULL)
 	{
-		new_cmd = ft_lst_cmd_new(&g->gc_parsing, find->value, g);
-		new_cmd->command = find->value;
-		ft_split_shell(&new_cmd, g);
-		ft_lst_parse_last(new_cmd->split_cmd)->next = (*lst)->next;
-		(*lst)->next = new_cmd->split_cmd;
 		if (*ret == NULL)
 			*ret = ft_strjoin(ft_substr((*lst)->str, sub->a, sub->b - sub->a, \
 			g), find->value, g);
@@ -170,10 +167,11 @@ t_lst_cmd	*do_dollar(char **ret, t_dual_int *sub, t_lst_parse **lst, t_global *g
 	}
 }
 
-void	replace_env_var(t_lst_parse **lst, t_global *g)
+void	replace_env_var(t_lst_parse **lst, t_lst_cmd **cmd, t_global *g)
 {
 	t_dual_int	sub;
 	char		*ret;
+	t_lst_cmd	*new_cmd;
 
 	if ((*lst)->str[0] == '\'')
 		return ;
@@ -193,14 +191,51 @@ void	replace_env_var(t_lst_parse **lst, t_global *g)
 	{
 		ret = ft_strjoin(ret, \
 		ft_substr((*lst)->str, sub.a, sub.c - sub.a, g), g);
-		(*lst)->env_var_str = ret;
+		printf("#### RET : %s\n", ret);
+		if (ret[0] == "\"" || ret[0] == "\'")
+		new_cmd = ft_lst_cmd_new(&g->gc_parsing, ret, g);
+		ft_split_shell(&new_cmd, g);
+		if (*ret == 0 || check_isempty(new_cmd->split_cmd->str) == 0)
+		{
+
+			if ((*lst)->next)
+				(*lst)->next->prev = (*lst)->prev;
+			if ((*lst)->prev)
+				(*lst)->prev->next = (*lst)->next;
+			else if ((*lst)->next)
+				(*lst) = (*lst)->next;
+			else {
+				(*lst)->str = ft_strdup("", g);
+			}
+		}
+		else 
+		{
+			new_cmd->split_cmd->is_near_prev = (*lst)->is_near_prev;
+			new_cmd->split_cmd->prev = (*lst)->prev;
+			if ((*lst)->prev)
+				(*lst)->prev->next = new_cmd->split_cmd;
+			else
+				(*cmd)->split_cmd = new_cmd->split_cmd;
+			if ((*lst)->next)
+				(*lst)->next->prev = ft_lst_parse_last(new_cmd->split_cmd);
+			ft_lst_parse_last(new_cmd->split_cmd)->next = (*lst)->next;
+			(*lst)->next = new_cmd->split_cmd;
+			*lst = new_cmd->split_cmd;
+		}
+		// (*lst)->env_var_str = ret;
 	}
+}
+
+void breakpoints(void)
+{
+	return ;
 }
 
 void	ft_split_shell(t_lst_cmd **cmd, t_global *mini_sh)
 {
 	int			i;
 	t_lst_parse	*lst_parse;
+	printf(" -- NEW COMMAND  :  %s\n", (*cmd)->command);
 
 	i = 0;
 	while ((*cmd)->command[i])
@@ -212,7 +247,11 @@ void	ft_split_shell(t_lst_cmd **cmd, t_global *mini_sh)
 	lst_parse = (*cmd)->split_cmd;
 	while (lst_parse)
 	{
-		replace_env_var(&lst_parse, mini_sh);
+		breakpoints();
+		printf("BEFORE : %s\n", lst_parse->str);
+		replace_env_var(&lst_parse, cmd, mini_sh);
+		printf("AFTER : %s\n --- ------- --- \n", lst_parse->str);
+		breakpoints();
 		lst_parse = lst_parse->next;
 	}
 }
