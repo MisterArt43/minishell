@@ -12,7 +12,7 @@
 
 #include "../../includes/header.h"
 
-int print_er(const char *er)
+int	print_er(const char *er)
 {
 	int	i;
 
@@ -36,7 +36,7 @@ int	strstrlen(char **tab)
 
 void	shlvl_plus_one(char **key, char **value, t_dual_int *forced_env)
 {
-	int nb;
+	int	nb;
 
 	if (ft_nstrncmp(*key, "SHLVL", 6, 0) == 0)
 	{
@@ -53,11 +53,12 @@ void	shlvl_plus_one(char **key, char **value, t_dual_int *forced_env)
 		forced_env->c = 1;
 }
 
-void	parse_env(char *current, t_lst_env **lst_env, t_global *g, t_dual_int *forced_env)
+void	parse_env(char *current, t_lst_env **lst_env, \
+t_global *g, t_dual_int *forced_env)
 {
-	int	i;
-	char *key;
-	char *value;
+	int		i;
+	char	*key;
+	char	*value;
 
 	i = 0;
 	while (current[i])
@@ -65,7 +66,7 @@ void	parse_env(char *current, t_lst_env **lst_env, t_global *g, t_dual_int *forc
 		if (current[i] == '=')
 		{
 			key = ft_substr(current, 0, i, NULL);
-			if (current[ i + 1] != 0)
+			if (current[i + 1] != 0)
 				value = ft_substr(current, i + 1, ft_strlen(current) - i, NULL);
 			else
 				value = ft_strdup("", NULL);
@@ -129,20 +130,17 @@ void	add_oldpwd(t_lst_env **lst_env, t_global *g)
 
 void	load_env(char **env, t_lst_env **lst_env, t_global *g)
 {
-	int	i;
-	t_dual_int forced_env;
+	int			i;
+	t_dual_int	forced_env;
 
 	forced_env.a = 0;
 	forced_env.b = 0;
 	forced_env.c = 0;
-	i = 0;
+	i = -1;
 	if (env != NULL)
 	{
-		while (env[i])
-		{
+		while (env[++i])
 			parse_env(env[i], lst_env, g, &forced_env);
-			i++;
-		}
 	}
 	if (forced_env.a == 0)
 		add_shlvl(lst_env, g);
@@ -164,18 +162,20 @@ int	make_lst_cmd(char *cmd, t_global *mini_sh, int i, int j)
 	{
 		if (cmd[i] == '|')
 		{
-			ft_lst_cmd_add_back(&mini_sh->cmd, ft_lst_cmd_new(&mini_sh->gc_parsing, ft_substr(cmd, j, i - j, mini_sh), mini_sh));
+			ft_lst_cmd_add_back(&mini_sh->cmd, ft_lst_cmd_new(\
+			&mini_sh->gc_parsing, ft_substr(cmd, j, i - j, mini_sh), mini_sh));
 			j = i + 1;
 		}
 		i++;
 	}
-	ft_lst_cmd_add_back(&mini_sh->cmd, ft_lst_cmd_new(&mini_sh->gc_parsing, ft_substr(cmd, j, i - j, mini_sh), mini_sh));
+	ft_lst_cmd_add_back(&mini_sh->cmd, ft_lst_cmd_new(\
+	&mini_sh->gc_parsing, ft_substr(cmd, j, i - j, mini_sh), mini_sh));
 	return (1);
 }
 
 int	start_parse(char *cmd, t_global *mini_sh)
 {
-	t_lst_cmd *tmp;
+	t_lst_cmd	*tmp;
 
 	mini_sh->cmd = NULL;
 	if (make_lst_cmd(cmd, mini_sh, 0, 0) == 0)
@@ -192,22 +192,18 @@ int	start_parse(char *cmd, t_global *mini_sh)
 	return (1);
 }
 
-void	select_exec(t_global *mini_sh)
+void	select_exec(t_global *mini_sh, int status, int l_status)
 {
-	int		status;
-	int		l_status;
 	pid_t	c_pid;
 	pid_t	l_c_pid;
 
-	status = 0;
-	l_status = 0;
-	if (ft_lst_cmd_size(mini_sh->cmd) == 1 &&
-		(!ft_strncmp(mini_sh->cmd->exec[0], "exit", -1)
-		|| !ft_strncmp(mini_sh->cmd->exec[0], "pwd", -1)
-		|| !ft_strncmp(mini_sh->cmd->exec[0], "cd", -1)
-		|| !ft_strncmp(mini_sh->cmd->exec[0], "echo", -1)
-		|| !ft_strncmp(mini_sh->cmd->exec[0], "env", -1)
-		|| !ft_strncmp(mini_sh->cmd->exec[0], "export", -1)
+	if (ft_lst_cmd_size(mini_sh->cmd) == 1 && \
+		(!ft_strncmp(mini_sh->cmd->exec[0], "exit", -1) \
+		|| !ft_strncmp(mini_sh->cmd->exec[0], "pwd", -1) \
+		|| !ft_strncmp(mini_sh->cmd->exec[0], "cd", -1) \
+		|| !ft_strncmp(mini_sh->cmd->exec[0], "echo", -1) \
+		|| !ft_strncmp(mini_sh->cmd->exec[0], "env", -1) \
+		|| !ft_strncmp(mini_sh->cmd->exec[0], "export", -1) \
 		|| !ft_strncmp(mini_sh->cmd->exec[0], "unset", -1)))
 		exec_built_in(mini_sh, &mini_sh->cmd);
 	else if (ft_lst_cmd_size(mini_sh->cmd) == 1)
@@ -224,34 +220,44 @@ void	select_exec(t_global *mini_sh)
 	}
 }
 
+int	check_line_and_init_gc(t_global *mini_sh)
+{
+	if (mini_sh->line[0] == 0)
+	{
+		free(mini_sh->line);
+		return (1);
+	}
+	ft_gc_add_back(&mini_sh->gc_parsing, ft_gc_new(mini_sh->line, \
+	"an error occured when mallocing readline", mini_sh));
+	add_history(mini_sh->line);
+	return (0);
+}
+
+void	sig_ctrl_d(t_global *mini_sh)
+{
+	printf("exit\n");
+	ft_gc_clear(&mini_sh->gc_parsing);
+	ft_lst_env_clear(&mini_sh->env);
+	rl_clear_history();
+	exit(0);
+}
+
 void	main_mini_sh(t_global *mini_sh)
 {
 	while (1)
 	{
 		signal(SIGINT, (void (*)(int))sig_child_hndlr);
-		signal(SIGQUIT , (void (*)(int))sig_child_hndlr);
+		signal(SIGQUIT, (void (*)(int))sig_child_hndlr);
 		mini_sh->in_cmd = 0;
 		mini_sh->line = readline("wati-minishell> ");
 		mini_sh->in_cmd = 1;
 		if (mini_sh->line)
 		{
-			if (mini_sh->line[0] == 0)
-			{
-				free(mini_sh->line);
+			if (check_line_and_init_gc(mini_sh) == 1)
 				continue ;
-			}
-			ft_gc_add_back(&mini_sh->gc_parsing,ft_gc_new(mini_sh->line, "an error occured when mallocing readline", mini_sh));
-			add_history(mini_sh->line);
 		}
 		else
-		{
-			printf("exit\n");
-			ft_gc_clear(&mini_sh->gc_parsing);
-			ft_lst_env_clear(&mini_sh->env);
-			rl_clear_history();
-			exit(0);
-			return ;
-		}
+			sig_ctrl_d(mini_sh);
 		if (start_parse(mini_sh->line, mini_sh) == 0)
 		{
 			ft_gc_clear(&mini_sh->gc_parsing);
@@ -259,7 +265,7 @@ void	main_mini_sh(t_global *mini_sh)
 		}
 		define_cmd(mini_sh);
 		mini_sh->in_cmd = 1;
-		select_exec(mini_sh);
+		select_exec(mini_sh, 0, 0);
 		ft_gc_clear(&mini_sh->gc_parsing);
 	}
 }
@@ -272,7 +278,7 @@ int	main(int argc, char **argv, char **env)
 	mini_sh.env = NULL;
 	mini_sh.cmd = NULL;
 	mini_sh.gc_parsing = NULL;
-	mini_sh.line = (char *)NULL;
+	mini_sh.line = (char *) NULL;
 	mini_sh.ret = 0;
 	mini_sh.in_cmd = 0;
 	sig_child_hndlr(0, &mini_sh);

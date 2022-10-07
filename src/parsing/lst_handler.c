@@ -134,7 +134,7 @@ t_lst_env	*ft_lst_env_new(char **key, char **value)
 {
 	t_lst_env	*newl;
 
-	newl = malloc(sizeof(t_lst_env));;
+	newl = malloc(sizeof(t_lst_env));
 	if (!newl)
 		return (NULL);
 	newl->key = *key;
@@ -143,6 +143,7 @@ t_lst_env	*ft_lst_env_new(char **key, char **value)
 	newl->value = *value;
 	newl->prev = NULL;
 	newl->next = NULL;
+	printf("NEW ENV : %s=%s\n", *key, *value);
 	return (newl);
 }
 
