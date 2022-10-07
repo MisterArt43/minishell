@@ -137,7 +137,19 @@ t_lst_env	*cmp_env_key(int *i, char *str, t_global *g, t_lst_env	*tmp)
 	return (NULL);
 }
 
-t_lst_cmd	*do_dollar(char **ret, t_dual_int *sub, t_lst_parse **lst, t_global *g)
+void	dollar_ret(t_global *g, char **ret, t_lst_parse **lst, t_dual_int *sub)
+{
+	if (*ret == NULL)
+		*ret = ft_strjoin(ft_substr((*lst)->str, sub->a, sub->b - sub->a, \
+		g), ft_itoa(g->ret, g), g);
+	else
+		*ret = ft_strjoin(*ret, ft_strjoin(ft_substr((*lst)->str, sub->a, \
+		sub->b - sub->a, g), ft_itoa(g->ret, g), g), g);
+	sub->c++;
+	sub->a = sub->c + 1;
+}
+
+void	do_dollar(char **ret, t_dual_int *sub, t_lst_parse **lst, t_global *g)
 {
 	t_lst_env	*find;
 	t_lst_cmd	*new_cmd;
@@ -155,75 +167,70 @@ t_lst_cmd	*do_dollar(char **ret, t_dual_int *sub, t_lst_parse **lst, t_global *g
 		sub->c--;
 	}
 	else if ((*lst)->str[sub->c + 1] == '?')
+		dollar_ret(g, ret, lst, sub);
+}
+
+void	new_lst(t_lst_parse **lst, t_global *g, t_lst_cmd **new_cmd, char *ret)
+{
+	if (*ret == 0 || check_isempty((*new_cmd)->split_cmd->str) == 0)
 	{
-		if (*ret == NULL)
-			*ret = ft_strjoin(ft_substr((*lst)->str, sub->a, sub->b - sub->a, \
-			g), ft_itoa(g->ret, g), g);
+		if ((*lst)->next)
+			(*lst)->next->prev = (*lst)->prev;
+		if ((*lst)->prev)
+			(*lst)->prev->next = (*lst)->next;
+		else if ((*lst)->next)
+			(*lst) = (*lst)->next;
 		else
-			*ret = ft_strjoin(*ret, ft_strjoin(ft_substr((*lst)->str, sub->a, \
-			sub->b - sub->a, g), ft_itoa(g->ret, g), g), g);
-		sub->c++;
-		sub->a = sub->c + 1;
+			(*new_cmd)->fd[0] = 1;
+	}
+	else
+	{
+		(*new_cmd)->split_cmd->is_near_prev = (*lst)->is_near_prev;
+		(*new_cmd)->split_cmd->prev = (*lst)->prev;
+		if ((*lst)->prev)
+			(*lst)->prev->next = (*new_cmd)->split_cmd;
+		else
+			(*new_cmd)->fd[0] = 2;
+		if ((*lst)->next)
+			(*lst)->next->prev = ft_lst_parse_last((*new_cmd)->split_cmd);
+		ft_lst_parse_last((*new_cmd)->split_cmd)->next = (*lst)->next;
+		(*lst)->next = (*new_cmd)->split_cmd;
+		*lst = (*new_cmd)->split_cmd;
 	}
 }
 
-void	replace_env_var(t_lst_parse **lst, t_lst_cmd **cmd, t_global *g)
+void	replace_env_v(t_lst_parse **lst, t_lst_cmd **cmd, t_global *g, char *r)
 {
 	t_dual_int	sub;
-	char		*ret;
 	t_lst_cmd	*new_cmd;
 
 	if ((*lst)->str[0] == '\'')
 		return ;
 	sub.c = 0;
 	sub.a = 0;
-	ret = NULL;
 	while ((*lst)->str[sub.c])
 	{
+		sub.b = sub.c;
 		if ((*lst)->str[sub.c] == '$')
-		{
-			sub.b = sub.c;
-			do_dollar(&ret, &sub, lst, g);
-		}
+			do_dollar(&r, &sub, lst, g);
 		sub.c++;
 	}
-	if (ret != NULL)
+	if (r != NULL)
 	{
-		ret = ft_strjoin(ret, \
-		ft_substr((*lst)->str, sub.a, sub.c - sub.a, g), g);
-		new_cmd = ft_lst_cmd_new(&g->gc_parsing, ret, g);
+		r = ft_strjoin(r, ft_substr((*lst)->str, sub.a, sub.c - sub.a, g), g);
+		new_cmd = ft_lst_cmd_new(&g->gc_parsing, r, g);
 		ft_split_shell(&new_cmd, g);
-		if (*ret == 0 || check_isempty(new_cmd->split_cmd->str) == 0)
-		{
-			if ((*lst)->next)
-				(*lst)->next->prev = (*lst)->prev;
-			if ((*lst)->prev)
-				(*lst)->prev->next = (*lst)->next;
-			else if ((*lst)->next)
-				(*lst) = (*lst)->next;
-			else {
-				(*lst)->str = ft_strdup("", g);
-			}
-		}
-		else 
-		{
-			new_cmd->split_cmd->is_near_prev = (*lst)->is_near_prev;
-			new_cmd->split_cmd->prev = (*lst)->prev;
-			if ((*lst)->prev)
-				(*lst)->prev->next = new_cmd->split_cmd;
-			else
-				(*cmd)->split_cmd = new_cmd->split_cmd;
-			if ((*lst)->next)
-				(*lst)->next->prev = ft_lst_parse_last(new_cmd->split_cmd);
-			ft_lst_parse_last(new_cmd->split_cmd)->next = (*lst)->next;
-			(*lst)->next = new_cmd->split_cmd;
-			*lst = new_cmd->split_cmd;
-		}
+		new_lst(lst, g, &new_cmd, r);
+		if (new_cmd->fd[0] == 1)
+			(*lst)->str = ft_strdup("", g);
+		else if (new_cmd->fd[0] == 2)
+			(*cmd)->split_cmd = new_cmd->split_cmd;
 	}
 }
 
 void	ft_split_shell(t_lst_cmd **cmd, t_global *mini_sh)
 {
+	char		*r;
 	int			i;
 	t_lst_parse	*lst_parse;
 
@@ -237,7 +244,8 @@ void	ft_split_shell(t_lst_cmd **cmd, t_global *mini_sh)
 	lst_parse = (*cmd)->split_cmd;
 	while (lst_parse)
 	{
-		replace_env_var(&lst_parse, cmd, mini_sh);
+		r = NULL;
+		replace_env_v(&lst_parse, cmd, mini_sh, r);
 		lst_parse = lst_parse->next;
 	}
 }

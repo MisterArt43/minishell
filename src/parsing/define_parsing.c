@@ -176,7 +176,7 @@ void	do_heredoc(t_lst_cmd *lst, t_global *g)
 
 int	check_redirect_has_fd(t_lst_cmd *cmd)
 {
-	t_lst_parse *tmp;
+	t_lst_parse	*tmp;
 
 	tmp = cmd->split_cmd;
 	while (tmp)
@@ -215,5 +215,5 @@ int	define_cmd(t_global *mini_sh)
 		do_heredoc(tmp_cmd, mini_sh);
 		tmp_cmd = tmp_cmd->next;
 	}
-	return  (1);
+	return (1);
 }

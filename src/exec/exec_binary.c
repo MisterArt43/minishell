@@ -14,13 +14,13 @@
 
 char	*get_path(t_global *mini_sh)
 {
-	t_lst_env *cpy;
+	t_lst_env	*cpy;
 
 	cpy = mini_sh->env;
-	while(cpy && ft_strncmp(cpy->key, "PATH", -1))
+	while (cpy && ft_strncmp(cpy->key, "PATH", -1))
 		cpy = cpy->next;
 	if (cpy)
-		return(cpy->value);
+		return (cpy->value);
 	return (NULL);
 }
 
@@ -40,8 +40,9 @@ int	is_relative(t_global *mini_sh, t_lst_cmd *cmd)
 		}
 		else
 		{
-			ft_putendl_fd(ft_strjoin(ft_strjoin("wati-minishell: ", cmd->exec[0]\
-			, mini_sh), ": No such file or directory", mini_sh), 2);
+			ft_putendl_fd(ft_strjoin(\
+			ft_strjoin("wati-minishell: ", cmd->exec[0], mini_sh), \
+			": No such file or directory", mini_sh), 2);
 			mini_sh->ret = 127;
 			exit(127);
 		}
@@ -64,8 +65,11 @@ char	*get_binary(t_global *mini_sh, t_lst_cmd *cmd)
 	i = 0;
 	while (path_splited[i])
 	{
-		if (access(ft_strjoin(ft_strjoin(path_splited[i], "/", mini_sh), cmd->exec[0], mini_sh), F_OK) == 0)
-			return (ft_strjoin(ft_strjoin(path_splited[i], "/", mini_sh), cmd->exec[0], mini_sh));
+		if (access(ft_strjoin(\
+		ft_strjoin(path_splited[i], "/", mini_sh), \
+		cmd->exec[0], mini_sh), F_OK) == 0)
+			return (ft_strjoin(ft_strjoin(path_splited[i], \
+			"/", mini_sh), cmd->exec[0], mini_sh));
 		i++;
 	}
 	return (NULL);

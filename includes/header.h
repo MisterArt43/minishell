@@ -31,6 +31,7 @@
 # include <limits.h> // For cd and pwd to get PATH_MAX
 
 # define CD_ERROR_LOST "cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory"
+# define FORK_OVERRIDE "wati-minishell: fork: Resource temporarily unavailable"
 /**
  * @brief gabadge memory collection
  * \struct
@@ -159,6 +160,8 @@ int		ft_isdigit(int c);
 char	*remove_quote(char *str, t_global *g);
 
 t_lst_env	*cmp_env_key(int *i, char *str, t_global *g, t_lst_env	*tmp);
+
+void	close_fds(int *fd_in, int *fd_out);
 
 
 //  ------------------------------------------------

@@ -14,14 +14,14 @@
 
 char	*rebuild_env_tab(t_lst_env *current, t_global *g)
 {
-	char *res;
+	char	*res;
 
 	if (current->value == NULL)
 		return (NULL);
 	res = ft_strdup(current->key, g);
 	res = ft_strjoin(res, "=", g);
 	res = ft_strjoin(res, current->value, g);
-	return(res);
+	return (res);
 }
 
 char	**rebuild_env(t_lst_env *env, t_global *g)
