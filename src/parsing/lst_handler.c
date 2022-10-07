@@ -143,7 +143,6 @@ t_lst_env	*ft_lst_env_new(char **key, char **value)
 	newl->value = *value;
 	newl->prev = NULL;
 	newl->next = NULL;
-	printf("NEW ENV : %s=%s\n", *key, *value);
 	return (newl);
 }
 
