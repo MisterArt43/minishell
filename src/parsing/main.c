@@ -219,7 +219,7 @@ void	select_exec(t_global *mini_sh)
 		kill(c_pid, SIGTERM);
 		waitpid(l_c_pid, &l_status, 0);
 		if (WIFEXITED(l_status))
-    		mini_sh->ret = WEXITSTATUS(status);
+			mini_sh->ret = WEXITSTATUS(status);
 		kill(l_c_pid, SIGTERM);
 	}
 }
@@ -229,8 +229,10 @@ void	main_mini_sh(t_global *mini_sh)
 	while (1)
 	{
 		signal(SIGINT, (void (*)(int))sig_child_hndlr);
+		signal(SIGQUIT , (void (*)(int))sig_child_hndlr);
 		mini_sh->in_cmd = 0;
 		mini_sh->line = readline("wati-minishell> ");
+		mini_sh->in_cmd = 1;
 		if (mini_sh->line)
 		{
 			if (mini_sh->line[0] == 0)
@@ -246,7 +248,7 @@ void	main_mini_sh(t_global *mini_sh)
 			printf("exit\n");
 			ft_gc_clear(&mini_sh->gc_parsing);
 			ft_lst_env_clear(&mini_sh->env);
-			clear_history();
+			rl_clear_history();
 			exit(0);
 			return ;
 		}

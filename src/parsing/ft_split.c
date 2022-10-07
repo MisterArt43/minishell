@@ -191,13 +191,10 @@ void	replace_env_var(t_lst_parse **lst, t_lst_cmd **cmd, t_global *g)
 	{
 		ret = ft_strjoin(ret, \
 		ft_substr((*lst)->str, sub.a, sub.c - sub.a, g), g);
-		printf("#### RET : %s\n", ret);
-		if (ret[0] == "\"" || ret[0] == "\'")
 		new_cmd = ft_lst_cmd_new(&g->gc_parsing, ret, g);
 		ft_split_shell(&new_cmd, g);
 		if (*ret == 0 || check_isempty(new_cmd->split_cmd->str) == 0)
 		{
-
 			if ((*lst)->next)
 				(*lst)->next->prev = (*lst)->prev;
 			if ((*lst)->prev)
@@ -222,20 +219,13 @@ void	replace_env_var(t_lst_parse **lst, t_lst_cmd **cmd, t_global *g)
 			(*lst)->next = new_cmd->split_cmd;
 			*lst = new_cmd->split_cmd;
 		}
-		// (*lst)->env_var_str = ret;
 	}
-}
-
-void breakpoints(void)
-{
-	return ;
 }
 
 void	ft_split_shell(t_lst_cmd **cmd, t_global *mini_sh)
 {
 	int			i;
 	t_lst_parse	*lst_parse;
-	printf(" -- NEW COMMAND  :  %s\n", (*cmd)->command);
 
 	i = 0;
 	while ((*cmd)->command[i])
@@ -247,11 +237,7 @@ void	ft_split_shell(t_lst_cmd **cmd, t_global *mini_sh)
 	lst_parse = (*cmd)->split_cmd;
 	while (lst_parse)
 	{
-		breakpoints();
-		printf("BEFORE : %s\n", lst_parse->str);
 		replace_env_var(&lst_parse, cmd, mini_sh);
-		printf("AFTER : %s\n --- ------- --- \n", lst_parse->str);
-		breakpoints();
 		lst_parse = lst_parse->next;
 	}
 }

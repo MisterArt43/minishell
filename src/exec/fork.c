@@ -109,14 +109,35 @@ int sig_child_hndlr(const int signal, void *ptr)
 	if (signal == SIGINT)
 	{
 		saved->ret = 130;
-		rl_on_new_line();
-		rl_replace_line("\0", 1);
-		rl_redisplay();
-		write(1, "\nwati-minishell> ", 17);
 		if (saved->in_cmd == 0)
-			ft_gc_clear(&saved->gc_parsing);
+		{
+			rl_on_new_line();
+			rl_replace_line("\0", 1);
+			write(1, "\n", 1);
+			rl_redisplay();
+		}
+		else
+		{
+			write(1, "\n", 1);
+		}
+		ft_gc_clear(&saved->gc_parsing);
 		//kill(0, signal);
 		//main_mini_sh(saved);
+	}
+	if (signal == SIGQUIT)
+	{
+		if (saved->in_cmd == 0)
+		{
+			rl_on_new_line();
+			rl_replace_line("\0", 1);
+			write(1, "\n", 1);
+			rl_redisplay();
+		}
+		else
+		{
+			write(1, "\n", 1);
+		}
+		ft_gc_clear(&saved->gc_parsing);
 	}
 }
 

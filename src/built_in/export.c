@@ -107,8 +107,6 @@ char	*skip_value(char *str, int *i, t_global *g)
 		{
 			if (str[*i + 1] == 0)
 				return (ft_strdup(ret, NULL));
-			// else if (str[*i + 1] == '\"' || str[*i + 1] == '\'')
-			// 	*i += 2;
 			else
 			{
 				skip_quote(str, i);
@@ -238,7 +236,6 @@ char	*rebuild_command(t_lst_cmd *cmd, t_global *g)
 		}
 		tmp = tmp->next;
 	}
-	printf("EXPORT : %s\n", ret);
 	return (ret);
 }
 
