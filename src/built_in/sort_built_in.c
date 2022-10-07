@@ -14,6 +14,7 @@
 
 void	exec_built_in(t_global *mini_sh, t_lst_cmd **cmd)
 {
+	mini_sh->ret = 0;
 	if (ft_nstrncmp((*cmd)->exec[0], "export", 7, 0) == 0)
 		b_in_export(cmd, mini_sh);
 	else if (!ft_strncmp((*cmd)->exec[0], "exit", -1))
@@ -21,7 +22,7 @@ void	exec_built_in(t_global *mini_sh, t_lst_cmd **cmd)
 	else if (!ft_strncmp((*cmd)->exec[0], "pwd", -1))
 		b_in_pwd(mini_sh);
 	else if (!ft_strncmp((*cmd)->exec[0], "cd", -1))
-		b_in_cd(mini_sh, cmd);
+		b_in_cd(mini_sh, cmd, 0);
 	else if (!ft_strncmp((*cmd)->exec[0], "echo", -1))
 		b_in_echo(mini_sh, cmd);
 	else if (!ft_strncmp((*cmd)->exec[0], "env", -1))

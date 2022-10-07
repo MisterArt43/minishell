@@ -14,28 +14,26 @@
 
 t_lst_env	*find_env_value(char *str, t_global *g, t_lst_env *tmp)
 {
-	int i;
-	int	j;
-	int	tmp_i;
+	t_dual_int	i;
 
-	i = 0;
+	i.a = 0;
 	while (tmp)
 	{
-		tmp_i = i;
-		j = 0;
-		if (tmp->key[j] == str[i])
+		i.c = i.a;
+		i.b = 0;
+		if (tmp->key[i.b] == str[i.a])
 		{
 			while (1)
 			{
-				if (tmp->key[j] == 0 && ft_isalnum(str[tmp_i]) == 0)
+				if (tmp->key[i.b] == 0 && ft_isalnum(str[i.c]) == 0)
 				{
-					i = tmp_i;
+					i.a = i.c;
 					return (tmp);
 				}
-				if (str[tmp_i] != tmp->key[j] || !ft_isalnum(str[tmp_i]))
+				if (str[i.c] != tmp->key[i.b] || !ft_isalnum(str[i.c]))
 					break ;
-				j++;
-				tmp_i++;
+				i.b++;
+				i.c++;
 			}
 		}
 		tmp = tmp->next;
@@ -43,7 +41,7 @@ t_lst_env	*find_env_value(char *str, t_global *g, t_lst_env *tmp)
 	return (NULL);
 }
 
-void	change_value_of_key(t_global *mini_sh, t_lst_env **env, char *key, char *newValue)
+void	change_value_of_key(t_lst_env **env, char *key, char *newValue)
 {
 	t_lst_env	*tmp;
 
@@ -51,7 +49,7 @@ void	change_value_of_key(t_global *mini_sh, t_lst_env **env, char *key, char *ne
 	while (tmp)
 	{
 		if (!ft_strncmp(tmp->key, key, -1))
-			break;
+			break ;
 		tmp = tmp->next;
 	}
 	if (tmp)
@@ -59,6 +57,18 @@ void	change_value_of_key(t_global *mini_sh, t_lst_env **env, char *key, char *ne
 		free(tmp->value);
 		tmp->value = newValue;
 	}
+}
+
+int	check_chdir(char *str, t_global *g)
+{
+	if (chdir(str) != EACCES)
+		ft_putendl_fd(ft_strjoin(ft_strjoin("wati-minishell: cd: ", str, g), \
+		": Permission denied", g), 2);
+	else
+		ft_putendl_fd(ft_strjoin(ft_strjoin("wati-minishell: cd: ", str, g), \
+		": Not a directory", g), 2);
+	g->ret = 1;
+	return (g->ret);
 }
 
 int	check_file_dir(char *str, t_global *g, int mode)
@@ -72,7 +82,6 @@ int	check_file_dir(char *str, t_global *g, int mode)
 		g->ret = 0;
 		return (0);
 	}
-	
 	else if (access(ft_strjoin(ft_strjoin(pwd, "/", g), str, g), F_OK) != 0)
 	{
 		ft_putstr_fd(ft_strjoin(ft_strjoin("wati-minishell: cd: ", str, g), \
@@ -81,141 +90,43 @@ int	check_file_dir(char *str, t_global *g, int mode)
 		return (1);
 	}
 	else if (mode == 0)
-	{
-		printf("%s\n", str);
-		if (chdir(str) != EACCES)
-		{
-			ft_putendl_fd(ft_strjoin(ft_strjoin("wati-minishell: cd: ", str, g), \
-			": Permission denied", g), 2);
-			g->ret = 1;
-			return (1);
-		}
-		else
-		{
-			ft_putendl_fd(ft_strjoin(ft_strjoin("wati-minishell: cd: ", str, g), \
-			": Not a directory", g), 2);
-			g->ret = 1;
-			return (1);		
-		}
-	}
-	else
-		return (2);
+		return (check_chdir(str, g));
+	return (2);
 }
 
-void	b_in_cd(t_global *mini_sh, t_lst_cmd **cmd)
+void	move_pwd(t_global *g, char *pwd, char *er)
+{
+	change_value_of_key(&g->env, "OLDPWD", ft_strdup(pwd, NULL));
+	if (!getcwd(pwd, PATH_MAX))
+		return (ft_putendl_fd(er, 2));
+	change_value_of_key(&g->env, "PWD", ft_strdup(pwd, NULL));
+	return ;
+}
+
+void	b_in_cd(t_global *mini_sh, t_lst_cmd **cmd, int i)
 {
 	char	pwd[PATH_MAX];
-	int		i;
 
-	i = 0;
-	mini_sh->ret = 0;
 	if (find_env_value("OLDPWD", mini_sh, mini_sh->env)->value == NULL)
-			change_value_of_key(mini_sh, &mini_sh->env, "OLDPWD", ft_strdup("", NULL));
+		change_value_of_key(&mini_sh->env, "OLDPWD", ft_strdup("", NULL));
 	if (!getcwd(pwd, PATH_MAX))
-	{
-		ft_putendl_fd("cd: error retrieving current directory: getcwd: cannot \
-		access parent directories: No such file or directory", 2);
-		mini_sh->ret = 0;
-		return ;
-	}
+		return (ft_putendl_fd(CD_ERROR_LOST, 2));
 	if ((*cmd)->exec[1] == NULL)
 	{
+		mini_sh->ret = 1;
 		if (!find_env_value("HOME", mini_sh, mini_sh->env)->value)
-		{
-			ft_putendl_fd("wati-minishell: cd: HOME not set", 2);
-			mini_sh->ret = 1;
-			return ;
-		}
+			return (ft_putendl_fd("wati-minishell: cd: HOME not set", 2));
 		else if (!chdir(find_env_value("HOME", mini_sh, mini_sh->env)->value))
-		{
-			change_value_of_key(mini_sh, &mini_sh->env, "OLDPWD", ft_strdup(pwd, NULL));
-			if (!getcwd(pwd, PATH_MAX))
-			{
-				ft_putendl_fd("wati-minishell: cd: HOME not set", 2);
-				mini_sh->ret = 0;
-				return ;
-			}
-			change_value_of_key(mini_sh, &mini_sh->env, "PWD", ft_strdup(pwd, NULL));
-			mini_sh->ret = 0;
-			return ;
-		}
+			return (move_pwd(mini_sh, pwd, \
+			"wati-minishell: cd: HOME not set", 1));
 	}
 	else if ((*cmd)->exec[1])
 	{
+		mini_sh->ret = 0;
 		if (!chdir((*cmd)->exec[1]))
-		{
-			change_value_of_key(mini_sh, &mini_sh->env, "OLDPWD", ft_strdup(pwd, NULL));
-			if (!getcwd(pwd, PATH_MAX))
-			{
-				ft_putendl_fd("cd: error retrieving current directory: \
-				getcwd: cannot access parent directories: No such file \
-				or directory", 2);
-				mini_sh->ret = 0;
-				return ;
-			}
-			change_value_of_key(mini_sh, &mini_sh->env, "PWD", ft_strdup(pwd, NULL));
-			mini_sh->ret = 0;
-			return ;
-		}
-		else
-			check_file_dir((*cmd)->exec[1], mini_sh, 0);
+			return (move_pwd(mini_sh, pwd, CD_ERROR_LOST));
+		check_file_dir((*cmd)->exec[1], mini_sh, 0);
 		return ;
 	}
-		mini_sh->ret = 1;
-		return ;
+	mini_sh->ret = 1;
 }
-
-
-
-// #include "../../includes/header.h"
-
-// void	change_value_of_key(t_global *mini_sh, t_lst_env **env, char *key, char *newValue)
-// {
-// 	t_lst_env	*tmp;
-
-// 	tmp = *env;
-// 	while (tmp)
-// 	{
-// 		if (!ft_strncmp(tmp->key, key, -1))
-// 			break;
-// 		tmp = tmp->next;
-// 	}
-// 	if (tmp)
-// 	{
-// 		free(tmp->value);
-// 		tmp->value = newValue;
-// 	}
-// }
-
-// int	b_in_cd(t_global *mini_sh, t_lst_cmd **cmd)
-// {
-// 	char	pwd[PATH_MAX];
-
-// 	mini_sh->ret = 0;
-// 	getcwd(pwd, PATH_MAX);
-// 	if ((*cmd)->exec[1])
-// 	{
-// 		if (!chdir((*cmd)->exec[1]))
-// 		{
-// 			change_value_of_key(mini_sh, &mini_sh->env, "OLDPWD", ft_strdup(pwd, NULL));
-// 			getcwd(pwd, PATH_MAX);
-// 			change_value_of_key(mini_sh, &mini_sh->env, "PWD", ft_strdup(pwd, NULL));
-// 			return (0);
-// 		}
-// 		else if (access(ft_strjoin(ft_strjoin(pwd, "/", mini_sh), (*cmd)->exec[1], mini_sh), F_OK) != 0)
-// 		{
-// 			ft_putstr_fd("wati-minishell: cd: ", 2);
-// 			ft_putstr_fd((*cmd)->exec[1], 2);
-// 			ft_putendl_fd(": No such file or directory", 2);
-// 			return (1);
-// 		}
-// 		else
-// 		{
-// 			ft_putstr_fd("wati-minishell: cd: ", 2);
-// 			ft_putstr_fd((*cmd)->exec[1], 2);
-// 			ft_putendl_fd(": Not a directory", 2);
-// 			return (1);
-// 		}
-// 	}
-// 	return (1);
-// }
