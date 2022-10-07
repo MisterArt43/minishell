@@ -47,17 +47,17 @@ void	left_redirect(int *fd_in, t_lst_parse *tmp, t_global *g)
 		close(*fd_in);
 }
 
-void	right_right_redirect(int *fd_in, int *fd_out, t_lst_parse *tmp, t_global *g)
+void	right_right_redirect(int *in, int *out, t_lst_parse *tmp, t_global *g)
 {
-	if (*fd_in > 0)
-		close(*fd_in);
-	if (*fd_out > 0)
-		close(*fd_out);
-	*fd_out = open(remove_quote(tmp->next->str, g), \
+	if (*in > 0)
+		close(*in);
+	if (*out > 0)
+		close(*out);
+	*out = open(remove_quote(tmp->next->str, g), \
 	O_CREAT | O_RDWR | O_APPEND, S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR);
-	dup2(*fd_out, STDOUT_FILENO);
-	if (*fd_out > 0)
-		close(*fd_out);
+	dup2(*out, STDOUT_FILENO);
+	if (*out > 0)
+		close(*out);
 }
 
 void	right_redirect(int	*fd_in, int *fd_out, t_lst_parse *tmp, t_global *g)
@@ -66,13 +66,13 @@ void	right_redirect(int	*fd_in, int *fd_out, t_lst_parse *tmp, t_global *g)
 		close(*fd_in);
 	if (*fd_out > 0)
 		close(*fd_out);
-	*fd_out = open(remove_quote(tmp->next->str, g), O_CREAT | O_RDWR | O_TRUNC, S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR);
+	*fd_out = open(remove_quote(tmp->next->str, g), \
+	O_CREAT | O_RDWR | O_TRUNC, S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR);
 	dup2(*fd_out, STDOUT_FILENO);
 	if (*fd_out > 0)
 		close(*fd_out);
 }
 
-//EXIT ?
 void	check_fd_in(int *fd_in, int *fd_out, t_lst_cmd *cmd, t_global *g)
 {
 	t_lst_parse	*tmp;
@@ -88,7 +88,7 @@ void	check_fd_in(int *fd_in, int *fd_out, t_lst_cmd *cmd, t_global *g)
 			if (!access(remove_quote(tmp->next->str, g), F_OK))
 				if (check_file_dir(remove_quote(tmp->next->str, g), g, 1) == 2)
 					left_redirect(fd_in, tmp, g);
-		if (tmp->type == 5) // HEREDOC
+		if (tmp->type == 5)
 			heredoc(tmp);
 		tmp = tmp->next;
 	}
@@ -101,12 +101,13 @@ void	check_fd_in(int *fd_in, int *fd_out, t_lst_cmd *cmd, t_global *g)
 	}
 }
 
-int sig_child_hndlr(const int signal, void *ptr)
+int	sig_child_hndlr(const int signal, void *ptr)
 {
-	static t_global *saved = NULL;
-	if (saved == NULL)
+	static t_global	*saved;
+
+	if (signal == 0)
 		saved = ptr;
-	if (signal == SIGINT)
+	if (signal == SIGINT || signal == SIGQUIT)
 	{
 		saved->ret = 130;
 		if (saved->in_cmd == 0)
@@ -117,35 +118,13 @@ int sig_child_hndlr(const int signal, void *ptr)
 			rl_redisplay();
 		}
 		else
-		{
 			write(1, "\n", 1);
-		}
-		ft_gc_clear(&saved->gc_parsing);
-		//kill(0, signal);
-		//main_mini_sh(saved);
-	}
-	if (signal == SIGQUIT)
-	{
-		if (saved->in_cmd == 0)
-		{
-			rl_on_new_line();
-			rl_replace_line("\0", 1);
-			write(1, "\n", 1);
-			rl_redisplay();
-		}
-		else
-		{
-			write(1, "\n", 1);
-		}
 		ft_gc_clear(&saved->gc_parsing);
 	}
 }
 
-void	exec_cmd(t_global *mini_sh)
+void	exec_cmd(t_global *mini_sh, pid_t pid, int status)
 {
-	pid_t	pid = 0;
-	int		status = 0;
-
 	pid = fork();
 	if (pid == -1)
 		perror("fork");
@@ -156,19 +135,13 @@ void	exec_cmd(t_global *mini_sh)
 			mini_sh->ret = WEXITSTATUS(status);
 		kill(pid, SIGTERM);
 	}
-	else 
+	else
 	{
 		if (pipe(mini_sh->cmd->fd) < 0)
-		{
-			ft_putendl_fd("PIPE ERR", 2);
-			return ;
-		}
+			return (ft_putendl_fd("PIPE ERR", 2));
 		check_fd_in(&mini_sh->cmd->fd[0], &mini_sh->cmd->fd[1], \
 		mini_sh->cmd, mini_sh);
-		if (mini_sh->cmd->fd[0] > 0)
-			close(mini_sh->cmd->fd[0]);
-		if (mini_sh->cmd->fd[1] > 0)
-			close(mini_sh->cmd->fd[1]);
+		close_fds(&mini_sh->cmd->fd[0], &mini_sh->cmd->fd[1]);
 		if (!check_path(mini_sh, mini_sh->cmd))
 		{
 			if (execve(get_binary(mini_sh, mini_sh->cmd), mini_sh->cmd->exec, \

@@ -118,11 +118,10 @@ void	b_in_cd(t_global *mini_sh, t_lst_cmd **cmd, int i)
 			return (ft_putendl_fd("wati-minishell: cd: HOME not set", 2));
 		else if (!chdir(find_env_value("HOME", mini_sh, mini_sh->env)->value))
 			return (move_pwd(mini_sh, pwd, \
-			"wati-minishell: cd: HOME not set", 1));
+			"wati-minishell: cd: HOME not set"));
 	}
 	else if ((*cmd)->exec[1])
 	{
-		mini_sh->ret = 0;
 		if (!chdir((*cmd)->exec[1]))
 			return (move_pwd(mini_sh, pwd, CD_ERROR_LOST));
 		check_file_dir((*cmd)->exec[1], mini_sh, 0);

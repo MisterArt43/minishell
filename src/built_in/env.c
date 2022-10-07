@@ -18,7 +18,7 @@ void	b_in_env(t_global *mini_sh, t_lst_cmd **cmd)
 	print_env(mini_sh->env);
 }
 
-void print_env(t_lst_env *env)
+void	print_env(t_lst_env *env)
 {
 	while (env)
 	{

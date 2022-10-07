@@ -20,6 +20,7 @@ void	b_in_pwd(t_global *mini_sh)
 	{
 		printf("%s\n", cwd);
 		mini_sh->ret = 0;
+		return ;
 	}
-		mini_sh->ret = 1;
+	mini_sh->ret = 1;
 }

@@ -211,7 +211,7 @@ void	select_exec(t_global *mini_sh)
 		|| !ft_strncmp(mini_sh->cmd->exec[0], "unset", -1)))
 		exec_built_in(mini_sh, &mini_sh->cmd);
 	else if (ft_lst_cmd_size(mini_sh->cmd) == 1)
-		exec_cmd(mini_sh);
+		exec_cmd(mini_sh, 0, 0);
 	else if (ft_lst_cmd_size(mini_sh->cmd) > 1)
 	{
 		l_c_pid = complicado(mini_sh, mini_sh->cmd, 0, &c_pid);

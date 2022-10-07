@@ -15,7 +15,7 @@
 char	*remove_quote(char *str, t_global *g)
 {
 	if (str[0] == '\"' || str[0] == '\'')
-		return (ft_substr(str, 1, ft_strlen(str) -2, g));
+		return (ft_substr(str, 1, ft_strlen(str) - 2, g));
 	return (str);
 }
 
