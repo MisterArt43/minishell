@@ -75,6 +75,25 @@ int	exec_len(t_lst_parse *tmp)
 	return (i);
 }
 
+void	add_exec2(t_lst_parse **parse, t_lst_cmd **lst, t_global *g, char **ret)
+{
+	if (*ret == NULL)
+	{
+		if ((*parse)->env_var_str != NULL)
+			*ret = remove_quote((*parse)->env_var_str, g);
+		else
+			*ret = remove_quote((*parse)->str, g);
+	}
+	else
+	{
+		if ((*parse)->env_var_str != NULL)
+			*ret = ft_strjoin(*ret, remove_quote(\
+			(*parse)->env_var_str, g), g);
+		else
+			*ret = ft_strjoin(*ret, remove_quote((*parse)->str, g), g);
+	}
+}
+
 char	*add_exec(t_lst_parse **parse, t_lst_cmd **lst, t_global *g)
 {
 	char	*ret;
@@ -83,23 +102,7 @@ char	*add_exec(t_lst_parse **parse, t_lst_cmd **lst, t_global *g)
 	while ((*parse))
 	{
 		if ((*parse)->type == 0 || (*parse)->type == 1)
-		{
-			if (ret == NULL)
-			{
-				if ((*parse)->env_var_str != NULL)
-					ret = remove_quote((*parse)->env_var_str, g);
-				else
-					ret = remove_quote((*parse)->str, g);
-			}
-			else
-			{
-				if ((*parse)->env_var_str != NULL)
-					ret = ft_strjoin(ret, remove_quote(\
-					(*parse)->env_var_str, g), g);
-				else
-					ret = ft_strjoin(ret, remove_quote((*parse)->str, g), g);
-			}
-		}
+			add_exec2(parse, lst, g, &ret);
 		if ((*parse)->next && (*parse)->next->is_near_prev == 0)
 			break ;
 		(*parse) = (*parse)->next;
