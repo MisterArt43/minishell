@@ -176,6 +176,7 @@ void	exec_cmd(t_global *mini_sh, pid_t pid, int status)
 			rebuild_env(mini_sh->env, mini_sh)) == -1)
 				cmd_not_vld(mini_sh, mini_sh->cmd);
 		}
+		ft_gc_clear(&mini_sh->gc_parsing);
 		exit(EXIT_FAILURE);
 	}
 }

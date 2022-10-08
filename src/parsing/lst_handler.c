@@ -173,7 +173,7 @@ void	ft_lst_env_add_back(t_lst_env **alst, t_lst_env *new, t_global *g)
 	new->prev = tmp;
 }
 
-void	ft_lst_env_del_in(t_lst_env *lst)
+void	ft_lst_env_del_in(t_lst_env *lst, t_global *g)
 {
 	if (lst->prev != NULL)
 	{
@@ -184,7 +184,12 @@ void	ft_lst_env_del_in(t_lst_env *lst)
 	}
 	else
 		if (lst->next != NULL)
+		{
 			lst->next->prev = NULL;
+			g->env = g->env->next;
+		}
+		else
+			return ;
 	if (!lst)
 		return ;
 	free(lst->key);

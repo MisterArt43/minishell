@@ -25,7 +25,7 @@ void	do_unset(char **exec, t_lst_env *tmp, t_global *g, t_lst_cmd **cmd)
 		{
 			if (ft_nstrncmp(exec[i], tmp->key, ft_strlen(tmp->key), 0) == 0)
 			{
-				ft_lst_env_del_in(tmp);
+				ft_lst_env_del_in(tmp, g);
 				break ;
 			}
 			tmp = tmp->next;

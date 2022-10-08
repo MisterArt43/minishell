@@ -198,7 +198,7 @@ int			ft_lst_env_size(t_lst_env *lst);
 t_lst_env	*ft_lst_env_new(char **key, char **value);
 t_lst_env	*ft_lst_env_last(t_lst_env *lst);
 void		ft_lst_env_add_back(t_lst_env **alst, t_lst_env *new, t_global *g);
-void		ft_lst_env_del_in(t_lst_env *lst);
+void		ft_lst_env_del_in(t_lst_env *lst, t_global *g);
 
 
 //  ------------------------------------------------
