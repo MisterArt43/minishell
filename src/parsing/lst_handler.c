@@ -183,6 +183,7 @@ void	ft_lst_env_del_in(t_lst_env *lst, t_global *g)
 			lst->prev->next = NULL;
 	}
 	else
+	{
 		if (lst->next != NULL)
 		{
 			lst->next->prev = NULL;
@@ -190,6 +191,7 @@ void	ft_lst_env_del_in(t_lst_env *lst, t_global *g)
 		}
 		else
 			return ;
+	}
 	if (!lst)
 		return ;
 	free(lst->key);
