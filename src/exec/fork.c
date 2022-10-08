@@ -14,9 +14,9 @@
 
 void	close_fds(int *fd_in, int *fd_out)
 {
-	if (*fd_in > 0)
+	if (*fd_in > 1)
 		close(*fd_in);
-	if (*fd_out > 0)
+	if (*fd_out > 1)
 		close(*fd_out);
 }
 
@@ -25,10 +25,7 @@ void	heredoc(t_lst_parse *tmp)
 	int	fd[2];
 
 	if (pipe(fd) < 0)
-	{
-		ft_putendl_fd("PIPE ERR", 2);
-		return ;
-	}
+		return (ft_putendl_fd("PIPE ERR", 2));
 	write(fd[1], tmp->heredoc, ft_strlen(tmp->heredoc));
 	dup2(fd[0], STDIN_FILENO);
 	if (fd[1] > 0)
@@ -39,7 +36,7 @@ void	heredoc(t_lst_parse *tmp)
 
 void	left_redirect(int *fd_in, t_lst_parse *tmp, t_global *g)
 {
-	if (*fd_in > 0)
+	if (*fd_in > 1)
 		close(*fd_in);
 	*fd_in = open(remove_quote(tmp->next->str, g), O_RDONLY);
 	dup2(*fd_in, STDIN_FILENO);
@@ -49,9 +46,9 @@ void	left_redirect(int *fd_in, t_lst_parse *tmp, t_global *g)
 
 void	right_right_redirect(int *in, int *out, t_lst_parse *tmp, t_global *g)
 {
-	if (*in > 0)
+	if (*in > 1)
 		close(*in);
-	if (*out > 0)
+	if (*out > 1)
 		close(*out);
 	*out = open(remove_quote(tmp->next->str, g), \
 	O_CREAT | O_RDWR | O_APPEND, S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR);
@@ -62,15 +59,44 @@ void	right_right_redirect(int *in, int *out, t_lst_parse *tmp, t_global *g)
 
 void	right_redirect(int	*fd_in, int *fd_out, t_lst_parse *tmp, t_global *g)
 {
-	if (*fd_in > 0)
+	if (*fd_in > 1)
 		close(*fd_in);
-	if (*fd_out > 0)
+	if (*fd_out > 1)
 		close(*fd_out);
 	*fd_out = open(remove_quote(tmp->next->str, g), \
 	O_CREAT | O_RDWR | O_TRUNC, S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR);
 	dup2(*fd_out, STDOUT_FILENO);
-	if (*fd_out > 0)
+	if (*fd_out > 1)
 		close(*fd_out);
+}
+
+void	check_fd_out(int *fd_in, int *fd_out, t_lst_cmd *cmd, t_global *g)
+{
+	t_lst_parse	*tmp;
+	t_lst_parse	*tmp2;
+	int			fd;
+
+	fd = 0;
+	tmp2 = NULL;
+	tmp = cmd->split_cmd;
+	while (tmp)
+	{
+		if (tmp->type == 4 || tmp->type == 3)
+		{
+			fd = open(remove_quote(tmp->next->str, g), O_CREAT | O_RDWR | \
+			O_APPEND, S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR);
+			if (fd > 0)
+				close(fd);
+			tmp2 = tmp;
+		}
+	}
+	if (tmp2 != NULL)
+	{
+		if (tmp2->type == 4)
+			right_redirect(fd_in, fd_out, tmp2, g);
+		if (tmp2->type == 3)
+			right_right_redirect(fd_in, fd_out, tmp2, g);
+	}
 }
 
 void	check_fd_in(int *fd_in, int *fd_out, t_lst_cmd *cmd, t_global *g)
@@ -117,8 +143,10 @@ int	sig_child_hndlr(const int signal, void *ptr)
 			write(1, "\n", 1);
 			rl_redisplay();
 		}
-		else
+		else if (signal == SIGINT)
 			write(1, "\n", 1);
+		else if (signal == SIGQUIT)
+			write(1, "Quit\n", 5);
 		ft_gc_clear(&saved->gc_parsing);
 	}
 }

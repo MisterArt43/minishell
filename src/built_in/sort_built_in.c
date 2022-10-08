@@ -14,6 +14,9 @@
 
 void	exec_built_in(t_global *mini_sh, t_lst_cmd **cmd)
 {
+	(*cmd)->fd[0] = 1;
+	(*cmd)->fd[1] = 1;
+	check_fd_in(&(*cmd)->fd[0], &(*cmd)->fd[1], *cmd, mini_sh);
 	mini_sh->ret = 0;
 	if (ft_nstrncmp((*cmd)->exec[0], "export", 7, 0) == 0)
 		b_in_export(cmd, mini_sh);
@@ -29,4 +32,6 @@ void	exec_built_in(t_global *mini_sh, t_lst_cmd **cmd)
 		b_in_env(mini_sh, cmd);
 	else if (!ft_nstrncmp((*cmd)->exec[0], "unset", 6, 0))
 		b_in_unset(cmd, mini_sh);
+	dup2(STDOUT_FILENO, 1);
+	dup2(STDIN_FILENO, 1);
 }

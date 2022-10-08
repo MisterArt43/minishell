@@ -103,7 +103,6 @@ typedef struct s_dual_int
 	int	c;
 }	t_dual_int;
 
-
 //  ------------------------------------------------
 //  < ------------ GARBADGE COLLECTOR ------------ >
 //  ------------------------------------------------
@@ -122,7 +121,6 @@ void	ft_gc_delone(t_gc *lst);
 void	ft_gc_clear(t_gc **lst);
 
 int	ft_gc_size(t_gc *lst);
-
 
 
 //  ------------------------------------------------
@@ -169,7 +167,7 @@ void	close_fds(int *fd_in, int *fd_out);
 //  ------------------------------------------------
 
 //check if the cmd is filled with nothing more than space, skip line, tab ...
-int check_isempty(char *cmd);
+int	check_isempty(char *cmd);
 //check if the cmd have a correct format of pipe
 int	check_pipe(char *cmd, int i, int state);
 //check if the redirection are valid
@@ -215,8 +213,6 @@ int			define_cmd(t_global *mini_sh);
 char		*rebuild_command(t_lst_cmd *cmd, t_global *g);
 
 
-
-
 //  ------------------------------------------------
 //  < ------------      READLINE      ------------ >
 //  ------------------------------------------------
@@ -257,12 +253,11 @@ void	malloc_exit(t_global *g, const char *er);
 
 //yes i know
 int		check_no_arg(t_lst_cmd **cmd, char *er_cmd, t_global *g);
-void	print_env(t_lst_env *env);
 char	*get_binary(t_global *mini_sh, t_lst_cmd *cmd);
 char	*get_path(t_global *mini_sh);
 int		complicado(t_global *mini_sh, t_lst_cmd *cmd, int fd_in, pid_t *c_pid);
 
 // SIGNAUX
-int sig_child_hndlr(const int signal, void *ptr);
+int		sig_child_hndlr(const int signal, void *ptr);
 
 #endif
