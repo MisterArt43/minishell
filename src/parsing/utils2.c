@@ -24,6 +24,24 @@ static int	ft_intlen(int n, int i)
 		return (i + 1);
 }
 
+void	add_numlen(int *n, int mode)
+{
+	int	ret;
+
+	ret = 0;
+	if (mode == 0)
+	{
+		ret = *n % 10 + '0';
+		*n /= 10;
+	}
+	else
+	{
+		ret = -(n % 10) + '0';
+		*n /= 10;
+	}
+	return (ret);
+}
+
 char	*ft_itoa(int n, t_global *g)
 {
 	int		numlen;
@@ -31,7 +49,7 @@ char	*ft_itoa(int n, t_global *g)
 
 	numlen = ft_intlen(n, 1);
 	if (g != NULL)
-		num = ft_gc_add_back(&g->gc_parsing,ft_gc_new(\
+		num = ft_gc_add_back(&g->gc_parsing, ft_gc_new(\
 		malloc(numlen), "error malloc in itoa", g));
 	else
 		num = malloc(numlen);
@@ -41,18 +59,12 @@ char	*ft_itoa(int n, t_global *g)
 	if (n >= 0)
 	{
 		while (numlen--)
-		{
-			*(num + numlen) = n % 10 + '0';
-			n /= 10;
-		}
+			*(num + numlen) = add_numlen(&n, 0);
 		return (num);
 	}
 	*num = '-';
 	while (--numlen)
-	{
-		*(num + numlen) = -(n % 10) + '0';
-		n /= 10;
-	}
+		*(num + numlen) = add_numlen(&n, 1);
 	return (num);
 }
 
@@ -73,7 +85,7 @@ int	ft_atoi(const char *str)
 		neg *= -1;
 		i++;
 	}
-	while (str[i] >= '0' && str[i] <= '9' && str[i]!=0)
+	while (str[i] >= '0' && str[i] <= '9' && str[i] != 0)
 	{
 		j *= 10;
 		j += str[i] - '0';

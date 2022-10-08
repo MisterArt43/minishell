@@ -39,8 +39,9 @@ char	*ft_strdup(const char *s1, t_global *g)
 
 	i = 0;
 	if (g != NULL)
-		cpy = (char *)ft_gc_add_back(&g->gc_parsing, ft_gc_new(malloc((ft_strlen(s1) + 1) * \
-	sizeof(char)), "An error occur while mallocing", g));
+		cpy = (char *)ft_gc_add_back(&g->gc_parsing, ft_gc_new(\
+		malloc((ft_strlen(s1) + 1) * sizeof(char)), \
+		"An error occur while mallocing", g));
 	else
 		cpy = malloc((ft_strlen(s1) + 1) * sizeof(char));
 	if (!cpy)
@@ -66,8 +67,8 @@ char	*ft_substr(char const *s, unsigned int start, size_t len, t_global *g)
 		i++;
 	if (g != NULL)
 	{
-		res = (char *)ft_gc_add_back(&g->gc_parsing, ft_gc_new(malloc((i + 1) * sizeof(char)), \
-		"An error occur while mallocing", g));
+		res = (char *)ft_gc_add_back(&g->gc_parsing, ft_gc_new(malloc(\
+		(i + 1) * sizeof(char)), "An error occur while mallocing", g));
 	}
 	else
 		res = malloc((i + 1) * sizeof(char));
@@ -118,10 +119,10 @@ char	*ft_strjoin(char *s1, char *s2, t_global *g)
 	if (!res)
 		return (NULL);
 	while (s1[i])
-		{
-			res[i] = s1[i];
-			i++;
-		}
+	{
+		res[i] = s1[i];
+		i++;
+	}
 	len = 0;
 	while (s2[len])
 	{
