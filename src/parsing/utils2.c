@@ -24,7 +24,7 @@ static int	ft_intlen(int n, int i)
 		return (i + 1);
 }
 
-void	add_numlen(int *n, int mode)
+int	add_numlen(int *n, int mode)
 {
 	int	ret;
 
@@ -36,7 +36,7 @@ void	add_numlen(int *n, int mode)
 	}
 	else
 	{
-		ret = -(n % 10) + '0';
+		ret = -(*n % 10) + '0';
 		*n /= 10;
 	}
 	return (ret);

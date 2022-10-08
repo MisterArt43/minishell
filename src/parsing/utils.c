@@ -92,11 +92,30 @@ int	ft_isalnum(int c)
 	return (0);
 }
 
+char	*ft_strjoin2(char *s1, char *s2, char *res, t_dual_int i)
+{
+	if (!res)
+		return (NULL);
+	while (s1[i.a])
+	{
+		res[i.a] = s1[i.a];
+		i.a++;
+	}
+	i.b = 0;
+	while (s2[i.b])
+	{
+		res[i.a] = s2[i.b];
+		i.a++;
+		i.b++;
+	}
+	res[i.a] = 0;
+	return (res);
+}
+
 char	*ft_strjoin(char *s1, char *s2, t_global *g)
 {
-	char	*res;
-	int		i;
-	int		len;
+	char		*res;
+	t_dual_int	i;
 
 	if (!s1)
 	{
@@ -107,31 +126,16 @@ char	*ft_strjoin(char *s1, char *s2, t_global *g)
 	}
 	if (!s2)
 		return (s1);
-	i = 0;
-	len = ft_strlen(s1) + ft_strlen(s2);
+	i.a = 0;
+	i.b = ft_strlen(s1) + ft_strlen(s2);
 	if (g != NULL)
 	{
 		res = ft_gc_add_back(&g->gc_parsing, ft_gc_new(\
-		malloc((len + 1) * sizeof(char)), "invalid malloc in strjoin", g));
+		malloc((i.b + 1) * sizeof(char)), "invalid malloc in strjoin", g));
 	}
 	else
-		res = malloc((len + 1) * sizeof(char));
-	if (!res)
-		return (NULL);
-	while (s1[i])
-	{
-		res[i] = s1[i];
-		i++;
-	}
-	len = 0;
-	while (s2[len])
-	{
-		res[i] = s2[len];
-		i++;
-		len++;
-	}
-	res[i] = 0;
-	return (res);
+		res = malloc((i.b + 1) * sizeof(char));
+	return (ft_strjoin2(s1, s2, res, i));
 }
 
 int	ft_nstrncmp(const char *s1, const char *s2, size_t n, size_t start)
