@@ -112,21 +112,24 @@ void	export_put_value(char *key, char *value, t_global *g, t_lst_env **env)
 {
 	t_lst_env	*tmp;
 
-	tmp = *env;
-	while (tmp)
+	if (ft_nstrncmp(key, "_", 2, 0) != 0)
 	{
-		if (ft_nstrncmp(tmp->key, key, ft_strlen(key), 0) == 0)
-			break ;
-		tmp = tmp->next;
+		tmp = *env;
+		while (tmp)
+		{
+			if (ft_nstrncmp(tmp->key, key, ft_strlen(key), 0) == 0)
+				break ;
+			tmp = tmp->next;
+		}
+		if (tmp != NULL)
+		{
+			free(key);
+			free(tmp->value);
+			tmp->value = value;
+		}
+		else
+			ft_lst_env_add_back(env, ft_lst_env_new(&key, &value), g);
 	}
-	if (tmp != NULL)
-	{
-		free(key);
-		free(tmp->value);
-		tmp->value = value;
-	}
-	else
-		ft_lst_env_add_back(env, ft_lst_env_new(&key, &value), g);
 }
 
 void	sort_export_ret_one(t_global *g, char *str, int *i, t_lst_env *tmp)

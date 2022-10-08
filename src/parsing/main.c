@@ -128,6 +128,31 @@ void	add_oldpwd(t_lst_env **lst_env, t_global *g)
 	ft_lst_env_add_back(lst_env, ft_lst_env_new(&key, &value), g);
 }
 
+void	add_env_(t_global *g)
+{
+	t_lst_env	*tmp;
+	char		*key;
+	char		*value;
+
+	tmp = g->env;
+	while (tmp)
+	{
+		if (ft_nstrncmp(tmp->key, "_", 2, 0) == 0)
+			return ;
+		tmp = tmp->next;
+	}
+	key = ft_strdup("_", NULL);
+	if (!key)
+		malloc_exit(g, "MALLOC ERROR: ADD '_' ENV KEY");
+	value = ft_strdup("/usr/bin/env", NULL);
+	if (!value)
+	{
+		free(key);
+		malloc_exit(g, "MALLOC ERROR: ADD '_' ENV KEY");
+	}
+	ft_lst_env_add_back(&g->env, ft_lst_env_new(&key, &value), g);
+}
+
 void	load_env(char **env, t_lst_env **lst_env, t_global *g)
 {
 	int			i;
@@ -148,6 +173,7 @@ void	load_env(char **env, t_lst_env **lst_env, t_global *g)
 		add_pwd(lst_env, g);
 	if (forced_env.c == 0)
 		add_oldpwd(lst_env, g);
+	add_env_(g);
 }
 
 int	make_lst_cmd(char *cmd, t_global *mini_sh, int i, int j)
@@ -235,7 +261,7 @@ int	check_line_and_init_gc(t_global *mini_sh)
 
 void	sig_ctrl_d(t_global *mini_sh)
 {
-	printf("exit\n");
+	write(1, "exit\n", 5);
 	ft_gc_clear(&mini_sh->gc_parsing);
 	ft_lst_env_clear(&mini_sh->env);
 	rl_clear_history();

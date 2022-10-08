@@ -175,7 +175,7 @@ void	ft_lst_env_add_back(t_lst_env **alst, t_lst_env *new, t_global *g)
 
 void	ft_lst_env_del_in(t_lst_env *lst, t_global *g)
 {
-	if (lst->prev != NULL)
+	if (lst->prev != NULL && ft_nstrncmp(lst->key, "_", 2, 0) != 0)
 	{
 		if (lst->next != NULL)
 			lst->prev->next = lst->next;
@@ -184,7 +184,7 @@ void	ft_lst_env_del_in(t_lst_env *lst, t_global *g)
 	}
 	else
 	{
-		if (lst->next != NULL)
+		if (lst->next != NULL && ft_nstrncmp(lst->key, "_", 2, 0) != 0)
 		{
 			lst->next->prev = NULL;
 			g->env = g->env->next;
