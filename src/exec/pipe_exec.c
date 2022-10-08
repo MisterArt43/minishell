@@ -49,10 +49,8 @@ void	exec_child(t_global *mini_sh, t_lst_cmd *cmd, int fd[2], int fd_in)
 		ft_split(get_path(mini_sh), ':', mini_sh)) == -1)
 			cmd_not_vld(mini_sh, cmd);
 		perror("wati-minishell");
-		ft_gc_clear(&mini_sh->gc_parsing);
 		exit(EXIT_FAILURE);
 	}
-	ft_gc_clear(&mini_sh->gc_parsing);
 	exit(mini_sh->ret);
 }
 
