@@ -18,5 +18,7 @@ void	cmd_not_vld(t_global *mini_sh, t_lst_cmd *cmd)
 	ft_putstr_fd(cmd->exec[0], 2);
 	ft_putendl_fd(": command not found", 2);
 	mini_sh->ret = 127;
+	ft_gc_clear(&mini_sh->gc_parsing);
+	ft_lst_env_clear(&mini_sh->env);
 	exit(127);
 }
