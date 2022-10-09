@@ -89,11 +89,11 @@ void	check_fd_in(int *fd_in, int *fd_out, t_lst_cmd *cmd, t_global *g)
 	{
 		if (tmp->type == 4 || tmp->type == 3)
 			check_fd_out(fd_in, fd_out, tmp, g);
-		if (tmp->type == 6)
+		if (tmp->type == 6 && *fd_in != 1)
 			if (!access(remove_quote(tmp->next->str, g), F_OK))
 				if (check_file_dir(remove_quote(tmp->next->str, g), g, 1) == 2)
 					left_redirect(fd_in, tmp, g);
-		if (tmp->type == 5)
+		if (tmp->type == 5 && *fd_in != 1)
 			heredoc(tmp);
 		tmp = tmp->next;
 	}
