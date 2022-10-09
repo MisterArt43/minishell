@@ -12,7 +12,7 @@
 
 #include "../../includes/header.h"
 
-t_lst_env	*find_env_value(char *str, t_global *g, t_lst_env *tmp)
+t_lst_env	*find_env_value(char *str, t_lst_env *tmp)
 {
 	t_dual_int	i;
 
@@ -59,41 +59,6 @@ void	change_value_of_key(t_lst_env **env, char *key, char *newValue)
 	}
 }
 
-int	check_chdir(char *str, t_global *g)
-{
-	if (chdir(str) != EACCES)
-		ft_putendl_fd(ft_strjoin(ft_strjoin("wati-minishell: cd: ", str, g), \
-		": Permission denied", g), 2);
-	else
-		ft_putendl_fd(ft_strjoin(ft_strjoin("wati-minishell: cd: ", str, g), \
-		": Not a directory", g), 2);
-	g->ret = 1;
-	return (g->ret);
-}
-
-int	check_file_dir(char *str, t_global *g, int mode)
-{
-	char	pwd[PATH_MAX];
-
-	if (!getcwd(pwd, PATH_MAX))
-	{
-		ft_putendl_fd("cd: error retrieving current directory: getcwd: cannot \
-		access parent directories: No such file or directory", 2);
-		g->ret = 0;
-		return (0);
-	}
-	else if (access(ft_strjoin(ft_strjoin(pwd, "/", g), str, g), F_OK) != 0)
-	{
-		ft_putstr_fd(ft_strjoin(ft_strjoin("wati-minishell: cd: ", str, g), \
-		": No such file or directory", g), 2);
-		g->ret = 1;
-		return (1);
-	}
-	else if (mode == 0)
-		return (check_chdir(str, g));
-	return (2);
-}
-
 void	move_pwd(t_global *g, char *pwd, char *er)
 {
 	change_value_of_key(&g->env, "OLDPWD", ft_strdup(pwd, NULL));
@@ -103,20 +68,20 @@ void	move_pwd(t_global *g, char *pwd, char *er)
 	return ;
 }
 
-void	b_in_cd(t_global *mini_sh, t_lst_cmd **cmd, int i)
+void	b_in_cd(t_global *mini_sh, t_lst_cmd **cmd)
 {
 	char	pwd[PATH_MAX];
 
-	if (find_env_value("OLDPWD", mini_sh, mini_sh->env)->value == NULL)
+	if (find_env_value("OLDPWD", mini_sh->env)->value == NULL)
 		change_value_of_key(&mini_sh->env, "OLDPWD", ft_strdup("", NULL));
 	if (!getcwd(pwd, PATH_MAX))
 		return (ft_putendl_fd(CD_ERROR_LOST, 2));
 	if ((*cmd)->exec[1] == NULL)
 	{
 		mini_sh->ret = 1;
-		if (!find_env_value("HOME", mini_sh, mini_sh->env)->value)
+		if (!find_env_value("HOME", mini_sh->env)->value)
 			return (ft_putendl_fd("wati-minishell: cd: HOME not set", 2));
-		else if (!chdir(find_env_value("HOME", mini_sh, mini_sh->env)->value))
+		else if (!chdir(find_env_value("HOME", mini_sh->env)->value))
 			return (move_pwd(mini_sh, pwd, \
 			"wati-minishell: cd: HOME not set"));
 	}

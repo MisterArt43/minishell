@@ -67,14 +67,6 @@ static char	*ft_fill(char const *str, char c, char *res, int *start)
 	return (res);
 }
 
-static char	**ft_free(char **res, int i)
-{
-	while (i != 0)
-		free(res[i--]);
-	free(res);
-	return (NULL);
-}
-
 char	**ft_split(char const *str, char c, t_global *g)
 {
 	char	**res;

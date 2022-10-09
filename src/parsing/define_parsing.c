@@ -19,7 +19,7 @@
  * 3-6:redirect
  * @param lst
  */
-void	define_parse(t_lst_parse **lst, int i, int init, t_lst_parse *tmp)
+void	define_parse(int i, int init, t_lst_parse *tmp)
 {
 	while (tmp)
 	{
@@ -75,7 +75,7 @@ int	exec_len(t_lst_parse *tmp)
 	return (i);
 }
 
-void	add_exec2(t_lst_parse **parse, t_lst_cmd **lst, t_global *g, char **ret)
+void	add_exec2(t_lst_parse **parse, t_global *g, char **ret)
 {
 	if (*ret == NULL)
 	{
@@ -94,7 +94,7 @@ void	add_exec2(t_lst_parse **parse, t_lst_cmd **lst, t_global *g, char **ret)
 	}
 }
 
-char	*add_exec(t_lst_parse **parse, t_lst_cmd **lst, t_global *g)
+char	*add_exec(t_lst_parse **parse, t_global *g)
 {
 	char	*ret;
 
@@ -102,7 +102,7 @@ char	*add_exec(t_lst_parse **parse, t_lst_cmd **lst, t_global *g)
 	while ((*parse))
 	{
 		if ((*parse)->type == 0 || (*parse)->type == 1)
-			add_exec2(parse, lst, g, &ret);
+			add_exec2(parse, g, &ret);
 		if ((*parse)->next && (*parse)->next->is_near_prev == 0)
 			break ;
 		(*parse) = (*parse)->next;
@@ -110,7 +110,7 @@ char	*add_exec(t_lst_parse **parse, t_lst_cmd **lst, t_global *g)
 	return (ret);
 }
 
-int	define_exec(t_lst_cmd **lst, t_global *g, int i)
+void	define_exec(t_lst_cmd **lst, t_global *g, int i)
 {
 	t_lst_parse	*parse;
 
@@ -123,7 +123,7 @@ int	define_exec(t_lst_cmd **lst, t_global *g, int i)
 	parse = (*lst)->split_cmd;
 	while (parse)
 	{
-		(*lst)->exec[i] = add_exec(&parse, lst, g);
+		(*lst)->exec[i] = add_exec(&parse, g);
 		i++;
 		if ((*lst)->exec[i - 1] == NULL || parse == NULL)
 			break ;
@@ -203,7 +203,7 @@ int	define_cmd(t_global *mini_sh)
 	tmp_cmd = mini_sh->cmd;
 	while (tmp_cmd)
 	{
-		define_parse(&tmp_cmd->split_cmd, 0, 0, tmp_cmd->split_cmd);
+		define_parse(0, 0, tmp_cmd->split_cmd);
 		if (check_redirect_has_fd(tmp_cmd) == 1)
 			return (0);
 		if (check_no_cmd(tmp_cmd) == 0)

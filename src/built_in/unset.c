@@ -12,13 +12,11 @@
 
 #include "../../includes/header.h"
 
-void	do_unset(char **exec, t_lst_env *tmp, t_global *g, t_lst_cmd **cmd)
+void	do_unset(char **exec, t_lst_env *tmp, t_global *g)
 {
 	int	i;
 
 	i = 0;
-	tmp = g->env;
-	exec = ft_split(rebuild_command(*cmd, g), ' ', g);
 	while (exec[i])
 	{
 		while (tmp)
@@ -37,7 +35,6 @@ void	do_unset(char **exec, t_lst_env *tmp, t_global *g, t_lst_cmd **cmd)
 void	b_in_unset(t_lst_cmd **cmd, t_global *g)
 {
 	char		**exec;
-	t_lst_env	*tmp;
 
 	if (ft_strstrlen((*cmd)->exec) == 1)
 		return ;
@@ -47,5 +44,6 @@ void	b_in_unset(t_lst_cmd **cmd, t_global *g)
 		g->ret = 2;
 		return ;
 	}
-	do_unset(exec, tmp, g, cmd);
+	exec = ft_split(rebuild_command(*cmd, g), ' ', g);
+	do_unset(exec, g->env, g);
 }

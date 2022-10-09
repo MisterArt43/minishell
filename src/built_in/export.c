@@ -12,36 +12,6 @@
 
 #include "../../includes/header.h"
 
-int	check_no_arg(t_lst_cmd **cmd, char *er_cmd, t_global *g)
-{
-	t_lst_parse	*tmp;
-
-	tmp = (*cmd)->split_cmd;
-	while (tmp)
-	{
-		if (ft_nstrncmp(tmp->str, "-", 1, 0) == 0)
-		{
-			g->ret = 1;
-			printf("wati-minishell: %s: %s: invalid option\n", er_cmd, tmp->str);
-			return (0);
-		}
-		tmp = tmp->next;
-	}
-	return (1);
-}
-
-void	print_export(t_lst_env *env)
-{
-	while (env)
-	{
-		if (env->value == NULL)
-			printf("delare - x %s\n", env->key);
-		else
-			printf("declare - x %s=%s\n", env->key, env->value);
-		env = env->next;
-	}
-}
-
 int	is_valid_key_char(char c, char mode)
 {
 	if (mode == 0)
@@ -132,101 +102,11 @@ void	export_put_value(char *key, char *value, t_global *g, t_lst_env **env)
 	}
 }
 
-void	sort_export_ret_one(t_global *g, char *str, int *i, t_lst_env *tmp)
-{
-	if (!tmp->key)
-		malloc_exit(g, "malloc error: env key");
-	if (str[*i] == '=')
-	{
-		tmp->value = skip_value(str, i, g);
-		if (tmp->value == NULL)
-		{
-			free(tmp->key);
-			malloc_exit(g, "malloc error: env value");
-		}
-	}
-	export_put_value(tmp->key, tmp->value, g, &g->env);
-}
-
-void	sort_export_ret_zero(t_global *g, int ret, char *str, int *i)
-{
-	g->ret = 1;
-	while (check_char_isempty(str[*i]) == 1)
-		*i += 1;
-	print_er("wati-minishell: export: `");
-	print_er(str);
-	print_er("': not a valid identifier\n");
-}
-
-void	sort_export(t_global *g, int *i, char *str, int start)
-{
-	t_lst_env	tmp;
-	int			ret;
-
-	ret = skip_key(str, i, 0);
-	tmp.value = NULL;
-	if (ret == 1 && (str[start] == '\'' || str[start] == '\"'))
-	{
-		if (str[*i - start] == '\'' || str[*i - start] == '\"')
-			tmp.key = ft_substr(str, start + 1, *i - start - 2, NULL);
-		else
-			ret = 0;
-	}
-	else if (ret == 1)
-		tmp.key = ft_substr(str, start, *i - start, NULL);
-	if (ret == 1)
-		sort_export_ret_one(g, str, i, &tmp);
-	if (ret == 0)
-		sort_export_ret_zero(g, ret, str, i);
-}
-
-void	exec_export(t_lst_cmd *cmd, t_global *mini_sh, char *str)
-{
-	int		i;
-	char	*key;
-	char	*value;
-
-	if (str == NULL)
-		return ;
-	i = 0;
-	while (str[i])
-	{
-		skip_to_next_word(str, &i);
-		sort_export(mini_sh, &i, str, i);
-	}
-	mini_sh->ret = 1;
-}
-
-char	*rebuild_command(t_lst_cmd *cmd, t_global *g)
-{
-	t_lst_parse	*tmp;
-	char		*ret;
-
-	ret = NULL;
-	tmp = cmd->split_cmd;
-	while (tmp)
-	{
-		if (tmp->type == 1)
-		{
-			if (tmp->is_near_prev == 0 && ret != NULL)
-				ret = ft_strjoin(ret, " ", g);
-			if (tmp->env_var_str != NULL)
-				ret = ft_strjoin(ret, tmp->env_var_str, g);
-			else if (tmp->str)
-				ret = ft_strjoin(ret, tmp->str, g);
-		}
-		tmp = tmp->next;
-	}
-	return (ret);
-}
-
 void	b_in_export(t_lst_cmd **cmd, t_global *mini_sh)
 {
-	t_lst_parse	*tmp;
 	char		*line;
 
 	mini_sh->ret = 0;
-	tmp = (*cmd)->split_cmd;
 	if (ft_strstrlen((*cmd)->exec) > 1)
 	{
 		if (check_no_arg(cmd, "export", mini_sh) == 0)
@@ -240,7 +120,7 @@ void	b_in_export(t_lst_cmd **cmd, t_global *mini_sh)
 			return ;
 		}
 		line = rebuild_command(*cmd, mini_sh);
-		exec_export(*cmd, mini_sh, line);
+		exec_export(mini_sh, line);
 		return ;
 	}
 	else

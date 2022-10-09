@@ -25,11 +25,11 @@ void	exec_built_in(t_global *mini_sh, t_lst_cmd **cmd)
 	else if (!ft_strncmp((*cmd)->exec[0], "pwd", -1))
 		b_in_pwd(mini_sh);
 	else if (!ft_strncmp((*cmd)->exec[0], "cd", -1))
-		b_in_cd(mini_sh, cmd, 0);
+		b_in_cd(mini_sh, cmd);
 	else if (!ft_strncmp((*cmd)->exec[0], "echo", -1))
 		b_in_echo(mini_sh, cmd);
 	else if (!ft_strncmp((*cmd)->exec[0], "env", -1))
-		b_in_env(mini_sh, cmd);
+		b_in_env(mini_sh);
 	else if (!ft_nstrncmp((*cmd)->exec[0], "unset", 6, 0))
 		b_in_unset(cmd, mini_sh);
 	dup2(STDOUT_FILENO, 1);

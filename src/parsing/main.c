@@ -272,10 +272,13 @@ void	main_mini_sh(t_global *mini_sh)
 {
 	while (1)
 	{
-		signal(SIGINT, (void (*)(int))sig_child_hndlr);
-		signal(SIGQUIT, (void (*)(int))sig_child_hndlr);
+		signal(SIGINT, (void *)sig_child_hndlr);
+		signal(SIGQUIT, (void *)sig_child_hndlr);
+		ft_gc_clear(&mini_sh->gc_parsing);
 		mini_sh->in_cmd = 0;
 		mini_sh->line = readline("wati-minishell> ");
+		signal(SIGINT, (void *)sig_child_hndlr_in_cmd);
+		signal(SIGQUIT, (void *)sig_child_hndlr_in_cmd);
 		mini_sh->in_cmd = 1;
 		if (mini_sh->line)
 		{
@@ -285,30 +288,38 @@ void	main_mini_sh(t_global *mini_sh)
 		else
 			sig_ctrl_d(mini_sh);
 		if (start_parse(mini_sh->line, mini_sh) == 0)
-		{
-			ft_gc_clear(&mini_sh->gc_parsing);
 			continue ;
-		}
 		define_cmd(mini_sh);
 		mini_sh->in_cmd = 1;
 		select_exec(mini_sh, 0, 0);
-		ft_gc_clear(&mini_sh->gc_parsing);
 	}
+}
+
+void	static_signal(void	*ptr)
+{
+	static t_global	*g;
+
+	if (ptr != NULL)
+		g = ptr;
+	else
+		g->ret = 130;
 }
 
 int	main(int argc, char **argv, char **env)
 {
 	t_global	mini_sh;
-	t_lst_env	*tmp;
 
-	mini_sh.env = NULL;
-	mini_sh.cmd = NULL;
-	mini_sh.gc_parsing = NULL;
-	mini_sh.line = (char *) NULL;
-	mini_sh.ret = 0;
-	mini_sh.in_cmd = 0;
-	sig_child_hndlr(0, &mini_sh);
-	load_env(env, &mini_sh.env, &mini_sh);
-	main_mini_sh(&mini_sh);
-	return (0);
+	if (argc > 0 && argv[0] != NULL)
+	{
+		mini_sh.env = NULL;
+		mini_sh.cmd = NULL;
+		mini_sh.gc_parsing = NULL;
+		mini_sh.line = (char *) NULL;
+		mini_sh.ret = 0;
+		mini_sh.in_cmd = 0;
+		static_signal(&mini_sh);
+		load_env(env, &mini_sh.env, &mini_sh);
+		main_mini_sh(&mini_sh);
+		return (0);
+	}
 }

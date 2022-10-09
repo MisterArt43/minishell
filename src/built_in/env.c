@@ -22,7 +22,7 @@ void	print_env(t_lst_env *env)
 	}
 }
 
-void	b_in_env(t_global *mini_sh, t_lst_cmd **cmd)
+void	b_in_env(t_global *mini_sh)
 {
 	mini_sh->ret = 0;
 	print_env(mini_sh->env);

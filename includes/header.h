@@ -157,7 +157,7 @@ int		ft_isdigit(int c);
 
 char	*remove_quote(char *str, t_global *g);
 
-t_lst_env	*cmp_env_key(int *i, char *str, t_global *g, t_lst_env	*tmp);
+t_lst_env	*cmp_env_key(int *i, char *str, t_lst_env *tmp);
 
 void	close_fds(int *fd_in, int *fd_out);
 
@@ -225,13 +225,35 @@ void	main_mini_sh(t_global *mini_sh);
 
 //sort to see if it's a built in and execute it
 void	sort_build_in(t_lst_cmd **cmd, t_global *mini_sh);
+
+// < --- EXPORT --- >
 void	b_in_export(t_lst_cmd **cmd, t_global *mini_sh);
+// < --- EXPORT UTILS --- >
+void	print_export(t_lst_env *env);
+void	exec_export(t_global *mini_sh, char *str);
+int		is_valid_key_char(char c, char mode);
+int		skip_key(char *str, int *i, int first);
+char	*skip_value(char *str, int *i, t_global *g);
+void	export_put_value(char *key, char *value, t_global *g, t_lst_env **env);
+
+// < --- EXIT --- >
 void	b_in_exit(t_global *mini_sh);
+
+// < --- PWD --- >
 void	b_in_pwd(t_global *mini_sh);
-void	b_in_cd(t_global *mini_sh, t_lst_cmd **cmd, int i);
+
+// < --- CD --- >
+void	b_in_cd(t_global *mini_sh, t_lst_cmd **cmd);
+
+// < --- ECHO --- >
 void	b_in_echo(t_global *mini_sh, t_lst_cmd **cmd);
-void	b_in_env(t_global *mini_sh, t_lst_cmd **cmd);
+
+// < --- ENV --- >
+void	b_in_env(t_global *mini_sh);
+
+// < --- UNSET --- >
 void	b_in_unset(t_lst_cmd **cmd, t_global *g);
+
 
 //  ------------------------------------------------
 //  < ------------      EXEC          ------------ >
@@ -257,7 +279,9 @@ char	*get_binary(t_global *mini_sh, t_lst_cmd *cmd);
 char	*get_path(t_global *mini_sh);
 int		complicado(t_global *mini_sh, t_lst_cmd *cmd, int fd_in, pid_t *c_pid);
 
-// SIGNAUX
-int		sig_child_hndlr(const int signal, void *ptr);
+// SIGNALS
+int		sig_child_hndlr(const int signal);
+int		sig_child_hndlr_in_cmd(const int signal);
+void	static_signal(void	*ptr);
 
 #endif

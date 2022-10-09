@@ -83,7 +83,7 @@ int	check_redirect2(char *cmd, int *i, int *state)
 	return (0);
 }
 
-int	redirect_erno(char *cmd, int i, int state)
+int	redirect_erno(char *cmd, int i)
 {
 	if (cmd[i] == '>')
 	{
@@ -113,7 +113,7 @@ int	check_redirection(char *cmd, int i, int state)
 		if (cmd[i] == '>' || cmd[i] == '<')
 		{
 			if (check_redirect2(cmd, &i, &state))
-				return (redirect_erno(cmd, i, state));
+				return (redirect_erno(cmd, i));
 		}
 		else if (check_char_isempty(cmd[i]))
 			state = 0;
@@ -121,6 +121,6 @@ int	check_redirection(char *cmd, int i, int state)
 			i++;
 	}
 	if (state == 1)
-		return (redirect_erno(cmd, i, state));
+		return (redirect_erno(cmd, i));
 	return (1);
 }

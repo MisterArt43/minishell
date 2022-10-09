@@ -108,7 +108,7 @@ void	sort_split(t_lst_cmd **cmd, int *i, t_global *g, int beg)
 	}
 }
 
-t_lst_env	*cmp_env_key(int *i, char *str, t_global *g, t_lst_env	*tmp)
+t_lst_env	*cmp_env_key(int *i, char *str, t_lst_env	*tmp)
 {
 	int	j;
 	int	tmp_i;
@@ -152,9 +152,8 @@ void	dollar_ret(t_global *g, char **ret, t_lst_parse **lst, t_dual_int *sub)
 void	do_dollar(char **ret, t_dual_int *sub, t_lst_parse **lst, t_global *g)
 {
 	t_lst_env	*find;
-	t_lst_cmd	*new_cmd;
 
-	find = cmp_env_key(&sub->c, (*lst)->str, g, g->env);
+	find = cmp_env_key(&sub->c, (*lst)->str, g->env);
 	if (find != NULL)
 	{
 		if (*ret == NULL)
@@ -170,7 +169,7 @@ void	do_dollar(char **ret, t_dual_int *sub, t_lst_parse **lst, t_global *g)
 		dollar_ret(g, ret, lst, sub);
 }
 
-void	new_lst(t_lst_parse **lst, t_global *g, t_lst_cmd **new_cmd, char *ret)
+void	new_lst(t_lst_parse **lst, t_lst_cmd **new_cmd, char *ret)
 {
 	if (*ret == 0 || check_isempty((*new_cmd)->split_cmd->str) == 0)
 	{
@@ -220,7 +219,7 @@ void	replace_env_v(t_lst_parse **lst, t_lst_cmd **cmd, t_global *g, char *r)
 		r = ft_strjoin(r, ft_substr((*lst)->str, sub.a, sub.c - sub.a, g), g);
 		new_cmd = ft_lst_cmd_new(&g->gc_parsing, r, g);
 		ft_split_shell(&new_cmd, g);
-		new_lst(lst, g, &new_cmd, r);
+		new_lst(lst, &new_cmd, r);
 		if (new_cmd->fd[0] == 1)
 			(*lst)->str = ft_strdup("", g);
 		else if (new_cmd->fd[0] == 2)
