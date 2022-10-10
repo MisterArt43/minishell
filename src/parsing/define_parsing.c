@@ -119,7 +119,7 @@ int	define_cmd(t_global *mini_sh)
 		if (check_no_cmd(tmp_cmd) == 0)
 		{
 			tmp_cmd->exec = ft_gc_add_back(&mini_sh->gc_parsing, ft_gc_new(\
-			ft_strdup("", mini_sh), \
+			malloc(sizeof(char *)), \
 			"error malloc while creating exec", mini_sh));
 			tmp_cmd->exec[0] = NULL;
 		}
