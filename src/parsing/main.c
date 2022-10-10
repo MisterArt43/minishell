@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 16:50:14 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/10 18:37:26 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/10 22:26:56 by abucia           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,27 +220,27 @@ int	start_parse(char *cmd, t_global *mini_sh)
 	return (1);
 }
 
-void	select_exec(t_global *mini_sh, int status, int l_status)
+void	select_exec(t_global *g, int status, int l_status)
 {
 	pid_t	c_pid;
 	pid_t	l_c_pid;
 
 	c_pid = 1;
 	l_c_pid = 1;
-	if (ft_lst_cmd_size(mini_sh->cmd) == 1 && \
-		(!ft_strncmp(mini_sh->cmd->exec[0], "exit", -1) \
-		|| !ft_strncmp(mini_sh->cmd->exec[0], "pwd", -1) \
-		|| !ft_strncmp(mini_sh->cmd->exec[0], "cd", -1) \
-		|| !ft_strncmp(mini_sh->cmd->exec[0], "echo", -1) \
-		|| !ft_strncmp(mini_sh->cmd->exec[0], "env", -1) \
-		|| !ft_strncmp(mini_sh->cmd->exec[0], "export", -1) \
-		|| !ft_strncmp(mini_sh->cmd->exec[0], "unset", -1)))
-		exec_built_in(mini_sh, &mini_sh->cmd);
-	else if (ft_lst_cmd_size(mini_sh->cmd) == 1)
-		exec_cmd(mini_sh, 0, 0);
-	else if (ft_lst_cmd_size(mini_sh->cmd) > 1)
+	if (g->cmd->exec[0] != NULL && ft_lst_cmd_size(g->cmd) == 1 && \
+		(!ft_strncmp(g->cmd->exec[0], "exit", -1) \
+		|| !ft_strncmp(g->cmd->exec[0], "pwd", -1) \
+		|| !ft_strncmp(g->cmd->exec[0], "cd", -1) \
+		|| !ft_strncmp(g->cmd->exec[0], "echo", -1) \
+		|| !ft_strncmp(g->cmd->exec[0], "env", -1) \
+		|| !ft_strncmp(g->cmd->exec[0], "export", -1) \
+		|| !ft_strncmp(g->cmd->exec[0], "unset", -1)))
+		exec_built_in(g, &g->cmd);
+	else if (ft_lst_cmd_size(g->cmd) == 1)
+		exec_cmd(g, 0, 0);
+	else if (ft_lst_cmd_size(g->cmd) > 1)
 	{
-		l_c_pid = complicado(mini_sh, mini_sh->cmd, 0, &c_pid);
+		l_c_pid = complicado(g, g->cmd, 0, &c_pid);
 		if (l_c_pid < 0)
 		{
 			printf("complicado \n");
@@ -250,7 +250,7 @@ void	select_exec(t_global *mini_sh, int status, int l_status)
 		kill(c_pid, SIGTERM);
 		waitpid(l_c_pid, &l_status, 0);
 		if (WIFEXITED(l_status))
-			mini_sh->ret = WEXITSTATUS(status);
+			g->ret = WEXITSTATUS(status);
 		kill(l_c_pid, SIGTERM);
 	}
 }

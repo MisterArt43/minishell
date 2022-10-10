@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 23:23:29 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/10/10 18:42:10 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/10 22:50:41 by abucia           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	exec_child(t_global *mini_sh, t_lst_cmd *cmd, int fd[2], int fd_in)
 	check_fd_in(&fd[0], &fd[1], cmd, mini_sh);
 	if (!is_builtin(cmd))
 		exec_built_in(mini_sh, &cmd);
-	else if (!check_path(mini_sh, cmd))
+	else if (check_has_cmd(cmd) && !check_path(mini_sh, cmd))
 	{
 		if (execve(get_binary(mini_sh, cmd), cmd->exec, \
 		ft_split(get_path(mini_sh), ':', mini_sh)) == -1)

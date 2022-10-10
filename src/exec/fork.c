@@ -6,7 +6,7 @@
 /*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 02:58:37 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/10 20:54:24 by abucia           ###   ########lyon.fr   */
+/*   Updated: 2022/10/10 22:48:07 by abucia           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,13 @@ int	sig_child_hndlr(const int signal)
 	return (130);
 }
 
+int	check_has_cmd(t_lst_cmd *cmd)
+{
+	if (cmd->exec[0] == NULL)
+		return (0);
+	return (1);
+}
+
 void	exec_cmd(t_global *mini_sh, pid_t pid, int status)
 {
 	pid = fork();
@@ -73,7 +80,7 @@ void	exec_cmd(t_global *mini_sh, pid_t pid, int status)
 		check_fd_in(&mini_sh->cmd->fd[0], &mini_sh->cmd->fd[1], \
 		mini_sh->cmd, mini_sh);
 		close_fds(&mini_sh->cmd->fd[0], &mini_sh->cmd->fd[1]);
-		if (!check_path(mini_sh, mini_sh->cmd))
+		if (!check_path(mini_sh, mini_sh->cmd) && check_has_cmd(mini_sh->cmd))
 		{
 			if (execve(get_binary(mini_sh, mini_sh->cmd), mini_sh->cmd->exec, \
 			rebuild_env(mini_sh->env, mini_sh)) == -1)

@@ -177,7 +177,7 @@ int check_char_isempty(char c);
 
 int	check_file_dir(char *str, t_global *g, int mode);
 
-
+int	check_has_cmd(t_lst_cmd *cmd);
 
 //  ------------------------------------------------
 //  < ------------    CHAINED LIST    ------------ >
