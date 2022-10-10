@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 00:39:49 by abucia            #+#    #+#             */
-/*   Updated: 2022/09/30 15:50:23 by abucia           ###   ########lyon.fr   */
+/*   Updated: 2022/10/10 15:26:51 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,7 +237,7 @@ void	ft_split_shell(t_lst_cmd **cmd, t_global *mini_sh)
 	while ((*cmd)->command[i])
 	{
 		skip_to_next_word((*cmd)->command, &i);
-		if (!(*cmd)->command[i] == 0)
+		if ((*cmd)->command[i] != 0)
 			sort_split(cmd, &i, mini_sh, i);
 	}
 	lst_parse = (*cmd)->split_cmd;

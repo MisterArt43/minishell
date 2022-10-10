@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/09 15:10:53 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/09 15:10:53 by abucia           ###   ########lyon.fr   */
+/*   Updated: 2022/10/10 17:10:27 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,9 @@ void	print_export(t_lst_env *env)
 	while (env)
 	{
 		if (env->value == NULL)
-			printf("delare - x %s\n", env->key);
+			printf("declare -x %s\n", env->key);
 		else
-			printf("declare - x %s=%s\n", env->key, env->value);
+			printf("declare -x %s=\"%s\"\n", env->key, env->value);
 		env = env->next;
 	}
 }

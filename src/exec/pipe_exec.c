@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 23:23:29 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/10/05 06:49:48 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/10 18:12:44 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,12 @@ int	complicado(t_global *mini_sh, t_lst_cmd *cmd, int fd_in, pid_t *c_pid)
 	if (child_pid == -1)
 	{
 		ft_putendl_fd(FORK_OVERRIDE, 2);
-		return (1);
+		rl_on_new_line();
+		rl_replace_line("\0", 1);
+		write(1, "\n", 1);
+		rl_redisplay();
+		static_signal(NULL);
+		return (child_pid);
 	}
 	else if (child_pid == 0)
 		exec_child(mini_sh, cmd, fd, fd_in);

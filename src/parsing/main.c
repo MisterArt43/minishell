@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 16:50:14 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/05 06:47:41 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/10 17:33:21 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ int	print_er(const char *er)
 int	strstrlen(char **tab)
 {
 	int	i;
+
+	i = 0;
 
 	while (tab[i])
 		i++;
@@ -237,6 +239,11 @@ void	select_exec(t_global *mini_sh, int status, int l_status)
 	else if (ft_lst_cmd_size(mini_sh->cmd) > 1)
 	{
 		l_c_pid = complicado(mini_sh, mini_sh->cmd, 0, &c_pid);
+		if (l_c_pid < 0)
+		{
+			printf("complicado \n");
+			exit(1);
+		}
 		waitpid(c_pid, &status, 0);
 		kill(c_pid, SIGTERM);
 		waitpid(l_c_pid, &l_status, 0);
@@ -264,7 +271,6 @@ void	sig_ctrl_d(t_global *mini_sh)
 	write(1, "exit\n", 5);
 	ft_gc_clear(&mini_sh->gc_parsing);
 	ft_lst_env_clear(&mini_sh->env);
-	rl_clear_history();
 	exit(0);
 }
 
