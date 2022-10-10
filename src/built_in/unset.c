@@ -32,6 +32,25 @@ void	do_unset(char **exec, t_lst_env *tmp, t_global *g)
 	}
 }
 
+void	ft_check_unset(char **exec)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (exec[i])
+	{
+		j = 0;
+		if (skip_key(exec[i], &j, 0, 0) == 0)
+		{
+			ft_putstr_fd("wati-minishell: `", 2);
+			ft_putstr_fd(exec[i], 2);
+			ft_putendl_fd("': not a valid identifier", 2);
+		}
+		i++;
+	}
+}
+
 void	b_in_unset(t_lst_cmd **cmd, t_global *g)
 {
 	char		**exec;
@@ -45,5 +64,6 @@ void	b_in_unset(t_lst_cmd **cmd, t_global *g)
 		return ;
 	}
 	exec = ft_split(rebuild_command(*cmd, g), ' ', g);
+	ft_check_unset(exec);
 	do_unset(exec, g->env, g);
 }

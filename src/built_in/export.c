@@ -25,7 +25,7 @@ int	is_valid_key_char(char c, char mode)
 	return (0);
 }
 
-int	skip_key(char *str, int *i, int first)
+int	skip_key(char *str, int *i, int first, int mode)
 {
 	while (str[*i])
 	{
@@ -40,7 +40,7 @@ int	skip_key(char *str, int *i, int first)
 			return (0);
 		if (first == 0)
 			first = 1;
-		else if (check_char_isempty(str[*i]) == 0 || str[*i] == '=')
+		else if (check_char_isempty(str[*i]) == 0 || (str[*i] == '=' && mode == 1))
 			return (1);
 		else if (is_valid_key_char(str[*i], 1) == 0)
 			return (0);

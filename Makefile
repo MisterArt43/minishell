@@ -37,6 +37,8 @@ src/exec/cmd_not_valid.c \
 src/exec/rebuild_env.c \
 src/built_in/export_utils.c \
 src/built_in/built_in_utils.c \
+src/exec/redirection.c \
+src/parsing/parsing_utils.c \
 
 CC = gcc
 OBJ = $(SRC:.c=.o)

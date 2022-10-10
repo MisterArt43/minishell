@@ -93,3 +93,12 @@ int	ft_atoi(const char *str)
 	}
 	return (j * neg);
 }
+
+int	check_char_isempty(char c)
+{
+	if (c == 0)
+		return (0);
+	if (c != ' ' && c != '\t' && c != '\n' && c != '\r')
+		return (1);
+	return (0);
+}

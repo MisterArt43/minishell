@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/09 15:10:53 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/10 17:10:27 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/10 22:07:30 by abucia           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	sort_export(t_global *g, int *i, char *str, int start)
 	t_lst_env	tmp;
 	int			ret;
 
-	ret = skip_key(str, i, 0);
+	ret = skip_key(str, i, 0, 1);
 	tmp.value = NULL;
 	if (ret == 1 && (str[start] == '\'' || str[start] == '\"'))
 	{

@@ -12,15 +12,6 @@
 
 #include "../../includes/header.h"
 
-int	check_char_isempty(char c)
-{
-	if (c == 0)
-		return (0);
-	if (c != ' ' && c != '\t' && c != '\n' && c != '\r')
-		return (1);
-	return (0);
-}
-
 int	check_isempty(char *cmd)
 {
 	int	i;
@@ -39,6 +30,9 @@ int	check_isempty(char *cmd)
 
 int	check_pipe(char *cmd, int i, int state)
 {
+	skip_to_next_word(cmd, &i);
+	if (cmd[i] == '|')
+		return (0);
 	while (cmd[i])
 	{
 		if (cmd[i] == '|')
@@ -104,6 +98,18 @@ int	redirect_erno(char *cmd, int i)
 	return (0);
 }
 
+int	check_token(char *cmd, int i)
+{
+	i++;
+	while (cmd[i])
+	{
+		if (check_char_isempty(cmd[i]) == 1)
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 int	check_redirection(char *cmd, int i, int state)
 {
 	while (cmd[i])
@@ -114,6 +120,11 @@ int	check_redirection(char *cmd, int i, int state)
 		{
 			if (check_redirect2(cmd, &i, &state))
 				return (redirect_erno(cmd, i));
+			if (check_token(cmd, i) == 1)
+			{
+				ft_putendl_fd("parse error near `\\n'", 2);
+				return (0);
+			}
 		}
 		else if (check_char_isempty(cmd[i]))
 			state = 0;

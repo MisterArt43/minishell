@@ -210,7 +210,11 @@ void		skip_to_next_word(char *str, int *i);
 void		skip_quote(char *str, int *i);
 void		skip_word(char *str, int *i);
 int			define_cmd(t_global *mini_sh);
+void		define_exec(t_lst_cmd **lst, t_global *g, int i);
+int			check_redirect_has_fd(t_lst_cmd *cmd);
+
 char		*rebuild_command(t_lst_cmd *cmd, t_global *g);
+
 
 
 //  ------------------------------------------------
@@ -232,7 +236,8 @@ void	b_in_export(t_lst_cmd **cmd, t_global *mini_sh);
 void	print_export(t_lst_env *env);
 void	exec_export(t_global *mini_sh, char *str);
 int		is_valid_key_char(char c, char mode);
-int		skip_key(char *str, int *i, int first);
+int		skip_key(char *str, int *i, int first, int mode);
+int		is_valid_key_char(char c, char mode);
 char	*skip_value(char *str, int *i, t_global *g);
 void	export_put_value(char *key, char *value, t_global *g, t_lst_env **env);
 
@@ -263,6 +268,9 @@ void	exec_cmd(t_global *mini_sh, pid_t pid, int status);
 void	exec_built_in(t_global *mini_sh, t_lst_cmd **cmd);
 char	**rebuild_env(t_lst_env *env, t_global *g);
 void	check_fd_in(int *fd_in, int *fd_out, t_lst_cmd *cmd, t_global *g);
+void	check_fd_out(int *fd_in, int *fd_out, t_lst_parse *tmp, t_global *g);
+void	right_redirect(int *fd_in, int *fd_out, t_lst_parse *tmp, t_global *g);
+void	right_right_redirect(int *in, int *out, t_lst_parse *tmp, t_global *g);
 
 //ERROR MANAGER 
 //return 0
