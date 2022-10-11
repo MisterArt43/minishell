@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 00:05:57 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/10/05 08:19:09 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/11 14:19:08 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,8 @@ void	b_in_cd(t_global *mini_sh, t_lst_cmd **cmd)
 	if (find_env_value("OLDPWD", mini_sh->env)->value == NULL)
 		change_value_of_key(&mini_sh->env, "OLDPWD", ft_strdup("", NULL));
 	if (!getcwd(pwd, PATH_MAX))
-		return (ft_putendl_fd(CD_ERROR_LOST, 2));
+		if (find_env_value("OLDPWD", mini_sh->env)->value == NULL)
+			return (ft_putendl_fd(CD_ERROR_LOST, 2));	
 	if ((*cmd)->exec[1] == NULL)
 	{
 		mini_sh->ret = 1;
