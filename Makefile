@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+         #
+#    By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/07 15:22:30 by abucia            #+#    #+#              #
-#    Updated: 2022/10/11 19:07:12 by tschlege         ###   ########lyon.fr    #
+#    Updated: 2022/10/11 19:12:33 by abucia           ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,6 +44,7 @@ src/exec/redirection.c \
 src/parsing/parsing_utils.c \
 src/parsing/split_env_var.c \
 src/exec/signal.c \
+src/parsing/skip.c \
 
 CC = gcc
 OBJ = $(SRC:.c=.o)

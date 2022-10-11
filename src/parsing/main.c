@@ -6,7 +6,7 @@
 /*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 16:50:14 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/11 19:04:04 by abucia           ###   ########lyon.fr   */
+/*   Updated: 2022/10/11 19:08:06 by abucia           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,7 +242,7 @@ void	select_exec(t_global *g, int status, int l_status)
 		l_c_pid = complicado(g, g->cmd, 0, &c_pid);
 		if (l_c_pid < 0 || c_pid < 0)
 		{
-			while(wait(NULL) != -1)
+			while (wait(NULL) != -1)
 				;
 			return ;
 		}
@@ -252,7 +252,7 @@ void	select_exec(t_global *g, int status, int l_status)
 		if (WIFEXITED(l_status))
 			g->ret = WEXITSTATUS(status);
 		kill(l_c_pid, SIGTERM);
-		while(wait(NULL) != -1)
+		while (wait(NULL) != -1)
 			;
 	}
 }

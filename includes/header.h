@@ -6,7 +6,7 @@
 /*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 16:15:55 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/11 19:04:42 by abucia           ###   ########lyon.fr   */
+/*   Updated: 2022/10/11 19:12:07 by abucia           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,9 +206,6 @@ void		ft_lst_env_del_in(t_lst_env *lst, t_global *g);
 //  ------------------------------------------------
 
 void		ft_split_shell(t_lst_cmd **cmd, t_global *mini_sh);
-void		skip_to_next_word(char *str, int *i);
-void		skip_quote(char *str, int *i);
-void		skip_word(char *str, int *i);
 int			define_cmd(t_global *mini_sh);
 void		define_exec(t_lst_cmd **lst, t_global *g, int i);
 int			check_redirect_has_fd(t_lst_cmd *cmd);
@@ -216,6 +213,10 @@ int			check_redirect_has_fd(t_lst_cmd *cmd);
 char		*rebuild_command(t_lst_cmd *cmd, t_global *g);
 void		replace_env_v(t_lst_parse **lst, t_lst_cmd **cmd, t_global *g, char *r);
 
+void		skip_quote(char *str, int *i);
+void		skip_word(char *str, int *i);
+void		skip_to_next_word(char *str, int *i);
+void		skip_redirection(char *str, int *i);
 
 //  ------------------------------------------------
 //  < ------------      READLINE      ------------ >
