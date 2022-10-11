@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fork.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 02:58:37 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/11 18:31:12 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/11 19:00:46 by abucia           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,37 +26,6 @@ void	check_fd_out(int *fd_in, int *fd_out, t_lst_parse *tmp, t_global *g)
 		right_redirect(fd_in, fd_out, tmp, g);
 	else if (tmp->type == 3)
 		right_right_redirect(fd_in, fd_out, tmp, g);
-}
-
-int	sig_child_hndlr_in_cmd(const int signal)
-{
-	if (signal == SIGINT || signal == SIGQUIT)
-	{
-		if (signal == SIGINT)
-		{
-			write(1, "\n", 1);
-			static_signal(NULL, 130);
-		}
-		else if (signal == SIGQUIT)
-		{
-			write(1, "Quit\n", 5);	
-			static_signal(NULL, 131);
-		}
-	}
-	return (130);
-}
-
-int	sig_child_hndlr(const int signal)
-{
-	if (signal == SIGINT)
-	{
-		rl_on_new_line();
-		rl_replace_line("\0", 1);
-		write(1, "\n", 1);
-		rl_redisplay();
-		static_signal(NULL, 0);
-	}
-	return (130);
 }
 
 int	check_has_cmd(t_lst_cmd *cmd, t_global *g)
