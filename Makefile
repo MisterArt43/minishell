@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+         #
+#    By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/07 15:22:30 by abucia            #+#    #+#              #
-#    Updated: 2022/10/11 20:47:33 by abucia           ###   ########lyon.fr    #
+#    Updated: 2022/10/11 21:05:16 by tschlege         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,7 +55,7 @@ CC = gcc
 OBJ = $(SRC:.c=.o)
 HEADER = includes/header.h
 READLINE_LIB = ./includes/readline-8.1
-FLAG = -I./includes/readline-8.1/ -g3 -Wall -Wextra -Werror #-fsanitize=address
+FLAG = -I./includes/readline-8.1/ -Wall -Wextra -Werror #-fsanitize=address
 
 all : $(NAME)
 

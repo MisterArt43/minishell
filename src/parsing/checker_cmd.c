@@ -6,7 +6,7 @@
 /*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 01:55:26 by abucia            #+#    #+#             */
-/*   Updated: 2022/09/09 01:55:26 by abucia           ###   ########lyon.fr   */
+/*   Updated: 2022/10/11 21:24:45 by abucia           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	check_pipe(char *cmd, int i, int state)
 		return (0);
 	while (cmd[i])
 	{
+		skip_quote(cmd, &i);
 		if (cmd[i] == '|')
 		{
 			if (state == 1)

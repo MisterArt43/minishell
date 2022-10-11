@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 15:40:57 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/10/11 15:03:08 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/11 21:15:00 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	b_in_exit(t_global *g)
 	{
 		ft_putstr_fd("wati-minishell: exit: ", 2);
 		ft_putstr_fd(g->cmd->exec[1], 2);
-		ft_putendl_fd(": exit: numeric argument required", 2);
+		ft_putendl_fd(": numeric argument required", 2);
 		g->ret = 255;
 	}
 	else if (g->cmd->exec[1] && g->cmd->exec[2])
