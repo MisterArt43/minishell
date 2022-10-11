@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/09 15:12:45 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/09 15:12:45 by abucia           ###   ########lyon.fr   */
+/*   Updated: 2022/10/11 13:33:57 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	check_file_dir(char *str, t_global *g, int mode)
 	}
 	else if (access(ft_strjoin(ft_strjoin(pwd, "/", g), str, g), F_OK) != 0)
 	{
-		ft_putstr_fd(ft_strjoin(ft_strjoin("wati-minishell: cd: ", str, g), \
+		ft_putendl_fd(ft_strjoin(ft_strjoin("wati-minishell: cd: ", str, g), \
 		": No such file or directory", g), 2);
 		g->ret = 1;
 		return (1);
