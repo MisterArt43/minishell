@@ -73,9 +73,10 @@ void	do_dollar(char **ret, t_dual_int *sub, t_lst_parse **lst, t_global *g)
 		dollar_ret(g, ret, lst, sub);
 }
 
-void	new_lst(t_lst_parse **lst, t_lst_cmd **new_cmd, char *ret)
+void	new_lst(t_lst_parse **lst, t_lst_cmd **new_cmd, char *ret, t_global *g)
 {
-	if (*ret == 0 || check_isempty((*new_cmd)->split_cmd->str) == 0)
+	spe_ec(new_cmd, ret, g);
+	if (!*ret || !check_isempty((*new_cmd)->split_cmd->str))
 	{
 		if ((*lst)->next)
 			(*lst)->next->prev = (*lst)->prev;
@@ -87,19 +88,7 @@ void	new_lst(t_lst_parse **lst, t_lst_cmd **new_cmd, char *ret)
 			(*new_cmd)->fd[0] = 1;
 	}
 	else
-	{
-		(*new_cmd)->split_cmd->is_near_prev = (*lst)->is_near_prev;
-		(*new_cmd)->split_cmd->prev = (*lst)->prev;
-		if ((*lst)->prev)
-			(*lst)->prev->next = (*new_cmd)->split_cmd;
-		else
-			(*new_cmd)->fd[0] = 2;
-		if ((*lst)->next)
-			(*lst)->next->prev = ft_lst_parse_last((*new_cmd)->split_cmd);
-		ft_lst_parse_last((*new_cmd)->split_cmd)->next = (*lst)->next;
-		(*lst)->next = (*new_cmd)->split_cmd;
-		*lst = (*new_cmd)->split_cmd;
-	}
+		lst_magic(lst, new_cmd);
 }
 
 void	replace_env_v(t_lst_parse **lst, t_lst_cmd **cmd, t_global *g, char *r)
@@ -123,7 +112,7 @@ void	replace_env_v(t_lst_parse **lst, t_lst_cmd **cmd, t_global *g, char *r)
 		r = ft_strjoin(r, ft_substr((*lst)->str, sub.a, sub.c - sub.a, g), g);
 		new_cmd = ft_lst_cmd_new(&g->gc_parsing, r, g);
 		ft_split_shell(&new_cmd, g);
-		new_lst(lst, &new_cmd, r);
+		new_lst(lst, &new_cmd, r, g);
 		if (new_cmd->fd[0] == 1)
 			(*lst)->str = ft_strdup("", g);
 		else if (new_cmd->fd[0] == 2)

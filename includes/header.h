@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 16:15:55 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/11 21:03:12 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/11 22:18:58 by abucia           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -310,5 +310,8 @@ int			sig_child_hndlr_in_cmd(const int signal);
 void		static_signal(void	*ptr, int sig);
 void		sig_ctrl_d(t_global *mini_sh);
 void		static_signal(void	*ptr, int sig);
+
+void		spe_ec(t_lst_cmd **new_cmd, char *ret, t_global *g);
+void		lst_magic(t_lst_parse **lst, t_lst_cmd **new_cmd);
 
 #endif
