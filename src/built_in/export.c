@@ -94,9 +94,12 @@ void	export_put_value(char *key, char *value, t_global *g, t_lst_env **env)
 		}
 		if (tmp != NULL)
 		{
-			free(key);
-			free(tmp->value);
-			tmp->value = value;
+			if (key != NULL)
+			{
+				free(key);
+				free(tmp->value);
+				tmp->value = value;
+			}
 		}
 		else
 			ft_lst_env_add_back(env, ft_lst_env_new(&key, &value), g);
@@ -105,7 +108,7 @@ void	export_put_value(char *key, char *value, t_global *g, t_lst_env **env)
 
 void	b_in_export(t_lst_cmd **cmd, t_global *mini_sh)
 {
-	char		*line;
+	char	*line;
 
 	mini_sh->ret = 0;
 	if (ft_strstrlen((*cmd)->exec) > 1)
