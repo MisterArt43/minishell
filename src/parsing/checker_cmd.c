@@ -12,22 +12,6 @@
 
 #include "../../includes/header.h"
 
-int	check_isempty(char *cmd)
-{
-	int	i;
-
-	if (cmd[0] == 0)
-		return (0);
-	i = 0;
-	while (cmd[i])
-	{
-		if (check_char_isempty(cmd[i]))
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
 int	check_pipe(char *cmd, int i, int state)
 {
 	skip_to_next_word(cmd, &i);

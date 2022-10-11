@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils4.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 18:51:15 by tschlege          #+#    #+#             */
-/*   Updated: 2022/10/11 18:53:07 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/11 19:06:06 by abucia           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,20 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 	}
 	dst[dst_len + i] = '\0';
 	return (ft_strlen(src) + dst_len);
+}
+
+int	check_isempty(char *cmd)
+{
+	int	i;
+
+	if (cmd[0] == 0)
+		return (0);
+	i = 0;
+	while (cmd[i])
+	{
+		if (check_char_isempty(cmd[i]))
+			return (1);
+		i++;
+	}
+	return (0);
 }
