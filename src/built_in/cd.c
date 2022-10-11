@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 00:05:57 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/10/11 14:19:08 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/11 14:46:40 by abucia           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,30 +68,31 @@ void	move_pwd(t_global *g, char *pwd, char *er)
 	return ;
 }
 
-void	b_in_cd(t_global *mini_sh, t_lst_cmd **cmd)
+void	b_in_cd(t_global *g, t_lst_cmd **cmd)
 {
 	char	pwd[PATH_MAX];
 
-	if (find_env_value("OLDPWD", mini_sh->env)->value == NULL)
-		change_value_of_key(&mini_sh->env, "OLDPWD", ft_strdup("", NULL));
+	if (find_env_value("OLDPWD", g->env)->value == NULL)
+		change_value_of_key(&g->env, "OLDPWD", ft_strdup("", NULL));
 	if (!getcwd(pwd, PATH_MAX))
-		if (find_env_value("OLDPWD", mini_sh->env)->value == NULL)
+		if (find_env_value("OLDPWD", g->env)->value == NULL)
 			return (ft_putendl_fd(CD_ERROR_LOST, 2));	
 	if ((*cmd)->exec[1] == NULL)
 	{
-		mini_sh->ret = 1;
-		if (!find_env_value("HOME", mini_sh->env)->value)
+		g->ret = 1;
+		if (find_env_value("HOME", g->env) == NULL || \
+		find_env_value("HOME", g->env)->value == NULL)
 			return (ft_putendl_fd("wati-minishell: cd: HOME not set", 2));
-		else if (!chdir(find_env_value("HOME", mini_sh->env)->value))
-			return (move_pwd(mini_sh, pwd, \
+		else if (!chdir(find_env_value("HOME", g->env)->value))
+			return (move_pwd(g, pwd, \
 			"wati-minishell: cd: HOME not set"));
 	}
 	else if ((*cmd)->exec[1])
 	{
 		if (!chdir((*cmd)->exec[1]))
-			return (move_pwd(mini_sh, pwd, CD_ERROR_LOST));
-		check_file_dir((*cmd)->exec[1], mini_sh, 0);
+			return (move_pwd(g, pwd, CD_ERROR_LOST));
+		check_file_dir((*cmd)->exec[1], g, 0);
 		return ;
 	}
-	mini_sh->ret = 1;
+	g->ret = 1;
 }
