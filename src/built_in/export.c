@@ -94,7 +94,7 @@ void	export_put_value(char *key, char *value, t_global *g, t_lst_env **env)
 		}
 		if (tmp != NULL)
 		{
-			if (key != NULL)
+			if (value != NULL)
 			{
 				free(key);
 				free(tmp->value);
