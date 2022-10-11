@@ -39,6 +39,7 @@ src/built_in/export_utils.c \
 src/built_in/built_in_utils.c \
 src/exec/redirection.c \
 src/parsing/parsing_utils.c \
+src/parsing/split_env_var.c \
 
 CC = gcc
 OBJ = $(SRC:.c=.o)

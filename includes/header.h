@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 16:15:55 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/11 16:42:11 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/11 18:14:59 by abucia           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,7 +214,7 @@ void		define_exec(t_lst_cmd **lst, t_global *g, int i);
 int			check_redirect_has_fd(t_lst_cmd *cmd);
 
 char		*rebuild_command(t_lst_cmd *cmd, t_global *g);
-
+void		replace_env_v(t_lst_parse **lst, t_lst_cmd **cmd, t_global *g, char *r);
 
 
 //  ------------------------------------------------
