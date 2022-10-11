@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 16:15:55 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/11 16:19:34 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/11 16:42:11 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,7 +254,7 @@ void	b_in_cd(t_global *mini_sh, t_lst_cmd **cmd);
 void	b_in_echo(t_global *mini_sh, t_lst_cmd **cmd);
 
 // < --- ENV --- >
-void	b_in_env(t_global *mini_sh);
+void	b_in_env(t_global *mini_sh, t_lst_cmd **cmd);
 
 // < --- UNSET --- >
 void	b_in_unset(t_lst_cmd **cmd, t_global *g);
