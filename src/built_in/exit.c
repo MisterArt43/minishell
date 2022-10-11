@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 15:40:57 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/10/10 17:02:43 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/11 02:06:05 by abucia           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,31 +33,35 @@ int	check_exit_arg(char *arg)
 	return (0);
 }
 
-void	b_in_exit(t_global *mini_sh)
+void	b_in_exit2(t_global *g)
 {
-	if (mini_sh->cmd->exec[1] && check_exit_arg(mini_sh->cmd->exec[1]))
+	g->ret = 1;
+}
+
+void	b_in_exit(t_global *g)
+{
+	g->ret = 0;
+	if (g->cmd->exec[1] && check_exit_arg(g->cmd->exec[1]))
 	{
 		ft_putstr_fd("wati-minishell: exit: ", 2);
-		ft_putstr_fd(mini_sh->cmd->exec[1], 2);
+		ft_putstr_fd(g->cmd->exec[1], 2);
 		ft_putendl_fd(": exit: numeric argument required", 2);
-		mini_sh->ret = 255;
-		quit(mini_sh);
+		g->ret = 255;
 	}
-	else if (mini_sh->cmd->exec[1] && mini_sh->cmd->exec[2])
+	else if (g->cmd->exec[1] && g->cmd->exec[2])
 	{
 		ft_putendl_fd("wati-minishell: exit: too many arguments", 2);
-		mini_sh->ret = 1;
+		g->ret = 1;
+		return ;
 	}
-	else if (mini_sh->cmd->exec[1])
+	else if (g->cmd->exec[1])
 	{
-		mini_sh->ret = ft_atoi(mini_sh->cmd->exec[1]);
+		g->ret = ft_atoi(g->cmd->exec[1]);
 		printf("exit\n");
-		quit(mini_sh);
 	}
+	else if (ft_lst_cmd_size(g->cmd) == 1)
+		printf("exit\n");
 	else
-	{
-		printf("exit\n");
-		mini_sh->ret = 0;
-		quit(mini_sh);
-	}
+		return (b_in_exit2(g));
+	quit(g);
 }

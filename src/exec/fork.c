@@ -6,7 +6,7 @@
 /*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 02:58:37 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/10 23:34:52 by abucia           ###   ########lyon.fr   */
+/*   Updated: 2022/10/11 02:11:46 by abucia           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	check_has_cmd(t_lst_cmd *cmd, t_global *g)
 	return (1);
 }
 
-void	exec_cmd(t_global *mini_sh, pid_t pid, int status)
+void	exec_cmd(t_global *g, pid_t pid, int status)
 {
 	pid = fork();
 	if (pid == -1)
@@ -74,21 +74,21 @@ void	exec_cmd(t_global *mini_sh, pid_t pid, int status)
 	{
 		waitpid(pid, &status, 0);
 		if (WIFEXITED(status))
-			mini_sh->ret = WEXITSTATUS(status);
+			g->ret = WEXITSTATUS(status);
 		kill(pid, SIGTERM);
 	}
 	else
 	{
-		if (pipe(mini_sh->cmd->fd) < 0)
+		if (pipe(g->cmd->fd) < 0)
 			return (ft_putendl_fd("PIPE ERR", 2));
-		check_fd_in(&mini_sh->cmd->fd[0], &mini_sh->cmd->fd[1], \
-		mini_sh->cmd, mini_sh);
-		close_fds(&mini_sh->cmd->fd[0], &mini_sh->cmd->fd[1]);
-		if (check_has_cmd(mini_sh->cmd, mini_sh) && !check_path(mini_sh, mini_sh->cmd))
+		check_fd_in(&g->cmd->fd[0], &g->cmd->fd[1], \
+		g->cmd, g);
+		close_fds(&g->cmd->fd[0], &g->cmd->fd[1]);
+		if (check_has_cmd(g->cmd, g) && !check_path(g, g->cmd))
 		{
-			if (execve(get_binary(mini_sh, mini_sh->cmd), mini_sh->cmd->exec, \
-			rebuild_env(mini_sh->env, mini_sh)) == -1)
-				cmd_not_vld(mini_sh, mini_sh->cmd);
+			if (execve(get_binary(g, g->cmd), g->cmd->exec, \
+			rebuild_env(g->env, g)) == -1)
+				cmd_not_vld(g, g->cmd);
 		}
 		exit(EXIT_FAILURE);
 	}

@@ -6,7 +6,7 @@
 /*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 16:50:14 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/10 22:26:56 by abucia           ###   ########lyon.fr   */
+/*   Updated: 2022/10/11 02:16:25 by abucia           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ int	strstrlen(char **tab)
 	int	i;
 
 	i = 0;
-
 	while (tab[i])
 		i++;
 	return (i);

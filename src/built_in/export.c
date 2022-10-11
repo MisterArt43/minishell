@@ -40,7 +40,8 @@ int	skip_key(char *str, int *i, int first, int mode)
 			return (0);
 		if (first == 0)
 			first = 1;
-		else if (check_char_isempty(str[*i]) == 0 || (str[*i] == '=' && mode == 1))
+		else if (check_char_isempty(str[*i]) == 0 \
+		|| (str[*i] == '=' && mode == 1))
 			return (1);
 		else if (is_valid_key_char(str[*i], 1) == 0)
 			return (0);

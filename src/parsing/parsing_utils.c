@@ -54,7 +54,7 @@ char	*add_exec(t_lst_parse **parse, t_global *g)
 	{
 		if ((*parse)->type == 0 || (*parse)->type == 1)
 			add_exec2(parse, g, &ret);
-		if ((*parse)->next && (*parse)->next->is_near_prev == 0)
+		if ((*parse)->next && (*parse)->next->is_near_prev == 0 && ret != NULL)
 			break ;
 		(*parse) = (*parse)->next;
 	}

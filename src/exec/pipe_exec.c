@@ -6,7 +6,7 @@
 /*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 23:23:29 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/10/10 23:23:59 by abucia           ###   ########lyon.fr   */
+/*   Updated: 2022/10/11 02:15:25 by abucia           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,21 @@ void	exec_child(t_global *mini_sh, t_lst_cmd *cmd, int fd[2], int fd_in)
 	exit(mini_sh->ret);
 }
 
+int	fork_override(int fd[2], pid_t child_pid)
+{
+	ft_putendl_fd(FORK_OVERRIDE, 2);
+	rl_on_new_line();
+	rl_replace_line("\0", 1);
+	write(1, "\n", 1);
+	rl_redisplay();
+	static_signal(NULL);
+	if (fd[0] > 0)
+		close(fd[0]);
+	if (fd[1] > 0)
+		close(fd[1]);
+	return (child_pid);
+}
+
 int	complicado(t_global *mini_sh, t_lst_cmd *cmd, int fd_in, pid_t *c_pid)
 {
 	int		fd[2];
@@ -68,19 +83,7 @@ int	complicado(t_global *mini_sh, t_lst_cmd *cmd, int fd_in, pid_t *c_pid)
 	}
 	child_pid = fork();
 	if (child_pid == -1)
-	{
-		ft_putendl_fd(FORK_OVERRIDE, 2);
-		rl_on_new_line();
-		rl_replace_line("\0", 1);
-		write(1, "\n", 1);
-		rl_redisplay();
-		static_signal(NULL);
-		if (fd[0] > 0)
-			close(fd[0]);
-		if (fd[1] > 0)
-			close(fd[1]);
-		return (child_pid);
-	}
+		return (fork_override(fd, child_pid));
 	else if (child_pid == 0)
 		exec_child(mini_sh, cmd, fd, fd_in);
 	close_fds(&fd_in, &fd[1]);
