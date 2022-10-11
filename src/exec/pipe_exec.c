@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 23:23:29 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/10/11 15:49:23 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/11 16:09:07 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,6 @@ void	exec_child(t_global *mini_sh, t_lst_cmd *cmd, int fd[2], int fd_in)
 int	fork_override(int *fd_in, int *fd_out, pid_t child_pid, t_global *g)
 {
 	ft_putendl_fd(FORK_OVERRIDE, 2);
-	ft_gc_clear(&g->gc_parsing);
-	ft_lst_env_clear(&g->env);
 	close_fds(fd_in, fd_out);
 	g->ret = 1;
 	return (child_pid);

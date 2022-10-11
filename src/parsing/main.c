@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 16:50:14 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/11 15:39:13 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/11 16:26:00 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -281,7 +281,7 @@ void	main_mini_sh(t_global *mini_sh)
 	while (1)
 	{
 		signal(SIGINT, (void *)sig_child_hndlr);
-		signal(SIGQUIT, (void *)sig_child_hndlr);
+		signal(SIGQUIT, SIG_IGN);
 		ft_gc_clear(&mini_sh->gc_parsing);
 		mini_sh->in_cmd = 0;
 		mini_sh->line = readline("wati-minishell> ");
@@ -303,14 +303,14 @@ void	main_mini_sh(t_global *mini_sh)
 	}
 }
 
-void	static_signal(void	*ptr)
+void	static_signal(void	*ptr, int sig)
 {
 	static t_global	*g;
 
 	if (ptr != NULL)
 		g = ptr;
 	else
-		g->ret = 130;
+		g->ret = sig;
 }
 
 int	main(int argc, char **argv, char **env)
@@ -325,7 +325,7 @@ int	main(int argc, char **argv, char **env)
 		mini_sh.line = (char *) NULL;
 		mini_sh.ret = 0;
 		mini_sh.in_cmd = 0;
-		static_signal(&mini_sh);
+		static_signal(&mini_sh, 0);
 		load_env(env, &mini_sh.env, &mini_sh);
 		main_mini_sh(&mini_sh);
 		return (0);

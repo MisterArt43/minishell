@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 16:15:55 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/11 15:14:38 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/11 16:19:34 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -291,6 +291,6 @@ int		complicado(t_global *mini_sh, t_lst_cmd *cmd, int fd_in, pid_t *c_pid);
 // SIGNALS
 int		sig_child_hndlr(const int signal);
 int		sig_child_hndlr_in_cmd(const int signal);
-void	static_signal(void	*ptr);
+void	static_signal(void	*ptr, int sig);
 
 #endif
