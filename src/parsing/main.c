@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 16:50:14 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/11 18:19:50 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/11 19:04:04 by abucia           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,14 +268,6 @@ int	check_line_and_init_gc(t_global *mini_sh)
 	"an error occured when mallocing readline", mini_sh));
 	add_history(mini_sh->line);
 	return (0);
-}
-
-void	sig_ctrl_d(t_global *mini_sh)
-{
-	write(1, "exit\n", 5);
-	ft_gc_clear(&mini_sh->gc_parsing);
-	ft_lst_env_clear(&mini_sh->env);
-	exit(mini_sh->ret);
 }
 
 void	main_mini_sh(t_global *mini_sh)

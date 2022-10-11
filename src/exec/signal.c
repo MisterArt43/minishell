@@ -42,3 +42,11 @@ int	sig_child_hndlr(const int signal)
 	}
 	return (130);
 }
+
+void	sig_ctrl_d(t_global *mini_sh)
+{
+	write(1, "exit\n", 5);
+	ft_gc_clear(&mini_sh->gc_parsing);
+	ft_lst_env_clear(&mini_sh->env);
+	exit(mini_sh->ret);
+}
