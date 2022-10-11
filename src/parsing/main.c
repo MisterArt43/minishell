@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 16:50:14 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/11 02:16:25 by abucia           ###   ########lyon.fr   */
+/*   Updated: 2022/10/11 13:14:06 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,8 +224,8 @@ void	select_exec(t_global *g, int status, int l_status)
 	pid_t	c_pid;
 	pid_t	l_c_pid;
 
-	c_pid = 1;
-	l_c_pid = 1;
+	c_pid = -1;
+	l_c_pid = -1;
 	if (g->cmd->exec[0] != NULL && ft_lst_cmd_size(g->cmd) == 1 && \
 		(!ft_strncmp(g->cmd->exec[0], "exit", -1) \
 		|| !ft_strncmp(g->cmd->exec[0], "pwd", -1) \
@@ -240,10 +240,11 @@ void	select_exec(t_global *g, int status, int l_status)
 	else if (ft_lst_cmd_size(g->cmd) > 1)
 	{
 		l_c_pid = complicado(g, g->cmd, 0, &c_pid);
-		if (l_c_pid < 0)
+		if (l_c_pid < 0 || c_pid < 0)
 		{
-			printf("complicado \n");
-			exit(1);
+			while(wait(NULL) != -1)
+           		;
+			return ;
 		}
 		waitpid(c_pid, &status, 0);
 		kill(c_pid, SIGTERM);
