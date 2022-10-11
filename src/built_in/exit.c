@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 15:40:57 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/10/11 02:06:05 by abucia           ###   ########lyon.fr   */
+/*   Updated: 2022/10/11 15:03:08 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,11 @@ int	check_exit_arg(char *arg)
 
 void	b_in_exit2(t_global *g)
 {
-	g->ret = 1;
+	g->ret = 0;
 }
 
 void	b_in_exit(t_global *g)
 {
-	g->ret = 0;
 	if (g->cmd->exec[1] && check_exit_arg(g->cmd->exec[1]))
 	{
 		ft_putstr_fd("wati-minishell: exit: ", 2);

@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 16:15:55 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/05 06:48:36 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/11 15:14:38 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -277,6 +277,7 @@ void	right_right_redirect(int *in, int *out, t_lst_parse *tmp, t_global *g);
 int		print_er(const char *er);
 //ERRR MANAGER
 int		check_path(t_global *mini_sh, t_lst_cmd *cmd);
+int		is_relative(t_global *mini_sh, t_lst_cmd *cmd);
 void	cmd_not_vld(t_global *mini_sh, t_lst_cmd *cmd);
 //exit program because of a malloc error.
 void	malloc_exit(t_global *g, const char *er);

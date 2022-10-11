@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 16:50:14 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/11 13:25:25 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/11 15:07:52 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -273,7 +273,7 @@ void	sig_ctrl_d(t_global *mini_sh)
 	write(1, "exit\n", 5);
 	ft_gc_clear(&mini_sh->gc_parsing);
 	ft_lst_env_clear(&mini_sh->env);
-	exit(0);
+	exit(mini_sh->ret);
 }
 
 void	main_mini_sh(t_global *mini_sh)
