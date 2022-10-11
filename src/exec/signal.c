@@ -50,3 +50,13 @@ void	sig_ctrl_d(t_global *mini_sh)
 	ft_lst_env_clear(&mini_sh->env);
 	exit(mini_sh->ret);
 }
+
+void	static_signal(void	*ptr, int sig)
+{
+	static t_global	*g;
+
+	if (ptr != NULL)
+		g = ptr;
+	else
+		g->ret = sig;
+}

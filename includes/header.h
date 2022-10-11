@@ -6,7 +6,7 @@
 /*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 16:15:55 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/11 19:12:07 by abucia           ###   ########lyon.fr   */
+/*   Updated: 2022/10/11 19:32:45 by abucia           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,6 +218,19 @@ void		skip_word(char *str, int *i);
 void		skip_to_next_word(char *str, int *i);
 void		skip_redirection(char *str, int *i);
 
+int			make_lst_cmd(char *cmd, t_global *mini_sh, int i, int j);
+int			print_er(const char *er);
+int			print_er(const char *er);
+void		kill_my_child(t_global *g, int status, int l_status);
+
+void		shlvl_plus_one(char **key, char **value, t_dual_int *forced_env);
+void		add_env_(t_global *g);
+void		add_oldpwd(t_lst_env **lst_env, t_global *g);
+void		add_pwd(t_lst_env **lst_env, t_global *g);
+void		add_shlvl(t_lst_env **lst_env, t_global *g);
+void		parse_env(char *current, t_lst_env **lst_env, t_global *g, t_dual_int *forced_env);
+void		load_env(char **env, t_lst_env **lst_env, t_global *g);
+
 //  ------------------------------------------------
 //  < ------------      READLINE      ------------ >
 //  ------------------------------------------------
@@ -294,5 +307,6 @@ int		sig_child_hndlr(const int signal);
 int		sig_child_hndlr_in_cmd(const int signal);
 void	static_signal(void	*ptr, int sig);
 void	sig_ctrl_d(t_global *mini_sh);
+void	static_signal(void	*ptr, int sig);
 
 #endif
