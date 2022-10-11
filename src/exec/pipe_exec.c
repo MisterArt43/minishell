@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 23:23:29 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/10/11 15:37:22 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/11 15:38:05 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	fork_override(int fd[2], pid_t child_pid, t_global *g)
 		close(fd[0]);
 	if (fd[1] > 0)
 		close(fd[1]);
-	g->cmd = 1;
+	g->ret = 1;
 	return (child_pid);
 }
 
