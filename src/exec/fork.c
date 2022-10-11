@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 02:58:37 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/11 16:22:30 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/11 18:31:12 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	sig_child_hndlr(const int signal)
 		rl_replace_line("\0", 1);
 		write(1, "\n", 1);
 		rl_redisplay();
-		static_signal(NULL, 130);
+		static_signal(NULL, 0);
 	}
 	return (130);
 }

@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 16:50:14 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/11 16:26:00 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/11 18:19:50 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,6 +252,8 @@ void	select_exec(t_global *g, int status, int l_status)
 		if (WIFEXITED(l_status))
 			g->ret = WEXITSTATUS(status);
 		kill(l_c_pid, SIGTERM);
+		while(wait(NULL) != -1)
+			;
 	}
 }
 
