@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 23:23:29 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/10/11 15:38:05 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/11 15:40:34 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,15 +54,15 @@ void	exec_child(t_global *mini_sh, t_lst_cmd *cmd, int fd[2], int fd_in)
 	exit(mini_sh->ret);
 }
 
-int	fork_override(int fd[2], pid_t child_pid, t_global *g)
+int	fork_override(int *fd[2], pid_t child_pid, t_global *g)
 {
 	ft_putendl_fd(FORK_OVERRIDE, 2);
 	ft_gc_clear(&g->gc_parsing);
 	ft_lst_env_clear(&g->env);
-	if (fd[0] > 0)
-		close(fd[0]);
-	if (fd[1] > 0)
-		close(fd[1]);
+	if (*fd[0] > 0)
+		close(*fd[0]);
+	if (*fd[1] > 0)
+		close(*fd[1]);
 	g->ret = 1;
 	return (child_pid);
 }
@@ -81,7 +81,7 @@ int	complicado(t_global *mini_sh, t_lst_cmd *cmd, int fd_in, pid_t *c_pid)
 	}
 	child_pid = fork();
 	if (child_pid == -1)
-		return (fork_override(fd, child_pid, mini_sh));
+		return (fork_override(&fd, child_pid, mini_sh));
 	else if (child_pid == 0)
 		exec_child(mini_sh, cmd, fd, fd_in);
 	close_fds(&fd_in, &fd[1]);

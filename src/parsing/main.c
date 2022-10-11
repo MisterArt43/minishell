@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 16:50:14 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/11 15:07:52 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/11 15:39:13 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,7 +243,7 @@ void	select_exec(t_global *g, int status, int l_status)
 		if (l_c_pid < 0 || c_pid < 0)
 		{
 			while(wait(NULL) != -1)
-           		;
+				;
 			return ;
 		}
 		waitpid(c_pid, &status, 0);
