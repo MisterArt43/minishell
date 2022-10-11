@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 00:05:57 by Wati-Theo         #+#    #+#             */
-/*   Updated: 2022/10/11 14:46:40 by abucia           ###   ########lyon.fr   */
+/*   Updated: 2022/10/11 19:00:55 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	b_in_cd(t_global *g, t_lst_cmd **cmd)
 		change_value_of_key(&g->env, "OLDPWD", ft_strdup("", NULL));
 	if (!getcwd(pwd, PATH_MAX))
 		if (find_env_value("OLDPWD", g->env)->value == NULL)
-			return (ft_putendl_fd(CD_ERROR_LOST, 2));	
+			return (ft_putendl_fd(CD_ERROR_LOST, 2));
 	if ((*cmd)->exec[1] == NULL)
 	{
 		g->ret = 1;

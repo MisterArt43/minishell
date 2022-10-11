@@ -6,7 +6,7 @@
 /*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 04:28:26 by abucia            #+#    #+#             */
-/*   Updated: 2022/10/11 18:48:30 by tschlege         ###   ########lyon.fr   */
+/*   Updated: 2022/10/11 18:58:54 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,4 +91,3 @@ int	ft_isalnum(int c)
 		return (1);
 	return (0);
 }
-
