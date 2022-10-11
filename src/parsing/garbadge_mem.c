@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   garbadge_mem.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 01:07:26 by abucia            #+#    #+#             */
-/*   Updated: 2022/09/08 01:07:26 by abucia           ###   ########lyon.fr   */
+/*   Updated: 2022/10/11 19:08:50 by tschlege         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,36 +75,4 @@ void	ft_gc_delone(t_gc *lst)
 		free(lst->src);
 		free(lst);
 	}
-}
-
-void	ft_gc_clear(t_gc **lst)
-{
-	t_gc	*tmp;
-	t_gc	*tmp2;
-
-	if (!lst)
-		return ;
-	tmp = *lst;
-	while (tmp)
-	{
-		tmp2 = tmp->next;
-		ft_gc_delone(tmp);
-		tmp = tmp2;
-	}
-	*lst = NULL;
-}
-
-int	ft_gc_size(t_gc *lst)
-{
-	unsigned int	i;
-
-	i = 1;
-	if (!lst)
-		return (0);
-	while (lst->next)
-	{
-		lst = lst->next;
-		i++;
-	}
-	return (i);
 }

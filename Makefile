@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: abucia <abucia@student.42lyon.fr>          +#+  +:+       +#+         #
+#    By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/07 15:22:30 by abucia            #+#    #+#              #
-#    Updated: 2022/10/11 19:03:24 by abucia           ###   ########lyon.fr    #
+#    Updated: 2022/10/11 19:07:12 by tschlege         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@ NAME = minishell
 SRC = src/parsing/main.c \
 src/parsing/lst_handler.c \
 src/parsing/garbadge_mem.c \
+src/parsing/garbadge_mem2.c \
 src/parsing/checker_cmd.c \
 src/parsing/ft_split.c \
 src/parsing/define_parsing.c \
