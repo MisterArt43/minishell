@@ -6,7 +6,7 @@
 #    By: tschlege <tschlege@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/07 15:22:30 by abucia            #+#    #+#              #
-#    Updated: 2022/10/02 20:20:56 by tschlege         ###   ########lyon.fr    #
+#    Updated: 2022/10/11 18:58:15 by tschlege         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,8 @@ src/parsing/ft_split.c \
 src/parsing/define_parsing.c \
 src/parsing/utils.c \
 src/parsing/utils2.c \
+src/parsing/utils3.c \
+src/parsing/utils4.c \
 src/exec/fork.c \
 src/built_in/export.c \
 src/built_in/exit.c \
